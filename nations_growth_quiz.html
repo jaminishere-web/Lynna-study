@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>여러 나라의 성장 단답형 퀴즈</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #2C7A6E;
+    --teal-light: #4AA89A;
+    --teal-dark: #1A4F46;
+    --cream: #F4F1EC;
+    --dark: #1A1F1E;
+    --muted: #5A6B69;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #EEF0EC;
+    background-image:
+      radial-gradient(ellipse at 15% 15%, rgba(44,122,110,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(26,79,70,0.08) 0%, transparent 50%);
+    color: #1A1F1E;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .header::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--teal), transparent);
+    margin: 0 auto 24px;
+  }
+
+  .header-badge {
+    display: inline-block;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--teal-dark);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(26px, 5vw, 46px);
+    font-weight: 900;
+    color: #1A1F1E;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  h1 span { color: var(--teal-dark); }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-top: 12px;
+  }
+
+  .header::after {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--teal-dark), transparent);
+    margin: 24px auto 0;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 12px 28px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .btn-primary {
+    background: var(--teal-dark);
+    color: #F4F1EC;
+  }
+
+  .btn-primary:hover {
+    background: var(--teal);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(44,122,110,0.3);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--teal-dark);
+    border: 1px solid var(--teal);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(44,122,110,0.08);
+    color: #1A1F1E;
+  }
+
+  .progress-bar-wrap {
+    max-width: 800px;
+    margin: 0 auto 40px;
+    padding: 0 8px;
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: rgba(44,122,110,0.15);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal-dark), var(--teal-light));
+    transition: width 0.5s ease;
+  }
+
+  .quiz-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .question-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(44,122,110,0.2);
+    padding: 28px 32px;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .question-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--teal-dark);
+    transition: background 0.3s;
+  }
+
+  .question-card:hover {
+    background: #F7FBF9;
+    border-color: rgba(44,122,110,0.4);
+  }
+
+  .question-card.revealed {
+    background: #F0F8F5;
+    border-color: rgba(44,122,110,0.4);
+  }
+
+  .question-card.revealed::before { background: var(--teal); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .q-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    color: var(--teal-dark);
+    letter-spacing: 2px;
+    min-width: 36px;
+    padding-top: 2px;
+  }
+
+  .q-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #1A1F1E;
+    flex: 1;
+  }
+
+  .answer-wrap {
+    margin-top: 16px;
+    margin-left: 56px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .answer-wrap.show {
+    max-height: 200px;
+    opacity: 1;
+  }
+
+  .answer-box {
+    background: rgba(44,122,110,0.08);
+    border-left: 2px solid var(--teal);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .answer-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--teal-dark);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .answer-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    color: #1A1F1E;
+    font-weight: 700;
+  }
+
+  .reveal-hint {
+    font-size: 11px;
+    color: #8A9E9B;
+    margin-left: 56px;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0 24px;
+  }
+
+  .section-divider span {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 13px;
+    color: var(--teal-dark);
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+
+  .section-divider::before {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--teal));
+  }
+
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--teal), transparent);
+  }
+
+  .score-panel {
+    max-width: 900px;
+    margin: 48px auto 0;
+    background: #FFFFFF;
+    border: 1px solid rgba(44,122,110,0.2);
+    padding: 32px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .score-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .score-number {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--teal-dark);
+    line-height: 1;
+  }
+
+  .score-number span {
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  @media (max-width: 600px) {
+    .question-card { padding: 20px; }
+    .answer-wrap, .reveal-hint { margin-left: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">역사 퀴즈 · 여러 나라의 성장</div>
+  <h1>철기 문화를 바탕으로<br><span>여러 나라가 성장하다</span></h1>
+  <p class="subtitle">단답형 40문제 · 클릭하여 정답 확인</p>
+</div>
+
+<div class="controls">
+  <button class="btn btn-primary" onclick="revealAll()">전체 정답 보기</button>
+  <button class="btn btn-secondary" onclick="hideAll()">전체 정답 숨기기</button>
+  <button class="btn btn-secondary" onclick="shuffleCards()">문제 순서 섞기</button>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-info">
+    <span id="progressText">0 / 40 확인 완료</span>
+    <span id="progressPct">0%</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="quiz-grid" id="quizGrid"></div>
+
+<div class="score-panel">
+  <div>
+    <div class="score-text">현재 확인한 문제</div>
+    <div class="score-number" id="scoreNum">0<span> / 40</span></div>
+  </div>
+  <button class="btn btn-primary" onclick="revealAll()">모든 정답 확인하기</button>
+</div>
+
+<script>
+const questions = [
+
+  // ─── 여러 나라의 형성 ───
+  { section: "여러 나라의 형성", q: "철기 문화를 바탕으로 만주와 한반도 북부에 세워진 두 나라는 무엇인가?", a: "부여, 고구려" },
+  { section: "여러 나라의 형성", q: "한반도 남부에 성립한 나라를 통틀어 무엇이라 하는가?", a: "삼한" },
+  { section: "여러 나라의 형성", q: "한반도 동북쪽 해안 지역에 등장한 두 나라는 무엇인가?", a: "옥저, 동예" },
+
+  // ─── 부여 ───
+  { section: "부여", q: "부여는 어느 강 주변에 살던 여러 부족이 연합하여 성립한 나라인가?", a: "만주 쑹화강(송화강)" },
+  { section: "부여", q: "부여의 정치 형태를 나타내는 용어는 무엇인가?", a: "연맹 왕국" },
+  { section: "부여", q: "연맹 왕국의 의미를 한 문장으로 쓰시오.", a: "여러 부족이 연합하여 만들어진 국가 형태로, 연합의 대표로 왕을 선출한다" },
+  { section: "부여", q: "부여에서 왕 아래 각자의 영역을 다스린 지배층을 무엇이라 하는가?", a: "가(加)" },
+  { section: "부여", q: "부여의 관직 이름이 말, 소, 돼지, 개 등 가축의 이름을 딴 이유는 무엇인가?", a: "목축이 발달했던 부여의 특징이 반영된 것" },
+  { section: "부여", q: "부여에서 12월에 열린 제천 행사의 이름은 무엇인가?", a: "영고" },
+  { section: "부여", q: "부여의 영고에서 사람들이 한 두 가지 활동은 무엇인가?", a: "노래와 춤" },
+  { section: "부여", q: "부여에서 왕이나 귀족이 죽으면 사람을 함께 묻는 풍습을 무엇이라 하는가?", a: "순장" },
+  { section: "부여", q: "부여에서 전쟁이 일어나면 소를 잡아 발굽 모양으로 점을 치는 풍습을 무엇이라 하는가?", a: "우제점법(길흉을 점침)" },
+  { section: "부여", q: "부여의 법에서 살인자에게 내린 형벌은 무엇인가?", a: "사형에 처하고 그 집안 사람을 노비로 삼는다" },
+  { section: "부여", q: "부여의 법에서 도둑질을 하면 훔친 물건의 몇 배를 변상해야 했는가?", a: "열두 배" },
+  { section: "부여", q: "부여의 행정 구역을 나누던 방식은 무엇을 기준으로 동, 서, 남, 북으로 구분하였는가?", a: "수도를 중심으로 방위(사출도)" },
+  { section: "부여", q: "부여가 결국 어느 나라에 통합되었는가? 그리고 그 시기는 몇 세기인가?", a: "고구려, 5세기" },
+
+  // ─── 고구려 ───
+  { section: "고구려", q: "고구려는 고조선이 멸망한 후 어느 강 중류의 토착민들이 부족을 이루며 세운 나라인가?", a: "압록강" },
+  { section: "고구려", q: "고구려의 첫 도읍지는 어디인가?", a: "졸본" },
+  { section: "고구려", q: "고구려가 졸본을 도읍으로 정한 시기는 기원전 몇 년인가?", a: "기원전 37년" },
+  { section: "고구려", q: "초기 고구려는 몇 개의 부족이 연합한 연맹 왕국이었는가?", a: "다섯 부족" },
+  { section: "고구려", q: "고구려에서 왕과 부족의 대표들이 나라의 중요한 일을 결정하던 귀족 회의를 무엇이라 하는가?", a: "제가 회의" },
+  { section: "고구려", q: "졸본 지역의 지형적 특성 때문에 고구려 사람들이 중요하게 여긴 두 가지 무예는 무엇인가?", a: "말타기(마술), 활쏘기" },
+  { section: "고구려", q: "고구려에 있던 혼인 풍습으로, 신랑이 신부 집 뒤꼍의 작은 집에 머무르는 제도는 무엇인가?", a: "서옥제" },
+  { section: "고구려", q: "서옥제에서 부부가 아이를 낳고 아이가 장성하면 어디로 가는가?", a: "남자(신랑)의 집" },
+  { section: "고구려", q: "고구려에서 10월에 열린 제천 행사의 이름은 무엇인가?", a: "동맹" },
+
+  // ─── 옥저와 동예 ───
+  { section: "옥저와 동예", q: "옥저와 동예가 성장한 지역은 한반도 어느 쪽인가?", a: "동해안(동쪽 해안)" },
+  { section: "옥저와 동예", q: "옥저와 동예에 왕이 없었던 이유와 대신 각 지역을 다스린 지배자를 쓰시오.", a: "강한 권력이 발달하지 못함 — 읍군 또는 삼로" },
+  { section: "옥저와 동예", q: "옥저와 동예가 강한 나라로 성장하지 못한 두 가지 이유는 무엇인가?", a: "지리적 한계로 선진 문화 수용이 늦고, 고구려의 간섭을 받았다" },
+  { section: "옥저와 동예", q: "동예의 대표적인 특산물 두 가지를 쓰시오.", a: "단궁, 과하마(반어피도 가능)" },
+  { section: "옥저와 동예", q: "옥저에 있던 혼인 풍습으로, 신랑 될 집안이 어린 여자아이를 데려와 키우다 성인이 되면 혼인하는 제도는?", a: "민며느리제" },
+  { section: "옥저와 동예", q: "동예에서 다른 부족의 경계를 침범하면 노비나 소, 말로 보상하는 풍습은 무엇인가?", a: "책화" },
+  { section: "옥저와 동예", q: "동예에서 같은 씨족끼리 혼인하지 않는 풍습을 무엇이라 하는가?", a: "족외혼" },
+  { section: "옥저와 동예", q: "동예에서 10월에 열린 제천 행사의 이름은 무엇인가?", a: "무천" },
+
+  // ─── 삼한 ───
+  { section: "삼한", q: "삼한을 구성하는 세 나라를 쓰시오.", a: "마한, 진한, 변한" },
+  { section: "삼한", q: "삼한에서 천군이 제사를 주관하는 독립된 구역을 무엇이라 하는가?", a: "소도" },
+  { section: "삼한", q: "소도에 죄를 짓고 도망친 사람이 들어와도 잡을 수 없었던 이유는 무엇을 의미하는가?", a: "삼한에서 제사와 정치가 분리되어 있었음(제정 분리)" },
+  { section: "삼한", q: "변한이 주변 나라에 수출할 만큼 풍부하게 생산하여 화폐처럼 사용한 것은 무엇인가?", a: "철(덩이쇠)" },
+  { section: "삼한", q: "삼한에서 5월과 10월 두 차례 하늘에 제사를 지냈다. 이 제천 행사의 공통된 목적은 무엇인가?", a: "농사의 시작과 마무리를 기념하며 풍요를 기원" },
+  { section: "삼한", q: "마한의 소국이었던 백제국은 이후 어느 나라로 발전하였는가?", a: "백제" },
+  { section: "삼한", q: "진한의 사로국은 이후 어느 나라로 발전하였는가?", a: "신라" },
+  { section: "삼한", q: "변한 지역의 소국들은 이후 어떤 연맹으로 발전하였는가?", a: "가야 연맹" },
+  { section: "삼한", q: "삼한에서 솟대를 마을 입구에 세운 두 가지 역할은 무엇인가?", a: "수호신으로 여겨 장승과 함께 세움 / 마을의 경계를 표시" },
+];
+
+let revealed = new Set();
+const TOTAL = questions.length;
+
+function buildCards(list) {
+  const grid = document.getElementById('quizGrid');
+  grid.innerHTML = '';
+  let currentSection = '';
+
+  list.forEach((item, i) => {
+    if (item.section !== currentSection) {
+      currentSection = item.section;
+      const div = document.createElement('div');
+      div.className = 'section-divider';
+      div.innerHTML = `<span>◆ ${currentSection}</span>`;
+      grid.appendChild(div);
+    }
+
+    const card = document.createElement('div');
+    card.className = 'question-card' + (revealed.has(item._id) ? ' revealed' : '');
+    card.dataset.id = item._id;
+    card.innerHTML = `
+      <div class="card-header">
+        <div class="q-num">Q${String(i+1).padStart(2,'0')}</div>
+        <div class="q-text">${item.q}</div>
+      </div>
+      <div class="answer-wrap ${revealed.has(item._id) ? 'show' : ''}" id="ans-${item._id}">
+        <div class="answer-box">
+          <div class="answer-label">정답</div>
+          <div class="answer-text">${item.a}</div>
+        </div>
+      </div>
+      <div class="reveal-hint">↓ 클릭하여 정답 확인</div>
+    `;
+    card.addEventListener('click', () => toggleCard(item._id, card));
+    grid.appendChild(card);
+  });
+}
+
+function toggleCard(id, card) {
+  const ansWrap = document.getElementById('ans-' + id);
+  if (revealed.has(id)) {
+    revealed.delete(id);
+    ansWrap.classList.remove('show');
+    card.classList.remove('revealed');
+  } else {
+    revealed.add(id);
+    ansWrap.classList.add('show');
+    card.classList.add('revealed');
+  }
+  updateProgress();
+}
+
+function revealAll() {
+  questions.forEach(q => revealed.add(q._id));
+  document.querySelectorAll('.answer-wrap').forEach(el => el.classList.add('show'));
+  document.querySelectorAll('.question-card').forEach(el => el.classList.add('revealed'));
+  updateProgress();
+}
+
+function hideAll() {
+  revealed.clear();
+  document.querySelectorAll('.answer-wrap').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.question-card').forEach(el => el.classList.remove('revealed'));
+  updateProgress();
+}
+
+function shuffleCards() {
+  hideAll();
+  const shuffled = [...questions].sort(() => Math.random() - 0.5);
+  buildCards(shuffled);
+}
+
+function updateProgress() {
+  const count = revealed.size;
+  const pct = Math.round(count / TOTAL * 100);
+  document.getElementById('progressText').textContent = `${count} / ${TOTAL} 확인 완료`;
+  document.getElementById('progressPct').textContent = `${pct}%`;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('scoreNum').innerHTML = `${count}<span> / ${TOTAL}</span>`;
+}
+
+questions.forEach((q, i) => q._id = 'q' + i);
+buildCards(questions);
+updateProgress();
+</script>
+</body>
+</html>
