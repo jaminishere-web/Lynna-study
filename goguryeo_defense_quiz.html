@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>고구려가 수와 당의 침략을 막아 내다</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #7A2020;
+    --accent-light: #B04040;
+    --accent-dark: #4E1010;
+    --bg: #EEE8E0;
+    --card-bg: #FFFFFF;
+    --card-hover: #FDF8F5;
+    --card-revealed: #FAF0EE;
+    --text-primary: #1C1208;
+    --text-muted: #6B5040;
+    --border: rgba(122,32,32,0.18);
+    --border-hover: rgba(122,32,32,0.38);
+    --answer-bg: rgba(122,32,32,0.07);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 15% 15%, rgba(122,32,32,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(78,16,16,0.07) 0%, transparent 50%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .header::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-light), transparent);
+    margin: 0 auto 24px;
+  }
+
+  .header-badge {
+    display: inline-block;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent-dark);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(24px, 5vw, 44px);
+    font-weight: 900;
+    color: #1C1208;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  h1 span { color: var(--accent-dark); }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-top: 12px;
+  }
+
+  .header::after {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-dark), transparent);
+    margin: 24px auto 0;
+  }
+
+  .timeline {
+    max-width: 900px;
+    margin: 0 auto 48px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  .tl-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+    position: relative;
+  }
+
+  .tl-item:not(:last-child)::after {
+    content: '▶';
+    position: absolute;
+    right: -8px;
+    top: 8px;
+    font-size: 10px;
+    color: var(--accent-light);
+  }
+
+  .tl-year {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 4px;
+  }
+
+  .tl-event {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 12px 28px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .btn-primary {
+    background: var(--accent-dark);
+    color: #FFFFFF;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(122,32,32,0.3);
+  }
+
+  .btn-secondary {
+    background: var(--card-bg);
+    color: var(--accent-dark);
+    border: 1px solid var(--accent);
+  }
+
+  .btn-secondary:hover {
+    background: var(--card-hover);
+    color: #1C1208;
+  }
+
+  .progress-bar-wrap {
+    max-width: 800px;
+    margin: 0 auto 40px;
+    padding: 0 8px;
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: rgba(122,32,32,0.12);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-dark), var(--accent-light));
+    transition: width 0.5s ease;
+  }
+
+  .quiz-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .question-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 28px 32px;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .question-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent-dark);
+    transition: background 0.3s;
+  }
+
+  .question-card:hover {
+    background: var(--card-hover);
+    border-color: var(--border-hover);
+  }
+
+  .question-card.revealed {
+    background: var(--card-revealed);
+    border-color: var(--border-hover);
+  }
+
+  .question-card.revealed::before { background: var(--accent-light); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .q-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    color: var(--accent-dark);
+    letter-spacing: 2px;
+    min-width: 36px;
+    padding-top: 2px;
+    font-weight: 700;
+  }
+
+  .q-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #1C1208;
+    flex: 1;
+  }
+
+  .answer-wrap {
+    margin-top: 16px;
+    margin-left: 56px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .answer-wrap.show {
+    max-height: 240px;
+    opacity: 1;
+  }
+
+  .answer-box {
+    background: var(--answer-bg);
+    border-left: 2px solid var(--accent-light);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .answer-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--accent-dark);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .answer-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    color: #1C1208;
+    font-weight: 700;
+  }
+
+  .reveal-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: 56px;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0 24px;
+  }
+
+  .section-divider span {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 13px;
+    color: var(--accent-dark);
+    letter-spacing: 2px;
+    white-space: nowrap;
+    font-weight: 700;
+  }
+
+  .section-divider::before {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-light));
+  }
+
+  .section-divider::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--accent-light), transparent);
+  }
+
+  .score-panel {
+    max-width: 900px;
+    margin: 48px auto 0;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 32px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .score-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .score-number {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--accent-dark);
+    line-height: 1;
+  }
+
+  .score-number span {
+    font-size: 16px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  @media (max-width: 600px) {
+    .question-card { padding: 20px; }
+    .answer-wrap, .reveal-hint { margin-left: 20px; }
+    .tl-item { padding: 0 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">역사 퀴즈 · 남북국 시대의 전개</div>
+  <h1>고구려가 수와 당의<br><span>침략을 막아 내다</span></h1>
+  <p class="subtitle">단답형 30문제 · 클릭하여 정답 확인</p>
+</div>
+
+<div class="timeline">
+  <div class="tl-item"><div class="tl-year">589</div><div class="tl-event">수, 중국 통일</div></div>
+  <div class="tl-item"><div class="tl-year">612</div><div class="tl-event">살수 대첩</div></div>
+  <div class="tl-item"><div class="tl-year">618</div><div class="tl-event">당 건국</div></div>
+  <div class="tl-item"><div class="tl-year">645</div><div class="tl-event">안시성 싸움</div></div>
+</div>
+
+<div class="controls">
+  <button class="btn btn-primary" onclick="revealAll()">전체 정답 보기</button>
+  <button class="btn btn-secondary" onclick="hideAll()">전체 정답 숨기기</button>
+  <button class="btn btn-secondary" onclick="shuffleCards()">문제 순서 섞기</button>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-info">
+    <span id="progressText">0 / 30 확인 완료</span>
+    <span id="progressPct">0%</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="quiz-grid" id="quizGrid"></div>
+
+<div class="score-panel">
+  <div>
+    <div class="score-text">현재 확인한 문제</div>
+    <div class="score-number" id="scoreNum">0<span> / 30</span></div>
+  </div>
+  <button class="btn btn-primary" onclick="revealAll()">모든 정답 확인하기</button>
+</div>
+
+<script>
+const questions = [
+
+  // ─── 6세기 후반 동아시아 정세 ───
+  { section: "6세기 후반 동아시아 정세", q: "6세기 중반 삼국의 경쟁에서 주도권을 잡은 나라는 어디인가?", a: "신라" },
+  { section: "6세기 후반 동아시아 정세", q: "수가 대륙을 통일한 연도는 언제인가?", a: "589년" },
+  { section: "6세기 후반 동아시아 정세", q: "수의 등장에 위협을 느낀 고구려가 손을 잡은 북쪽 세력은 무엇인가?", a: "돌궐" },
+  { section: "6세기 후반 동아시아 정세", q: "수의 등장 이후 고구려가 연결을 꾀한 남쪽 두 나라는 어디인가?", a: "백제, 왜" },
+  { section: "6세기 후반 동아시아 정세", q: "신라는 고구려·백제의 잦은 공격에 맞서기 위해 어느 나라에 도움을 요청하였는가?", a: "수" },
+
+  // ─── 고구려와 수의 전쟁 ───
+  { section: "고구려와 수의 전쟁", q: "수가 고구려에 복속을 요구하자 고구려가 취한 선제 행동은 무엇인가?", a: "요서 지방을 공격" },
+  { section: "고구려와 수의 전쟁", q: "수 문제의 1차 침략이 실패한 두 가지 이유는 무엇인가?", a: "홍수와 전염병으로 별다른 성과 없이 돌아감" },
+  { section: "고구려와 수의 전쟁", q: "수 양제가 이끌고 고구려를 침략한 군사의 수는 몇 명 이상인가?", a: "113만 명" },
+  { section: "고구려와 수의 전쟁", q: "수 양제가 우중문에게 30만 명의 별동대를 이끌고 공격하도록 명한 성은 어디인가?", a: "평양성" },
+  { section: "고구려와 수의 전쟁", q: "612년 을지문덕이 고구려군을 이끌어 수의 군대를 크게 무찌른 전투를 무엇이라 하는가?", a: "살수 대첩" },
+  { section: "고구려와 수의 전쟁", q: "살수 대첩에서 을지문덕이 수의 군대를 물리친 전략은 무엇인가?", a: "도망치는 척하며 수군을 평양 쪽으로 유인한 뒤, 후퇴하는 수군이 살수를 건널 때 총공격하여 수군을 전멸시킴" },
+  { section: "고구려와 수의 전쟁", q: "을지문덕이 수의 장군 우중문에게 보낸 것은 무엇인가?", a: "철수를 요구하는 시(시를 보냄)" },
+  { section: "고구려와 수의 전쟁", q: "수가 멸망한 연도와 원인은 무엇인가?", a: "618년 — 무리한 고구려 원정으로 국력이 소모되고 각지에서 반란이 일어나 멸망" },
+
+  // ─── 연개소문의 집권 ───
+  { section: "연개소문의 집권과 당의 침략", q: "수의 뒤를 이어 건국된 나라는 무엇인가?", a: "당(618년)" },
+  { section: "연개소문의 집권과 당의 침략", q: "당 건국 초기에 고구려와 당의 관계는 어떠하였는가?", a: "친선 관계를 맺음" },
+  { section: "연개소문의 집권과 당의 침략", q: "당 태종 즉위 이후 고구려가 국경 지역에 쌓은 방어 시설은 무엇인가?", a: "천리장성" },
+  { section: "연개소문의 집권과 당의 침략", q: "고구려에서 정변을 일으켜 보장왕을 세우고 최고 권력자인 대막리지가 된 인물은 누구인가?", a: "연개소문" },
+  { section: "연개소문의 집권과 당의 침략", q: "대막리지의 의미는 무엇인가?", a: "행정권과 군사권을 장악한 최고 관직" },
+  { section: "연개소문의 집권과 당의 침략", q: "연개소문이 권력을 잡은 후 신라와 당에 취한 태도는 무엇인가?", a: "신라를 공격하고 당을 견제하는 강경한 태도" },
+
+  // ─── 고구려와 당의 전쟁 ───
+  { section: "고구려와 당의 전쟁", q: "당 태종이 고구려를 침략한 구실은 무엇인가?", a: "연개소문의 정변" },
+  { section: "고구려와 당의 전쟁", q: "당군이 차례로 무너뜨린 두 성의 이름은 무엇인가?", a: "요동성, 백암성" },
+  { section: "고구려와 당의 전쟁", q: "645년 안시성에서 고구려가 당의 공격을 물리친 싸움을 무엇이라 하는가?", a: "안시성 싸움" },
+  { section: "고구려와 당의 전쟁", q: "안시성 싸움에서 당의 공격을 결사적으로 막아 낸 두 인물은 누구인가?", a: "성주와 백성" },
+  { section: "고구려와 당의 전쟁", q: "수와 당의 침략을 모두 막아 낸 것이 고구려에 미친 부정적 영향은 무엇인가?", a: "오랜 전쟁으로 국토가 황폐해지고 국력이 약해짐" },
+
+  // ─── 고구려의 수·당 방어 원동력 ───
+  { section: "고구려의 방어 원동력", q: "고구려가 험준한 지형에 산성을 쌓아 방어를 높인 전략을 무엇이라 하는가?", a: "산성을 이용한 방어 체제" },
+  { section: "고구려의 방어 원동력", q: "고구려 백성들이 전쟁이 일어나면 평지의 농작물과 건물을 태운 이유는 무엇인가?", a: "적이 이용할 수 없게 하기 위해(청야 전술)" },
+  { section: "고구려의 방어 원동력", q: "고구려 병사들이 전투력을 높이기 위해 기병과 보병이 각각 다르게 사용한 것은 무엇인가?", a: "서로 다른 활(기병과 보병이 각각 다른 활을 사용)" },
+  { section: "고구려의 방어 원동력", q: "머리부터 발끝까지 철갑으로 무장한 고구려의 강한 군사력을 상징하는 병사를 무엇이라 하는가?", a: "개마 무사" },
+  { section: "고구려의 방어 원동력", q: "고구려가 강력한 철제 무기와 갑옷을 만들 수 있었던 자원적 기반은 무엇인가?", a: "요동 지방의 철광 지대(풍부한 철)" },
+  { section: "고구려의 방어 원동력", q: "고구려가 수·당의 침략을 막아 낸 역사적 의의는 무엇인가?", a: "중국 중심의 국제 질서에 복속되지 않고 독자적인 세력을 유지" },
+];
+
+let revealed = new Set();
+const TOTAL = questions.length;
+
+function buildCards(list) {
+  const grid = document.getElementById('quizGrid');
+  grid.innerHTML = '';
+  let currentSection = '';
+  list.forEach((item, i) => {
+    if (item.section !== currentSection) {
+      currentSection = item.section;
+      const div = document.createElement('div');
+      div.className = 'section-divider';
+      div.innerHTML = `<span>◆ ${currentSection}</span>`;
+      grid.appendChild(div);
+    }
+    const card = document.createElement('div');
+    card.className = 'question-card' + (revealed.has(item._id) ? ' revealed' : '');
+    card.innerHTML = `
+      <div class="card-header">
+        <div class="q-num">Q${String(i+1).padStart(2,'0')}</div>
+        <div class="q-text">${item.q}</div>
+      </div>
+      <div class="answer-wrap ${revealed.has(item._id) ? 'show' : ''}" id="ans-${item._id}">
+        <div class="answer-box">
+          <div class="answer-label">정답</div>
+          <div class="answer-text">${item.a}</div>
+        </div>
+      </div>
+      <div class="reveal-hint">↓ 클릭하여 정답 확인</div>
+    `;
+    card.addEventListener('click', () => toggleCard(item._id, card));
+    grid.appendChild(card);
+  });
+}
+
+function toggleCard(id, card) {
+  const ansWrap = document.getElementById('ans-' + id);
+  if (revealed.has(id)) {
+    revealed.delete(id);
+    ansWrap.classList.remove('show');
+    card.classList.remove('revealed');
+  } else {
+    revealed.add(id);
+    ansWrap.classList.add('show');
+    card.classList.add('revealed');
+  }
+  updateProgress();
+}
+
+function revealAll() {
+  questions.forEach(q => revealed.add(q._id));
+  document.querySelectorAll('.answer-wrap').forEach(el => el.classList.add('show'));
+  document.querySelectorAll('.question-card').forEach(el => el.classList.add('revealed'));
+  updateProgress();
+}
+
+function hideAll() {
+  revealed.clear();
+  document.querySelectorAll('.answer-wrap').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.question-card').forEach(el => el.classList.remove('revealed'));
+  updateProgress();
+}
+
+function shuffleCards() {
+  hideAll();
+  buildCards([...questions].sort(() => Math.random() - 0.5));
+}
+
+function updateProgress() {
+  const count = revealed.size;
+  const pct = Math.round(count / TOTAL * 100);
+  document.getElementById('progressText').textContent = `${count} / ${TOTAL} 확인 완료`;
+  document.getElementById('progressPct').textContent = `${pct}%`;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('scoreNum').innerHTML = `${count}<span> / ${TOTAL}</span>`;
+}
+
+questions.forEach((q, i) => q._id = 'q' + i);
+buildCards(questions);
+updateProgress();
+</script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>백제 위기 극복과 중흥 단답형 퀴즈</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #1A4A7A;
+    --blue-light: #2E6FAD;
+    --blue-dark: #0F2D4E;
+    --cream: #F4F6F9;
+    --dark: #111820;
+    --muted: #4A5A6B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #E8EDF4;
+    background-image:
+      radial-gradient(ellipse at 15% 15%, rgba(26,74,122,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(15,45,78,0.08) 0%, transparent 50%);
+    color: #111820;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .header::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    margin: 0 auto 24px;
+  }
+
+  .header-badge {
+    display: inline-block;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--blue-dark);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(26px, 5vw, 46px);
+    font-weight: 900;
+    color: #111820;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  h1 span { color: var(--blue-dark); }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-top: 12px;
+  }
+
+  .header::after {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue-dark), transparent);
+    margin: 24px auto 0;
+  }
+
+  /* 연표 */
+  .timeline {
+    max-width: 900px;
+    margin: 0 auto 48px;
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .tl-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 22px;
+    position: relative;
+  }
+
+  .tl-item:not(:last-child)::after {
+    content: '▶';
+    position: absolute;
+    right: -8px;
+    top: 8px;
+    font-size: 10px;
+    color: var(--blue-light);
+  }
+
+  .tl-year {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--blue-dark);
+    margin-bottom: 4px;
+  }
+
+  .tl-event {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 12px 28px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .btn-primary {
+    background: var(--blue-dark);
+    color: #F4F6F9;
+  }
+
+  .btn-primary:hover {
+    background: var(--blue);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26,74,122,0.3);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--blue-dark);
+    border: 1px solid var(--blue);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(26,74,122,0.07);
+    color: #111820;
+  }
+
+  .progress-bar-wrap {
+    max-width: 800px;
+    margin: 0 auto 40px;
+    padding: 0 8px;
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: rgba(26,74,122,0.12);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue-dark), var(--blue-light));
+    transition: width 0.5s ease;
+  }
+
+  .quiz-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .question-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(26,74,122,0.18);
+    padding: 28px 32px;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .question-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--blue-dark);
+    transition: background 0.3s;
+  }
+
+  .question-card:hover {
+    background: #F5F8FC;
+    border-color: rgba(26,74,122,0.35);
+  }
+
+  .question-card.revealed {
+    background: #EFF4FA;
+    border-color: rgba(26,74,122,0.35);
+  }
+
+  .question-card.revealed::before { background: var(--blue); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .q-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    color: var(--blue-dark);
+    letter-spacing: 2px;
+    min-width: 36px;
+    padding-top: 2px;
+  }
+
+  .q-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #111820;
+    flex: 1;
+  }
+
+  .answer-wrap {
+    margin-top: 16px;
+    margin-left: 56px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .answer-wrap.show {
+    max-height: 220px;
+    opacity: 1;
+  }
+
+  .answer-box {
+    background: rgba(26,74,122,0.07);
+    border-left: 2px solid var(--blue);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .answer-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--blue-dark);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .answer-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    color: #111820;
+    font-weight: 700;
+  }
+
+  .reveal-hint {
+    font-size: 11px;
+    color: #8A9AAB;
+    margin-left: 56px;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0 24px;
+  }
+
+  .section-divider span {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 13px;
+    color: var(--blue-dark);
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+
+  .section-divider::before {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue));
+  }
+
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--blue), transparent);
+  }
+
+  .score-panel {
+    max-width: 900px;
+    margin: 48px auto 0;
+    background: #FFFFFF;
+    border: 1px solid rgba(26,74,122,0.18);
+    padding: 32px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .score-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .score-number {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--blue-dark);
+    line-height: 1;
+  }
+
+  .score-number span {
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  @media (max-width: 600px) {
+    .question-card { padding: 20px; }
+    .answer-wrap, .reveal-hint { margin-left: 20px; }
+    .tl-item { padding: 0 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">역사 퀴즈 · 삼국의 성립과 발전</div>
+  <h1>백제가 위기를 극복하고<br><span>중흥하다</span></h1>
+  <p class="subtitle">단답형 50문제 · 클릭하여 정답 확인</p>
+</div>
+
+<div class="timeline">
+  <div class="tl-item"><div class="tl-year">기원전 18</div><div class="tl-event">백제 건국</div></div>
+  <div class="tl-item"><div class="tl-year">371</div><div class="tl-event">근초고왕 전성기</div></div>
+  <div class="tl-item"><div class="tl-year">475</div><div class="tl-event">웅진 천도</div></div>
+  <div class="tl-item"><div class="tl-year">538</div><div class="tl-event">사비 천도</div></div>
+</div>
+
+<div class="controls">
+  <button class="btn btn-primary" onclick="revealAll()">전체 정답 보기</button>
+  <button class="btn btn-secondary" onclick="hideAll()">전체 정답 숨기기</button>
+  <button class="btn btn-secondary" onclick="shuffleCards()">문제 순서 섞기</button>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-info">
+    <span id="progressText">0 / 50 확인 완료</span>
+    <span id="progressPct">0%</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="quiz-grid" id="quizGrid"></div>
+
+<div class="score-panel">
+  <div>
+    <div class="score-text">현재 확인한 문제</div>
+    <div class="score-number" id="scoreNum">0<span> / 50</span></div>
+  </div>
+  <button class="btn btn-primary" onclick="revealAll()">모든 정답 확인하기</button>
+</div>
+
+<script>
+const questions = [
+
+  // ─── 백제의 성립 ───
+  { section: "백제의 성립", q: "백제는 어떤 나라의 소국에서 출발하였는가?", a: "마한의 소국" },
+  { section: "백제의 성립", q: "백제 건국에 참여한 두 세력은 무엇인가?", a: "부여·고구려에서 내려온 세력 + 한강 유역의 토착 세력" },
+  { section: "백제의 성립", q: "백제가 건국된 연도는 기원전 몇 년인가?", a: "기원전 18년" },
+  { section: "백제의 성립", q: "백제가 자리 잡은 한강 유역의 지리적 장점 두 가지를 쓰시오.", a: "농경 발달, 해상 교통이 편리하여 중국 선진 문물 수용에 유리" },
+  { section: "백제의 성립", q: "백제의 초기 도읍지는 어디인가?", a: "한성(서울 풍납동 토성 일대)" },
+  { section: "백제의 성립", q: "서울 풍납동 토성의 규모에 대해 알려진 두 가지 수치를 쓰시오.", a: "둘레 약 3.5km, 높이 약 15m" },
+  { section: "백제의 성립", q: "백제 초기의 고분인 석촌동 고분이 고구려의 돌무지무덤과 유사한 이유는 무엇인가?", a: "백제를 건국한 중심 세력이 고구려와 같은 계통의 집단이었기 때문" },
+
+  // ─── 성장과 체제 정비 ───
+  { section: "성장과 체제 정비(고이왕·침류왕)", q: "3세기 중반 백제의 체제를 정비한 왕은 누구인가?", a: "고이왕" },
+  { section: "성장과 체제 정비(고이왕·침류왕)", q: "고이왕이 마련한 관리 등급제는 몇 품을 기준으로 하였는가?", a: "6좌평을 비롯하여 관리의 등급" },
+  { section: "성장과 체제 정비(고이왕·침류왕)", q: "고이왕이 관리의 등급에 따라 구분한 것은 무엇인가?", a: "관복의 색" },
+  { section: "성장과 체제 정비(고이왕·침류왕)", q: "고이왕 대에 백제가 복속하여 한반도 중부 지역을 확보한 세력은 어디인가?", a: "주변의 마한 소국들" },
+  { section: "성장과 체제 정비(고이왕·침류왕)", q: "4세기 후반 백제가 중국 동진으로부터 받아들인 것은 무엇인가?", a: "불교" },
+  { section: "성장과 체제 정비(고이왕·침류왕)", q: "백제의 정치를 주도한 핵심 귀족 세력은 왕족인 무엇 씨와 여러 귀족 세력인가?", a: "부여씨" },
+  { section: "성장과 체제 정비(고이왕·침류왕)", q: "백제에서 왕과 귀족들이 함께 재상을 선출하고 나랏일을 논의한 기구는 무엇인가?", a: "회의체(정사암 회의)" },
+
+  // ─── 근초고왕의 영토 확장과 해상 진출 ───
+  { section: "근초고왕의 영토 확장과 해상 진출", q: "4세기 중반 대외 활동을 활발히 벌인 백제의 왕은 누구인가?", a: "근초고왕" },
+  { section: "근초고왕의 영토 확장과 해상 진출", q: "근초고왕이 남쪽으로 진출하여 복속시킨 세력과 도달한 지역은 어디인가?", a: "마한의 남은 세력을 복속, 남해안까지 진출" },
+  { section: "근초고왕의 영토 확장과 해상 진출", q: "근초고왕이 가야에 행사한 것은 무엇인가?", a: "영향력" },
+  { section: "근초고왕의 영토 확장과 해상 진출", q: "근초고왕이 북쪽으로 고구려를 공격하여 전사시킨 왕은 누구인가?", a: "고국원왕" },
+  { section: "근초고왕의 영토 확장과 해상 진출", q: "고국원왕을 전사시킨 전투가 일어난 연도는?", a: "371년" },
+  { section: "근초고왕의 영토 확장과 해상 진출", q: "근초고왕이 북쪽으로 진출하여 차지한 지역은 어디인가?", a: "황해도 일부 지역" },
+  { section: "근초고왕의 영토 확장과 해상 진출", q: "근초고왕이 국교를 맺은 중국 나라는 어디인가?", a: "중국 남조의 동진" },
+  { section: "근초고왕의 영토 확장과 해상 진출", q: "근초고왕이 교류한 또 다른 나라는 어디인가?", a: "왜(일본)" },
+  { section: "근초고왕의 영토 확장과 해상 진출", q: "칠지도는 어느 나라에 있으며, 누구에게 전한다는 기록이 있는가?", a: "일본, 백제의 왕세자가 왜왕에게 전함" },
+  { section: "근초고왕의 영토 확장과 해상 진출", q: "백제가 이러한 외교 관계를 통해 견제하려 한 나라는 어디인가?", a: "고구려" },
+
+  // ─── 웅진 천도와 중흥 노력 ───
+  { section: "웅진 천도와 중흥 노력", q: "5세기에 백제가 위기를 맞게 된 두 가지 원인을 쓰시오.", a: "광개토 대왕의 공격으로 한강 이북 상실, 장수왕의 남진으로 한성 함락" },
+  { section: "웅진 천도와 중흥 노력", q: "장수왕의 공격으로 살해당한 백제의 왕은 누구인가?", a: "개로왕" },
+  { section: "웅진 천도와 중흥 노력", q: "한성 함락 이후 백제가 옮긴 수도는 어디이며, 현재 지명은 무엇인가?", a: "웅진, 현재 충남 공주" },
+  { section: "웅진 천도와 중흥 노력", q: "웅진 천도가 이루어진 연도는?", a: "475년" },
+  { section: "웅진 천도와 중흥 노력", q: "수도를 옮긴 후 백제에서 나타난 두 가지 정치적 문제는 무엇인가?", a: "무역 활동 침체, 귀족들이 권력을 다투어 왕권 약화" },
+  { section: "웅진 천도와 중흥 노력", q: "동성왕이 고구려에 대항하기 위해 맺은 관계는 무엇인가?", a: "신라 왕실과 혼인 관계" },
+  { section: "웅진 천도와 중흥 노력", q: "6세기 초 무령왕이 지방 통치를 강화하기 위해 설치한 지방 행정 구역은 무엇이며, 몇 개인가?", a: "22담로" },
+  { section: "웅진 천도와 중흥 노력", q: "담로의 의미는 무엇인가?", a: "방, 군, 성의 지방 제도를 갖추기 전에 설치한 행정 구역, 왕족이나 왕족을 보내 다스림" },
+  { section: "웅진 천도와 중흥 노력", q: "무령왕이 영토 일부를 회복하기 위해 공격한 나라는 어디인가?", a: "고구려" },
+  { section: "웅진 천도와 중흥 노력", q: "무령왕이 문화 교류에 힘쓴 중국의 나라는 어디인가?", a: "중국 남조" },
+
+  // ─── 무령왕릉 ───
+  { section: "무령왕릉과 대외 교류", q: "무령왕릉은 어디에 위치하는가?", a: "충남 공주" },
+  { section: "무령왕릉과 대외 교류", q: "무령왕릉에서 발견된 유물은 총 몇 점인가?", a: "4,600여 점" },
+  { section: "무령왕릉과 대외 교류", q: "무령왕릉의 벽돌이 중국 어느 나라의 영향을 받아 만들어졌는가?", a: "중국 남조" },
+  { section: "무령왕릉과 대외 교류", q: "무령왕릉의 목관(복원)은 어느 나라에서 자라는 금송으로 만들었는가?", a: "일본" },
+  { section: "무령왕릉과 대외 교류", q: "무령왕릉에서 발견된 중국 화폐는 무엇인가?", a: "오수전" },
+  { section: "무령왕릉과 대외 교류", q: "무령왕릉에서 발견된 진묘수의 역할은 무엇인가?", a: "무덤을 지키는 상상의 동물" },
+  { section: "무령왕릉과 대외 교류", q: "진묘수를 무덤 안에 넣는 풍습은 어디서 유행한 것인가?", a: "중국" },
+
+  // ─── 사비 천도와 체제 재정비 ───
+  { section: "사비 천도와 체제 재정비(성왕)", q: "무령왕의 뒤를 이어 사비로 수도를 옮긴 왕은 누구인가?", a: "성왕" },
+  { section: "사비 천도와 체제 재정비(성왕)", q: "사비 천도가 이루어진 연도는?", a: "538년" },
+  { section: "사비 천도와 체제 재정비(성왕)", q: "사비의 현재 지명은 어디인가?", a: "충남 부여" },
+  { section: "사비 천도와 체제 재정비(성왕)", q: "사비가 수도로 적합한 지리적 장점 두 가지를 쓰시오.", a: "넓은 평야, 강을 끼고 있어 교통에 유리" },
+  { section: "사비 천도와 체제 재정비(성왕)", q: "성왕이 나라 이름을 일시적으로 바꾼 이름은 무엇인가?", a: "남부여" },
+  { section: "사비 천도와 체제 재정비(성왕)", q: "성왕이 중앙에 설치한 실무 담당 관청은 몇 부이며, 이름은 무엇인가?", a: "22부" },
+  { section: "사비 천도와 체제 재정비(성왕)", q: "성왕이 수도와 지방을 각각 몇 방으로 나누어 다스렸는가?", a: "수도 5부, 지방 5방" },
+  { section: "사비 천도와 체제 재정비(성왕)", q: "성왕이 왜에 전해 준 선진 문물은 무엇인가?", a: "불교를 비롯한 선진 문물" },
+  { section: "사비 천도와 체제 재정비(성왕)", q: "성왕이 신라와 연합하여 고구려를 공격한 결과 되찾은 지역은 어디인가?", a: "한강 유역" },
+  { section: "사비 천도와 체제 재정비(성왕)", q: "성왕이 한강 유역을 되찾았지만 다시 빼앗긴 나라는 어디이며, 그 왕은 누구인가?", a: "신라, 진흥왕" },
+  { section: "사비 천도와 체제 재정비(성왕)", q: "성왕이 신라를 공격하다 전사한 전투지는 어디인가?", a: "관산성(충북 옥천)" },
+
+  // ─── 백제 역사 유적 ───
+  { section: "유네스코 백제 역사 유적", q: "백제 역사 유적 지구가 유네스코 세계 유산으로 등재된 연도는?", a: "2015년" },
+  { section: "유네스코 백제 역사 유적", q: "백제 역사 유적 지구에 포함된 세 지역을 쓰시오.", a: "충남 공주, 충남 부여, 전북 익산" },
+  { section: "유네스코 백제 역사 유적", q: "공산성은 백제가 어느 수도를 방어하기 위해 만든 성인가?", a: "웅진(공주)" },
+  { section: "유네스코 백제 역사 유적", q: "농산리 고분군(충남 부여)에서 출토된 대표 유물은 무엇인가?", a: "백제 금동 대향로" },
+  { section: "유네스코 백제 역사 유적", q: "왕궁리 유적(전북 익산)에 남아 있는 석탑의 높이와 층수는?", a: "약 8.5m, 5층 석탑" },
+];
+
+let revealed = new Set();
+const TOTAL = questions.length;
+
+function buildCards(list) {
+  const grid = document.getElementById('quizGrid');
+  grid.innerHTML = '';
+  let currentSection = '';
+
+  list.forEach((item, i) => {
+    if (item.section !== currentSection) {
+      currentSection = item.section;
+      const div = document.createElement('div');
+      div.className = 'section-divider';
+      div.innerHTML = `<span>◆ ${currentSection}</span>`;
+      grid.appendChild(div);
+    }
+
+    const card = document.createElement('div');
+    card.className = 'question-card' + (revealed.has(item._id) ? ' revealed' : '');
+    card.dataset.id = item._id;
+    card.innerHTML = `
+      <div class="card-header">
+        <div class="q-num">Q${String(i+1).padStart(2,'0')}</div>
+        <div class="q-text">${item.q}</div>
+      </div>
+      <div class="answer-wrap ${revealed.has(item._id) ? 'show' : ''}" id="ans-${item._id}">
+        <div class="answer-box">
+          <div class="answer-label">정답</div>
+          <div class="answer-text">${item.a}</div>
+        </div>
+      </div>
+      <div class="reveal-hint">↓ 클릭하여 정답 확인</div>
+    `;
+    card.addEventListener('click', () => toggleCard(item._id, card));
+    grid.appendChild(card);
+  });
+}
+
+function toggleCard(id, card) {
+  const ansWrap = document.getElementById('ans-' + id);
+  if (revealed.has(id)) {
+    revealed.delete(id);
+    ansWrap.classList.remove('show');
+    card.classList.remove('revealed');
+  } else {
+    revealed.add(id);
+    ansWrap.classList.add('show');
+    card.classList.add('revealed');
+  }
+  updateProgress();
+}
+
+function revealAll() {
+  questions.forEach(q => revealed.add(q._id));
+  document.querySelectorAll('.answer-wrap').forEach(el => el.classList.add('show'));
+  document.querySelectorAll('.question-card').forEach(el => el.classList.add('revealed'));
+  updateProgress();
+}
+
+function hideAll() {
+  revealed.clear();
+  document.querySelectorAll('.answer-wrap').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.question-card').forEach(el => el.classList.remove('revealed'));
+  updateProgress();
+}
+
+function shuffleCards() {
+  hideAll();
+  const shuffled = [...questions].sort(() => Math.random() - 0.5);
+  buildCards(shuffled);
+}
+
+function updateProgress() {
+  const count = revealed.size;
+  const pct = Math.round(count / TOTAL * 100);
+  document.getElementById('progressText').textContent = `${count} / ${TOTAL} 확인 완료`;
+  document.getElementById('progressPct').textContent = `${pct}%`;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('scoreNum').innerHTML = `${count}<span> / ${TOTAL}</span>`;
+}
+
+questions.forEach((q, i) => q._id = 'q' + i);
+buildCards(questions);
+updateProgress();
+</script>
+</body>
+</html>

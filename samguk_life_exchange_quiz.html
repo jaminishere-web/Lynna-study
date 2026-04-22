@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>삼국·가야 생활과 대외 교류 단답형 퀴즈</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #5D4A8A;
+    --accent-light: #8B70C0;
+    --accent-dark: #3A2C60;
+    --bg: #F2F0F7;
+    --card-bg: #FFFFFF;
+    --card-hover: #F7F5FC;
+    --card-revealed: #F0ECFA;
+    --text-primary: #1A1628;
+    --text-secondary: #3D3455;
+    --text-muted: #6B6080;
+    --border: rgba(93,74,138,0.18);
+    --border-hover: rgba(93,74,138,0.38);
+    --answer-bg: rgba(93,74,138,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 15% 15%, rgba(93,74,138,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(58,44,96,0.07) 0%, transparent 50%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .header::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-light), transparent);
+    margin: 0 auto 24px;
+  }
+
+  .header-badge {
+    display: inline-block;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent-dark);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(26px, 5vw, 44px);
+    font-weight: 900;
+    color: var(--text-primary);
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  h1 span { color: var(--accent-dark); }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-top: 12px;
+  }
+
+  .header::after {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-dark), transparent);
+    margin: 24px auto 0;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 12px 28px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .btn-primary {
+    background: var(--accent-dark);
+    color: #FFFFFF;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(93,74,138,0.3);
+  }
+
+  .btn-secondary {
+    background: var(--card-bg);
+    color: var(--accent-dark);
+    border: 1px solid var(--accent);
+  }
+
+  .btn-secondary:hover {
+    background: var(--card-hover);
+    color: var(--text-primary);
+  }
+
+  .progress-bar-wrap {
+    max-width: 800px;
+    margin: 0 auto 40px;
+    padding: 0 8px;
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: rgba(93,74,138,0.12);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-dark), var(--accent-light));
+    transition: width 0.5s ease;
+  }
+
+  .quiz-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .question-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 28px 32px;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .question-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent-dark);
+    transition: background 0.3s;
+  }
+
+  .question-card:hover {
+    background: var(--card-hover);
+    border-color: var(--border-hover);
+  }
+
+  .question-card.revealed {
+    background: var(--card-revealed);
+    border-color: var(--border-hover);
+  }
+
+  .question-card.revealed::before { background: var(--accent-light); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .q-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    color: var(--accent-dark);
+    letter-spacing: 2px;
+    min-width: 36px;
+    padding-top: 2px;
+    font-weight: 700;
+  }
+
+  /* 핵심: 질문 텍스트 — 밝은/어두운 배경 모두에서 잘 보이도록 진한 색 고정 */
+  .q-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #1A1628;
+    flex: 1;
+  }
+
+  .answer-wrap {
+    margin-top: 16px;
+    margin-left: 56px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .answer-wrap.show {
+    max-height: 240px;
+    opacity: 1;
+  }
+
+  .answer-box {
+    background: var(--answer-bg);
+    border-left: 2px solid var(--accent-light);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .answer-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--accent-dark);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* 핵심: 정답 텍스트 — 진한 색으로 고정 */
+  .answer-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    color: #1A1628;
+    font-weight: 700;
+  }
+
+  .reveal-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: 56px;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0 24px;
+  }
+
+  .section-divider span {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 13px;
+    color: var(--accent-dark);
+    letter-spacing: 2px;
+    white-space: nowrap;
+    font-weight: 700;
+  }
+
+  .section-divider::before {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-light));
+  }
+
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent-light), transparent);
+  }
+
+  .score-panel {
+    max-width: 900px;
+    margin: 48px auto 0;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 32px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .score-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .score-number {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--accent-dark);
+    line-height: 1;
+  }
+
+  .score-number span {
+    font-size: 16px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  @media (max-width: 600px) {
+    .question-card { padding: 20px; }
+    .answer-wrap, .reveal-hint { margin-left: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">역사 퀴즈 · 삼국의 문화와 대외 교류</div>
+  <h1>삼국·가야인의 생활과<br><span>이웃 나라와의 교류</span></h1>
+  <p class="subtitle">단답형 40문제 · 클릭하여 정답 확인</p>
+</div>
+
+<div class="controls">
+  <button class="btn btn-primary" onclick="revealAll()">전체 정답 보기</button>
+  <button class="btn btn-secondary" onclick="hideAll()">전체 정답 숨기기</button>
+  <button class="btn btn-secondary" onclick="shuffleCards()">문제 순서 섞기</button>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-info">
+    <span id="progressText">0 / 40 확인 완료</span>
+    <span id="progressPct">0%</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="quiz-grid" id="quizGrid"></div>
+
+<div class="score-panel">
+  <div>
+    <div class="score-text">현재 확인한 문제</div>
+    <div class="score-number" id="scoreNum">0<span> / 40</span></div>
+  </div>
+  <button class="btn btn-primary" onclick="revealAll()">모든 정답 확인하기</button>
+</div>
+
+<script>
+const questions = [
+
+  // ─── 삼국의 신분 제도와 생활 ───
+  { section: "삼국의 신분 제도와 생활", q: "삼국이 영토를 넓히고 지배 체제를 정비하는 과정에서 확립한 사회 제도는 무엇인가?", a: "신분제" },
+  { section: "삼국의 신분 제도와 생활", q: "삼국의 신분을 크게 세 계층으로 구분하여 쓰시오.", a: "왕족을 비롯한 귀족, 평민, 천민" },
+  { section: "삼국의 신분 제도와 생활", q: "신라에서 정치·사회 활동과 일상생활을 신분에 따라 제한한 제도는 무엇인가?", a: "골품제" },
+  { section: "삼국의 신분 제도와 생활", q: "신라 골품제에서 신분을 성골과 진골을 제외하고 몇 두품으로 나누었는가?", a: "6~1두품" },
+  { section: "삼국의 신분 제도와 생활", q: "삼국의 귀족들은 어떤 옷을 입고 어떤 음식을 먹었는가?", a: "비단옷과 보석으로 치장, 쌀밥과 고기를 먹음" },
+  { section: "삼국의 신분 제도와 생활", q: "삼국의 귀족들이 살았던 집의 종류는 무엇인가?", a: "기와집" },
+  { section: "삼국의 신분 제도와 생활", q: "삼국의 평민들이 입은 옷의 재료 두 가지를 쓰시오.", a: "거친 베, 동물 가죽" },
+  { section: "삼국의 신분 제도와 생활", q: "삼국의 평민들이 주로 먹은 곡식 네 가지를 쓰시오.", a: "조, 기장, 보리, 콩" },
+  { section: "삼국의 신분 제도와 생활", q: "삼국의 평민들이 살았던 집의 두 가지 종류를 쓰시오.", a: "움집, 귀틀집" },
+
+  // ─── 고분 문화의 발달 ───
+  { section: "고분 문화의 발달", q: "고구려 초기에 만든 무덤 형태는 무엇이며, 이후 어떤 무덤으로 바뀌었는가?", a: "돌무지무덤 → 굴식 돌방무덤" },
+  { section: "고분 문화의 발달", q: "고구려 굴식 돌방무덤의 특징은 무엇인가?", a: "돌로 널방을 만들어 통로로 연결하고 그 위에 흙을 덮음, 돌방 천장과 벽에 벽화를 그림" },
+  { section: "고분 문화의 발달", q: "백제가 한성 시기에 만든 무덤 형태는 고구려와 유사한 어떤 형태인가?", a: "계단식 돌무지무덤" },
+  { section: "고분 문화의 발달", q: "백제가 웅진 시기부터 만들기 시작한 무덤 형태는 무엇인가?", a: "굴식 돌방무덤" },
+  { section: "고분 문화의 발달", q: "백제가 중국의 영향을 받아 만든 무덤 형태는 무엇인가?", a: "벽돌무덤" },
+  { section: "고분 문화의 발달", q: "신라가 6세기 말 이후 주로 만들기 시작한 무덤 형태는 무엇인가?", a: "굴식 돌방무덤" },
+  { section: "고분 문화의 발달", q: "신라 초기의 무덤 형태는 무엇이며, 그 특징은 무엇인가?", a: "돌무지덧널무덤 — 나무 덧널 위에 돌을 쌓은 뒤 흙으로 덮음, 벽화 없고 도굴이 어려워 꺼묻거리가 많이 보존됨" },
+  { section: "고분 문화의 발달", q: "가야에서 만든 무덤의 형태와 특징은 무엇인가?", a: "구덩이에 돌로 벽을 쌓아 만든 돌덧널무덤" },
+
+  // ─── 꺼묻거리와 고분 벽화 ───
+  { section: "꺼묻거리와 고분 벽화", q: "삼국 시대 사람들이 무덤 안에 꺼묻거리를 넣은 이유는 무엇인가?", a: "사람이 죽더라도 영혼이 다른 세상에서 살아간다고 믿었기 때문" },
+  { section: "꺼묻거리와 고분 벽화", q: "신라와 가야에서 노비를 함께 묻은 풍습의 명칭은 무엇인가?", a: "순장" },
+  { section: "꺼묻거리와 고분 벽화", q: "고구려 고분 벽화의 내용이 초기와 후기에 어떻게 변화하였는가?", a: "초기: 생활 모습(사냥·음식 등) → 후기: 불교 요소 반영, 사신도(도교)" },
+  { section: "꺼묻거리와 고분 벽화", q: "고구려 덕흥리 고분 벽화에 그려진 도교 관련 그림은 무엇인가?", a: "북두칠성" },
+  { section: "꺼묻거리와 고분 벽화", q: "사신도에서 북쪽을 지키는 상상 속의 동물은 무엇인가?", a: "현무" },
+  { section: "꺼묻거리와 고분 벽화", q: "백제 부여 능산리 1호분 무덤의 천장을 장식한 문양은 무엇이며, 어떤 사상을 반영하는가?", a: "연꽃무늬 — 불교 사상 반영" },
+  { section: "꺼묻거리와 고분 벽화", q: "경주 천마총에서 발견된 '천마도'와 가야 '오리 모양 토기'의 공통된 상징은 무엇인가?", a: "죽은 사람을 하늘로 실어 나르거나 영혼을 하늘로 인도한다는 의미" },
+
+  // ─── 중국·서역과의 문화 교류 ───
+  { section: "중국·서역과의 문화 교류", q: "고구려가 주로 교류한 중국 나라는 지리적으로 어느 방향에 위치한 나라들인가?", a: "북중국(북방) 나라들" },
+  { section: "중국·서역과의 문화 교류", q: "고구려의 왕산악이 중국의 악기를 개조하여 만든 악기는 무엇인가?", a: "거문고" },
+  { section: "중국·서역과의 문화 교류", q: "백제 유물인 백제 청자 항아리와 비슷한 중국 청자 항아리는 어느 나라 계통인가?", a: "중국 동진 계통" },
+  { section: "중국·서역과의 문화 교류", q: "신라가 한강 유역을 차지하기 전에는 어느 나라를 통해 중국 문화를 받아들였는가?", a: "고구려와 백제를 통해" },
+  { section: "중국·서역과의 문화 교류", q: "신라가 중국과 직접 교류하게 된 계기는 무엇인가?", a: "한강 유역 차지 후 황해를 통해 직접 교류" },
+  { section: "중국·서역과의 문화 교류", q: "삼국이 서역과 교류하였음을 보여 주는 고구려 고분 벽화의 증거는 무엇인가?", a: "아프라시아브 궁전 벽화에 고구려식 관모와 칼을 찬 인물(고구려 사신으로 추정)" },
+  { section: "중국·서역과의 문화 교류", q: "신라 고분에서 발굴된 서역과의 교류를 알려 주는 유물 세 가지를 쓰시오.", a: "유리그릇, 금제 장식 보검(경주 계림로 보검), 상감 유리구슬" },
+  { section: "중국·서역과의 문화 교류", q: "가야가 교류한 두 방향의 문화권을 쓰시오.", a: "중국, 유라시아(북방 초원 지대)" },
+
+  // ─── 삼국과 가야 문화의 일본 전파 ───
+  { section: "삼국·가야 문화의 일본 전파", q: "삼국 중 일본과 가장 활발히 교류하며 불교를 전한 나라는 어디인가?", a: "백제" },
+  { section: "삼국·가야 문화의 일본 전파", q: "백제의 아직기와 왕인이 일본에 전해 준 것 세 가지를 쓰시오.", a: "한문, 논어, 천자문" },
+  { section: "삼국·가야 문화의 일본 전파", q: "백제가 일본에 파견하여 기술을 전해 준 세 종류의 전문가를 쓰시오.", a: "오경박사, 의·역박사, 화가와 공예 기술자" },
+  { section: "삼국·가야 문화의 일본 전파", q: "고구려 승려 혜자가 일본에서 스승이 된 인물은 누구인가?", a: "쇼토쿠 태자" },
+  { section: "삼국·가야 문화의 일본 전파", q: "고구려 승려 담징이 일본에 전해 준 두 가지는 무엇인가?", a: "종이와 먹의 제조 방법" },
+  { section: "삼국·가야 문화의 일본 전파", q: "일본의 다카마쓰 고분 벽화는 어느 나라 고분 벽화와 비슷한가?", a: "고구려 수산리 고분 벽화" },
+  { section: "삼국·가야 문화의 일본 전파", q: "신라가 일본에 전해 준 두 가지 기술을 쓰시오.", a: "배 만드는 기술, 둑 쌓는 기술" },
+  { section: "삼국·가야 문화의 일본 전파", q: "가야가 일본에 수출한 것과 전해 준 물건 두 가지를 쓰시오.", a: "질 좋은 철 수출, 철로 만든 갑옷 전달" },
+  { section: "삼국·가야 문화의 일본 전파", q: "가야 토기가 일본에 영향을 주어 탄생한 일본 토기는 무엇인가?", a: "스에키" },
+  { section: "삼국·가야 문화의 일본 전파", q: "삼국에서 전해진 문화가 기여한 일본 고대 문화는 무엇인가?", a: "아스카 문화" },
+  { section: "삼국·가야 문화의 일본 전파", q: "금동 미륵보살 반가 사유상(우리나라)과 일본의 고류사 목조 미륵보살 반가 사유상의 관계는?", a: "삼국 문화가 일본에 영향을 준 대표적인 사례(형태가 매우 유사)" },
+];
+
+let revealed = new Set();
+const TOTAL = questions.length;
+
+function buildCards(list) {
+  const grid = document.getElementById('quizGrid');
+  grid.innerHTML = '';
+  let currentSection = '';
+
+  list.forEach((item, i) => {
+    if (item.section !== currentSection) {
+      currentSection = item.section;
+      const div = document.createElement('div');
+      div.className = 'section-divider';
+      div.innerHTML = `<span>◆ ${currentSection}</span>`;
+      grid.appendChild(div);
+    }
+
+    const card = document.createElement('div');
+    card.className = 'question-card' + (revealed.has(item._id) ? ' revealed' : '');
+    card.dataset.id = item._id;
+    card.innerHTML = `
+      <div class="card-header">
+        <div class="q-num">Q${String(i+1).padStart(2,'0')}</div>
+        <div class="q-text">${item.q}</div>
+      </div>
+      <div class="answer-wrap ${revealed.has(item._id) ? 'show' : ''}" id="ans-${item._id}">
+        <div class="answer-box">
+          <div class="answer-label">정답</div>
+          <div class="answer-text">${item.a}</div>
+        </div>
+      </div>
+      <div class="reveal-hint">↓ 클릭하여 정답 확인</div>
+    `;
+    card.addEventListener('click', () => toggleCard(item._id, card));
+    grid.appendChild(card);
+  });
+}
+
+function toggleCard(id, card) {
+  const ansWrap = document.getElementById('ans-' + id);
+  if (revealed.has(id)) {
+    revealed.delete(id);
+    ansWrap.classList.remove('show');
+    card.classList.remove('revealed');
+  } else {
+    revealed.add(id);
+    ansWrap.classList.add('show');
+    card.classList.add('revealed');
+  }
+  updateProgress();
+}
+
+function revealAll() {
+  questions.forEach(q => revealed.add(q._id));
+  document.querySelectorAll('.answer-wrap').forEach(el => el.classList.add('show'));
+  document.querySelectorAll('.question-card').forEach(el => el.classList.add('revealed'));
+  updateProgress();
+}
+
+function hideAll() {
+  revealed.clear();
+  document.querySelectorAll('.answer-wrap').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.question-card').forEach(el => el.classList.remove('revealed'));
+  updateProgress();
+}
+
+function shuffleCards() {
+  hideAll();
+  const shuffled = [...questions].sort(() => Math.random() - 0.5);
+  buildCards(shuffled);
+}
+
+function updateProgress() {
+  const count = revealed.size;
+  const pct = Math.round(count / TOTAL * 100);
+  document.getElementById('progressText').textContent = `${count} / ${TOTAL} 확인 완료`;
+  document.getElementById('progressPct').textContent = `${pct}%`;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('scoreNum').innerHTML = `${count}<span> / ${TOTAL}</span>`;
+}
+
+questions.forEach((q, i) => q._id = 'q' + i);
+buildCards(questions);
+updateProgress();
+</script>
+</body>
+</html>

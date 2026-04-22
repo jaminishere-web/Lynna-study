@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>고구려 성장 단답형 퀴즈</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #8B2020;
+    --red-light: #B94040;
+    --red-dark: #5C1010;
+    --cream: #F6F1EC;
+    --dark: #1C1410;
+    --muted: #6B5B55;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #F0EAE4;
+    background-image:
+      radial-gradient(ellipse at 15% 15%, rgba(139,32,32,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(92,16,16,0.07) 0%, transparent 50%);
+    color: #1C1410;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .header::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--red), transparent);
+    margin: 0 auto 24px;
+  }
+
+  .header-badge {
+    display: inline-block;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--red-dark);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(26px, 5vw, 46px);
+    font-weight: 900;
+    color: #1C1410;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  h1 span { color: var(--red-dark); }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-top: 12px;
+  }
+
+  .header::after {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--red-dark), transparent);
+    margin: 24px auto 0;
+  }
+
+  /* 연표 */
+  .timeline {
+    max-width: 900px;
+    margin: 0 auto 48px;
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .tl-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+    position: relative;
+  }
+
+  .tl-item:not(:last-child)::after {
+    content: '▶';
+    position: absolute;
+    right: -8px;
+    top: 8px;
+    font-size: 10px;
+    color: var(--red-light);
+  }
+
+  .tl-year {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--red-dark);
+    margin-bottom: 4px;
+  }
+
+  .tl-event {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 12px 28px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .btn-primary {
+    background: var(--red-dark);
+    color: #F6F1EC;
+  }
+
+  .btn-primary:hover {
+    background: var(--red);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(139,32,32,0.3);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--red-dark);
+    border: 1px solid var(--red);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(139,32,32,0.07);
+    color: #1C1410;
+  }
+
+  .progress-bar-wrap {
+    max-width: 800px;
+    margin: 0 auto 40px;
+    padding: 0 8px;
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: rgba(139,32,32,0.12);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red-dark), var(--red-light));
+    transition: width 0.5s ease;
+  }
+
+  .quiz-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .question-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(139,32,32,0.18);
+    padding: 28px 32px;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .question-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--red-dark);
+    transition: background 0.3s;
+  }
+
+  .question-card:hover {
+    background: #FDF8F5;
+    border-color: rgba(139,32,32,0.35);
+  }
+
+  .question-card.revealed {
+    background: #FBF3F0;
+    border-color: rgba(139,32,32,0.35);
+  }
+
+  .question-card.revealed::before { background: var(--red); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .q-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    color: var(--red-dark);
+    letter-spacing: 2px;
+    min-width: 36px;
+    padding-top: 2px;
+  }
+
+  .q-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #1C1410;
+    flex: 1;
+  }
+
+  .answer-wrap {
+    margin-top: 16px;
+    margin-left: 56px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .answer-wrap.show {
+    max-height: 220px;
+    opacity: 1;
+  }
+
+  .answer-box {
+    background: rgba(139,32,32,0.07);
+    border-left: 2px solid var(--red);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .answer-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--red-dark);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .answer-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    color: #1C1410;
+    font-weight: 700;
+  }
+
+  .reveal-hint {
+    font-size: 11px;
+    color: #A08880;
+    margin-left: 56px;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0 24px;
+  }
+
+  .section-divider span {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 13px;
+    color: var(--red-dark);
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+
+  .section-divider::before {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--red));
+  }
+
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--red), transparent);
+  }
+
+  .score-panel {
+    max-width: 900px;
+    margin: 48px auto 0;
+    background: #FFFFFF;
+    border: 1px solid rgba(139,32,32,0.18);
+    padding: 32px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .score-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .score-number {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--red-dark);
+    line-height: 1;
+  }
+
+  .score-number span {
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  @media (max-width: 600px) {
+    .question-card { padding: 20px; }
+    .answer-wrap, .reveal-hint { margin-left: 20px; }
+    .tl-item { padding: 0 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">역사 퀴즈 · 삼국의 성립과 발전</div>
+  <h1>고구려가 동북아시아의<br><span>강자로 성장하다</span></h1>
+  <p class="subtitle">단답형 50문제 · 클릭하여 정답 확인</p>
+</div>
+
+<div class="timeline">
+  <div class="tl-item"><div class="tl-year">기원전 37</div><div class="tl-event">고구려 건국</div></div>
+  <div class="tl-item"><div class="tl-year">372</div><div class="tl-event">불교 전래·태학 설립</div></div>
+  <div class="tl-item"><div class="tl-year">427</div><div class="tl-event">평양 천도</div></div>
+  <div class="tl-item"><div class="tl-year">475</div><div class="tl-event">백제 한성 함락</div></div>
+</div>
+
+<div class="controls">
+  <button class="btn btn-primary" onclick="revealAll()">전체 정답 보기</button>
+  <button class="btn btn-secondary" onclick="hideAll()">전체 정답 숨기기</button>
+  <button class="btn btn-secondary" onclick="shuffleCards()">문제 순서 섞기</button>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-info">
+    <span id="progressText">0 / 50 확인 완료</span>
+    <span id="progressPct">0%</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="quiz-grid" id="quizGrid"></div>
+
+<div class="score-panel">
+  <div>
+    <div class="score-text">현재 확인한 문제</div>
+    <div class="score-number" id="scoreNum">0<span> / 50</span></div>
+  </div>
+  <button class="btn btn-primary" onclick="revealAll()">모든 정답 확인하기</button>
+</div>
+
+<script>
+const questions = [
+
+  // ─── 도읍 이동과 초기 성장 ───
+  { section: "도읍 이동과 초기 성장", q: "고구려가 1세기 초 도읍을 옮긴 새 수도는 어디인가?", a: "국내성(지린성 지안)" },
+  { section: "도읍 이동과 초기 성장", q: "고구려가 국내성으로 도읍을 옮긴 이유 두 가지를 쓰시오.", a: "물자가 풍부하고 교통이 편리하다" },
+  { section: "도읍 이동과 초기 성장", q: "국내성은 어느 강 중류에 위치하였는가?", a: "압록강" },
+  { section: "도읍 이동과 초기 성장", q: "고구려가 도읍 이동 이후 진출하려고 노력한 지역은 어디인가?", a: "평야 지대(요동 지방)" },
+
+  // ─── 태조왕과 고국천왕 ───
+  { section: "태조왕·고국천왕 시기", q: "1세기 후반 태조왕이 동해안 방향으로 정복한 나라는 어디인가?", a: "옥저" },
+  { section: "태조왕·고국천왕 시기", q: "태조왕 시기 고구려가 서쪽으로 진출을 꾀한 지역은 어디인가?", a: "요동 지방" },
+  { section: "태조왕·고국천왕 시기", q: "2세기 고국천왕 시기에 수도와 지방을 각각 몇 부(部)로 나누었는가?", a: "각각 5부" },
+  { section: "태조왕·고국천왕 시기", q: "고국천왕이 지방에 파견한 사람들이 맡은 두 가지 업무는 무엇인가?", a: "행정과 군사 업무" },
+  { section: "태조왕·고국천왕 시기", q: "고국천왕이 가난한 백성을 구제하기 위해 시행한 제도는 무엇인가?", a: "진대법" },
+  { section: "태조왕·고국천왕 시기", q: "진대법의 구체적인 내용을 쓰시오.", a: "봄 3월~가을 7월에 관청 곡식을 빌려 주고 겨울 10월에 갚게 함" },
+  { section: "태조왕·고국천왕 시기", q: "진대법이 시행되면서 막을 수 있었던 사회 문제는 무엇인가?", a: "빌린 곡식을 갚지 못한 농민들이 노비가 되는 것" },
+  { section: "태조왕·고국천왕 시기", q: "고국천왕이 진대법을 통해 구제한 대상 네 부류를 쓰시오.", a: "홀아비, 과부, 고아, 혼자 사는 노인" },
+
+  // ─── 중앙 집권 체제 정비 ───
+  { section: "중앙 집권 체제 정비", q: "고구려가 안정된 왕권을 확립하면서 기존 군장들을 편입시킨 곳은 어디인가?", a: "중앙의 귀족" },
+  { section: "중앙 집권 체제 정비", q: "고구려 중앙에서 수상의 역할을 맡은 관직은 무엇인가?", a: "대대로" },
+  { section: "중앙 집권 체제 정비", q: "고구려의 관리는 몇 등급으로 나뉘었는가?", a: "10여 등급" },
+  { section: "중앙 집권 체제 정비", q: "4세기 초 미천왕이 멸망시켜 고구려의 세력 확대에 기여한 중국 행정 조직은 무엇인가?", a: "낙랑군" },
+  { section: "중앙 집권 체제 정비", q: "낙랑군은 원래 어느 나라가 고조선을 멸망시키고 설치한 행정 조직인가?", a: "중국 한(漢)" },
+  { section: "중앙 집권 체제 정비", q: "4세기 중반 고구려가 전연의 침입으로 수도가 함락되는 피해를 입은 왕은 누구인가?", a: "고국원왕" },
+  { section: "중앙 집권 체제 정비", q: "고국원왕이 전사한 원인은 무엇인가?", a: "평양성을 공격한 백제군을 막다가 전사" },
+  { section: "중앙 집권 체제 정비", q: "전연은 4세기 중반 중국의 어느 방향에서 일어난 유목 민족 왕조인가?", a: "중국 사서쪽(북중국)" },
+
+  // ─── 소수림왕의 체제 정비 ───
+  { section: "소수림왕의 체제 정비", q: "4세기 후반 고구려의 위기를 극복하고 체제를 정비한 왕은 누구인가?", a: "소수림왕" },
+  { section: "소수림왕의 체제 정비", q: "소수림왕이 중국 어느 나라로부터 불교를 받아들였는가?", a: "전진(前秦)" },
+  { section: "소수림왕의 체제 정비", q: "소수림왕이 불교를 받아들인 정치적 목적은 무엇인가?", a: "나라의 사상을 하나로 통합하고 왕실의 권위를 높이기 위해" },
+  { section: "소수림왕의 체제 정비", q: "소수림왕이 인재를 양성하기 위해 세운 교육 기관은 무엇인가?", a: "태학" },
+  { section: "소수림왕의 체제 정비", q: "소수림왕이 왕 중심의 통치 조직을 정비하기 위해 반포한 것은 무엇인가?", a: "율령" },
+  { section: "소수림왕의 체제 정비", q: "율령의 뜻을 쓰시오.", a: "각종 범죄에 대한 처벌 규정(율)과 세금·행정에 관한 규정(령)" },
+
+  // ─── 광개토 대왕의 영토 확장 ───
+  { section: "광개토 대왕의 영토 확장", q: "광개토 대왕이 왕위에 오른 시기는 언제인가?", a: "4세기 말" },
+  { section: "광개토 대왕의 영토 확장", q: "광개토 대왕이 백제를 공격하여 차지한 지역은 어디인가?", a: "한강 이북 지역" },
+  { section: "광개토 대왕의 영토 확장", q: "신라에 침입한 왜를 물리치는 과정에서 고구려가 남쪽으로 진출한 강은 어디까지인가?", a: "낙동강 하류" },
+  { section: "광개토 대왕의 영토 확장", q: "광개토 대왕의 남쪽 원정 과정에서 큰 타격을 받은 가야의 소국은 어디인가?", a: "낙동강 유역의 금관가야" },
+  { section: "광개토 대왕의 영토 확장", q: "광개토 대왕이 북쪽으로 격파한 두 세력은 무엇인가?", a: "거란, 후연" },
+  { section: "광개토 대왕의 영토 확장", q: "광개토 대왕 시기 고구려가 차지한 서쪽 영토는 어디인가?", a: "만주와 요동 지역 대부분" },
+  { section: "광개토 대왕의 영토 확장", q: "광개토 대왕 시기 고구려가 사용한 연호는 무엇인가?", a: "영락" },
+  { section: "광개토 대왕의 영토 확장", q: "'태왕'이라는 칭호의 의미는 무엇인가?", a: "크고 위대한 왕" },
+  { section: "광개토 대왕의 영토 확장", q: "광개토 대왕릉비는 누가 세웠으며, 어디에 위치하는가?", a: "아들 장수왕이 세움, 중국 지린성" },
+  { section: "광개토 대왕의 영토 확장", q: "광개토 대왕릉비의 높이는 약 몇 m인가?", a: "약 6.4m" },
+  { section: "광개토 대왕의 영토 확장", q: "광개토 대왕릉비에 따르면 고구려의 시조는 누구이며, 어디 출신이라고 기록되어 있는가?", a: "추모왕(주몽), 북부여 출신" },
+  { section: "광개토 대왕의 영토 확장", q: "광개토 대왕릉비에서 백잔(백제)과 신라를 어떻게 표현하고 있는가?", a: "옛적부터 복속된 백성으로 조공을 바쳐 왔다" },
+
+  // ─── 장수왕의 남진 정책 ───
+  { section: "장수왕의 남진 정책", q: "장수왕이 수도를 평양으로 옮긴 연도는 언제인가?", a: "427년" },
+  { section: "장수왕의 남진 정책", q: "장수왕이 평양으로 수도를 옮긴 두 가지 지리적 장점을 쓰시오.", a: "대동강 유역 평야로 물산이 풍부하고, 바다로 진출하기 유리하다" },
+  { section: "장수왕의 남진 정책", q: "장수왕이 국내 귀족 세력을 약화하기 위해 사용한 방법은 무엇인가?", a: "국내성에 기반을 둔 귀족 세력을 약화하고 왕권 강화" },
+  { section: "장수왕의 남진 정책", q: "고구려의 남진에 위협을 느낀 신라와 백제가 맺은 군사 동맹의 이름은 무엇인가?", a: "나제 동맹" },
+  { section: "장수왕의 남진 정책", q: "장수왕이 475년에 함락시킨 백제의 수도는 어디인가?", a: "한성" },
+  { section: "장수왕의 남진 정책", q: "한성 함락 이후 고구려가 진출한 유역은 어디인가?", a: "남한강 유역(한반도 중부 지역)" },
+  { section: "장수왕의 남진 정책", q: "고구려가 한반도 중부까지 영토를 확장했음을 알 수 있는 비석은 무엇인가?", a: "충주 고구려비" },
+  { section: "장수왕의 남진 정책", q: "충주 고구려비에 기록된 내용 두 가지를 쓰시오.", a: "신라가 고구려에 복속된 것으로 표현 / 고구려가 신라 왕과 신하들에게 고구려 관리의 옷을 나눠 줌" },
+  { section: "장수왕의 남진 정책", q: "충주 고구려비의 높이는 약 몇 m이며, 한반도에서 어떤 의미를 지니는가?", a: "약 2.3m, 한반도에 있는 유일한 고구려 비석" },
+  { section: "장수왕의 남진 정책", q: "장수왕 시기 고구려가 외교를 맺으며 우호 관계를 유지한 중국의 두 나라는?", a: "북위, 남조" },
+  { section: "장수왕의 남진 정책", q: "고구려의 전성기 번영이 지속된 시기는 언제까지인가?", a: "6세기 초반" },
+
+  // ─── 종합·심화 ───
+  { section: "종합·심화", q: "고구려가 5세기경 동북아시아의 강대국으로 성장할 수 있었던 핵심 요인 세 가지를 쓰시오.", a: "체제 정비(율령·불교·태학), 광개토 대왕의 영토 확장, 장수왕의 남진 정책" },
+  { section: "종합·심화", q: "고구려 사람들이 5세기에 고구려를 '천하의 중심'이라고 여겼음을 보여 주는 근거 두 가지를 쓰시오.", a: "독자적인 연호(영락) 사용 / 왕을 '태왕'으로 칭함" },
+  { section: "종합·심화", q: "고구려가 체제를 정비하면서 도입한 세 가지 제도를 순서대로 쓰시오.", a: "불교 수용 → 태학 설립 → 율령 반포" },
+];
+
+let revealed = new Set();
+const TOTAL = questions.length;
+
+function buildCards(list) {
+  const grid = document.getElementById('quizGrid');
+  grid.innerHTML = '';
+  let currentSection = '';
+
+  list.forEach((item, i) => {
+    if (item.section !== currentSection) {
+      currentSection = item.section;
+      const div = document.createElement('div');
+      div.className = 'section-divider';
+      div.innerHTML = `<span>◆ ${currentSection}</span>`;
+      grid.appendChild(div);
+    }
+
+    const card = document.createElement('div');
+    card.className = 'question-card' + (revealed.has(item._id) ? ' revealed' : '');
+    card.dataset.id = item._id;
+    card.innerHTML = `
+      <div class="card-header">
+        <div class="q-num">Q${String(i+1).padStart(2,'0')}</div>
+        <div class="q-text">${item.q}</div>
+      </div>
+      <div class="answer-wrap ${revealed.has(item._id) ? 'show' : ''}" id="ans-${item._id}">
+        <div class="answer-box">
+          <div class="answer-label">정답</div>
+          <div class="answer-text">${item.a}</div>
+        </div>
+      </div>
+      <div class="reveal-hint">↓ 클릭하여 정답 확인</div>
+    `;
+    card.addEventListener('click', () => toggleCard(item._id, card));
+    grid.appendChild(card);
+  });
+}
+
+function toggleCard(id, card) {
+  const ansWrap = document.getElementById('ans-' + id);
+  if (revealed.has(id)) {
+    revealed.delete(id);
+    ansWrap.classList.remove('show');
+    card.classList.remove('revealed');
+  } else {
+    revealed.add(id);
+    ansWrap.classList.add('show');
+    card.classList.add('revealed');
+  }
+  updateProgress();
+}
+
+function revealAll() {
+  questions.forEach(q => revealed.add(q._id));
+  document.querySelectorAll('.answer-wrap').forEach(el => el.classList.add('show'));
+  document.querySelectorAll('.question-card').forEach(el => el.classList.add('revealed'));
+  updateProgress();
+}
+
+function hideAll() {
+  revealed.clear();
+  document.querySelectorAll('.answer-wrap').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.question-card').forEach(el => el.classList.remove('revealed'));
+  updateProgress();
+}
+
+function shuffleCards() {
+  hideAll();
+  const shuffled = [...questions].sort(() => Math.random() - 0.5);
+  buildCards(shuffled);
+}
+
+function updateProgress() {
+  const count = revealed.size;
+  const pct = Math.round(count / TOTAL * 100);
+  document.getElementById('progressText').textContent = `${count} / ${TOTAL} 확인 완료`;
+  document.getElementById('progressPct').textContent = `${pct}%`;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('scoreNum').innerHTML = `${count}<span> / ${TOTAL}</span>`;
+}
+
+questions.forEach((q, i) => q._id = 'q' + i);
+buildCards(questions);
+updateProgress();
+</script>
+</body>
+</html>
