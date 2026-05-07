@@ -71,8 +71,13 @@
     cursor: pointer; transition: all 0.2s;
     background: var(--surface2); color: var(--ink2);
   }
+  --moral: #7c3aed;
+  --moral-bg: #ede9fe;
   .tab.active[data-s="history"] { background: var(--history); color: white; }
   .tab.active[data-s="social"] { background: var(--social); color: white; }
+  .tab.active[data-s="moral"] { background: var(--moral); color: white; }
+  .app-card[data-s="moral"]::before { background: var(--moral); }
+  .app-card[data-s="moral"] .app-num { background: var(--moral-bg); color: var(--moral); }
 
   /* ── SECTION ── */
   .section { display: none; }
@@ -186,6 +191,7 @@
   <div class="tabs">
     <button class="tab active" data-s="history" onclick="switchTab('history')">📜 한국사</button>
     <button class="tab" data-s="social" onclick="switchTab('social')">🏛️ 사회</button>
+    <button class="tab" data-s="moral" onclick="switchTab('moral')">🌿 도덕</button>
   </div>
 
   <!-- ── 한국사 ── -->
@@ -194,70 +200,37 @@
       <div class="section-icon" style="background:#fef3c7">📜</div>
       <div class="section-info">
         <h3>한국사</h3>
-        <p>선사시대 ~ 남북국 시대</p>
+        <p>선사시대 ~ 고려시대 (27단원)</p>
       </div>
     </div>
     <div class="app-list">
-      <a class="app-card" data-s="history" href="bronze_age_quiz.html" target="_blank">
-        <div class="app-num">1</div>
-        <div class="app-info"><div class="app-name">청동기 시대</div><div class="app-desc">단답형 퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="history" href="iron_age_quiz.html" target="_blank">
-        <div class="app-num">2</div>
-        <div class="app-info"><div class="app-name">철기 시대</div><div class="app-desc">단답형 퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="history" href="nations_growth_quiz.html" target="_blank">
-        <div class="app-num">3</div>
-        <div class="app-info"><div class="app-name">여러 나라의 성장</div><div class="app-desc">단답형 퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="history" href="gaya_quiz.html" target="_blank">
-        <div class="app-num">4</div>
-        <div class="app-info"><div class="app-name">가야</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="history" href="goguryeo_quiz.html" target="_blank">
-        <div class="app-num">5</div>
-        <div class="app-info"><div class="app-name">고구려</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="history" href="goguryeo_defense_quiz.html" target="_blank">
-        <div class="app-num">6</div>
-        <div class="app-info"><div class="app-name">고구려 대외 항쟁</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="history" href="baekje_quiz.html" target="_blank">
-        <div class="app-num">7</div>
-        <div class="app-info"><div class="app-name">백제</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="history" href="silla_quiz.html" target="_blank">
-        <div class="app-num">8</div>
-        <div class="app-info"><div class="app-name">신라</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="history" href="samguk_culture_quiz.html" target="_blank">
-        <div class="app-num">9</div>
-        <div class="app-info"><div class="app-name">삼국의 문화</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="history" href="samguk_life_exchange_quiz.html" target="_blank">
-        <div class="app-num">10</div>
-        <div class="app-info"><div class="app-name">삼국의 생활·대외교류</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="history" href="silla_unification_quiz.html" target="_blank">
-        <div class="app-num">11</div>
-        <div class="app-info"><div class="app-name">신라의 삼국통일</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="history" href="balhae_quiz.html" target="_blank">
-        <div class="app-num">12</div>
-        <div class="app-info"><div class="app-name">발해</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
+      <a class="app-card" data-s="history" href="unit01_bronze.html" target="_blank"><div class="app-num">1</div><div class="app-info"><div class="app-name">청동기 시대</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit02_iron.html" target="_blank"><div class="app-num">2</div><div class="app-info"><div class="app-name">철기 시대</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit03_nations.html" target="_blank"><div class="app-num">3</div><div class="app-info"><div class="app-name">여러 나라의 성장</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit04_goguryeo.html" target="_blank"><div class="app-num">4</div><div class="app-info"><div class="app-name">고구려</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit05_baekje.html" target="_blank"><div class="app-num">5</div><div class="app-info"><div class="app-name">백제</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit06_silla.html" target="_blank"><div class="app-num">6</div><div class="app-info"><div class="app-name">신라</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit07_gaya.html" target="_blank"><div class="app-num">7</div><div class="app-info"><div class="app-name">가야</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit08_culture.html" target="_blank"><div class="app-num">8</div><div class="app-info"><div class="app-name">삼국의 문화</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit09_life_exchange.html" target="_blank"><div class="app-num">9</div><div class="app-info"><div class="app-name">삼국의 생활·대외교류</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit10_goguryeo_defending.html" target="_blank"><div class="app-num">10</div><div class="app-info"><div class="app-name">고구려 대외 항쟁</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit11_unification.html" target="_blank"><div class="app-num">11</div><div class="app-info"><div class="app-name">신라의 삼국통일</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit12_balhae.html" target="_blank"><div class="app-num">12</div><div class="app-info"><div class="app-name">발해</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit13_later_three.html" target="_blank"><div class="app-num">13</div><div class="app-info"><div class="app-name">후삼국 시대</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit14_silla_culture.html" target="_blank"><div class="app-num">14</div><div class="app-info"><div class="app-name">통일신라 문화</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit15_balhae_culture.html" target="_blank"><div class="app-num">15</div><div class="app-info"><div class="app-name">발해 문화</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit16_foreign_relations.html" target="_blank"><div class="app-num">16</div><div class="app-info"><div class="app-name">남북국 대외관계</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit17_goryeo_founding.html" target="_blank"><div class="app-num">17</div><div class="app-info"><div class="app-name">고려 건국</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit18_goryeo_system.html" target="_blank"><div class="app-num">18</div><div class="app-info"><div class="app-name">고려 통치 체제</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit19_political_upheaval.html" target="_blank"><div class="app-num">19</div><div class="app-info"><div class="app-name">고려 정치 변동</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit20_khitan_jurchen.html" target="_blank"><div class="app-num">20</div><div class="app-info"><div class="app-name">거란·여진 침입</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit21_goryeo_trade.html" target="_blank"><div class="app-num">21</div><div class="app-info"><div class="app-name">고려 대외 교류</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit22_mongol.html" target="_blank"><div class="app-num">22</div><div class="app-info"><div class="app-name">몽골 침입</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit23_yuan_interference.html" target="_blank"><div class="app-num">23</div><div class="app-info"><div class="app-name">원의 간섭</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit24_goryeo_fall.html" target="_blank"><div class="app-num">24</div><div class="app-info"><div class="app-name">고려 멸망</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit25_goryeo_life.html" target="_blank"><div class="app-num">25</div><div class="app-info"><div class="app-name">고려 생활</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit26_goryeo_culture.html" target="_blank"><div class="app-num">26</div><div class="app-info"><div class="app-name">고려 문화</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="history" href="unit27_goryeo_arts.html" target="_blank"><div class="app-num">27</div><div class="app-info"><div class="app-name">고려 예술</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
     </div>
   </div>
 
@@ -267,50 +240,34 @@
       <div class="section-icon" style="background:#ccfbf1">🏛️</div>
       <div class="section-info">
         <h3>사회</h3>
-        <p>인권 · 헌법 · 국가기관 · 경제</p>
+        <p>경제 · 국제사회 (8단원)</p>
       </div>
     </div>
     <div class="app-list">
-      <a class="app-card" data-s="social" href="social1.html" target="_blank">
-        <div class="app-num">1</div>
-        <div class="app-info"><div class="app-name">인권 보장과 기본권</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="social" href="social2.html" target="_blank">
-        <div class="app-num">2</div>
-        <div class="app-info"><div class="app-name">인권 침해 및 구제</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="social" href="social3.html" target="_blank">
-        <div class="app-num">3</div>
-        <div class="app-info"><div class="app-name">근로자 권리와 노동 구제</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="social" href="social4.html" target="_blank">
-        <div class="app-num">4</div>
-        <div class="app-info"><div class="app-name">국회</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="social" href="social5.html" target="_blank">
-        <div class="app-num">5</div>
-        <div class="app-info"><div class="app-name">행정부와 대통령</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="social" href="social6.html" target="_blank">
-        <div class="app-num">6</div>
-        <div class="app-info"><div class="app-name">법원과 헌법재판소</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="social" href="social7.html" target="_blank">
-        <div class="app-num">7</div>
-        <div class="app-info"><div class="app-name">경제생활과 경제문제</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
-      <a class="app-card" data-s="social" href="social8.html" target="_blank">
-        <div class="app-num">8</div>
-        <div class="app-info"><div class="app-name">기업의 역할과 사회적 책임</div><div class="app-desc">퀴즈</div></div>
-        <div class="app-arrow">›</div>
-      </a>
+      <a class="app-card" data-s="social" href="01_financial-life.html" target="_blank"><div class="app-num">1</div><div class="app-info"><div class="app-name">경제 생활</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="social" href="02_market-types.html" target="_blank"><div class="app-num">2</div><div class="app-info"><div class="app-name">시장의 종류</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="social" href="03_market-price.html" target="_blank"><div class="app-num">3</div><div class="app-info"><div class="app-name">시장 가격</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="social" href="04_price-changes.html" target="_blank"><div class="app-num">4</div><div class="app-info"><div class="app-name">가격 변동</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="social" href="05_GDP.html" target="_blank"><div class="app-num">5</div><div class="app-info"><div class="app-name">GDP</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="social" href="06_inflation-unemployment.html" target="_blank"><div class="app-num">6</div><div class="app-info"><div class="app-name">인플레이션과 실업</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="social" href="07_international-trade-exchange.html" target="_blank"><div class="app-num">7</div><div class="app-info"><div class="app-name">국제 무역과 환율</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+      <a class="app-card" data-s="social" href="08_international-society.html" target="_blank"><div class="app-num">8</div><div class="app-info"><div class="app-name">국제 사회</div><div class="app-desc">퀴즈</div></div><div class="app-arrow">›</div></a>
+    </div>
+  </div>
+
+  <!-- ── 도덕 ── -->
+  <div class="section" id="sec-moral">
+    <div class="section-header">
+      <div class="section-icon" style="background:#ede9fe">🌿</div>
+      <div class="section-info">
+        <h3>도덕</h3>
+        <p>준비 중이에요</p>
+      </div>
+    </div>
+    <div style="background:#f5f3ff;border-radius:16px;padding:28px;text-align:center;border:2px dashed rgba(109,40,217,0.15)">
+      <p style="font-size:28px;margin-bottom:10px">🔜</p>
+      <p style="font-size:14px;color:#7c3aed;font-weight:700">곧 추가될 예정이에요!</p>
+      <p style="font-size:12px;color:#a78bfa;margin-top:4px">아티팩트 완성 후 업데이트 예정</p>
     </div>
   </div>
 
