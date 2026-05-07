@@ -71,13 +71,9 @@
     cursor: pointer; transition: all 0.2s;
     background: var(--surface2); color: var(--ink2);
   }
-  --moral: #7c3aed;
-  --moral-bg: #ede9fe;
-  .tab.active[data-s="history"] { background: var(--history); color: white; }
-  .tab.active[data-s="social"] { background: var(--social); color: white; }
-  .tab.active[data-s="moral"] { background: var(--moral); color: white; }
-  .app-card[data-s="moral"]::before { background: var(--moral); }
-  .app-card[data-s="moral"] .app-num { background: var(--moral-bg); color: var(--moral); }
+  .tab.active { background: var(--ink); color: white; }
+  .app-card[data-s="moral"]::before { background: #7c3aed; }
+  .app-card[data-s="moral"] .app-num { background: #ede9fe; color: #7c3aed; }
 
   /* ── SECTION ── */
   .section { display: none; }
