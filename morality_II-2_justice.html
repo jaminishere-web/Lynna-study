@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ⅱ-2. 정의란 무엇인가</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1e3a5f;
+    --navy-deep: #142948;
+    --steel: #4a6a8a;
+    --slate: #8a9bb0;
+    --parchment: #f5efe0;
+    --paper: #faf7ec;
+    --paper-soft: #ebeef3;
+    --ink: #1a1814;
+    --ink-soft: #4a443e;
+    --ink-muted: #7a7268;
+    --rust: #b8542d;
+    --gold: #c8941e;
+    --highlight: rgba(30,58,95,0.08);
+    --border: rgba(30,58,95,0.18);
+    --border-soft: rgba(30,58,95,0.10);
+    --shadow: rgba(30,58,95,0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: var(--parchment);
+    background-image:
+      radial-gradient(ellipse at 15% 10%, rgba(30,58,95,0.06) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 90%, rgba(184,84,45,0.05) 0%, transparent 55%);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 32px 16px 80px;
+    line-height: 1.65;
+  }
+
+  .wrap { max-width: 880px; margin: 0 auto; }
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header::before {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--navy), transparent);
+    margin: 0 auto 18px;
+  }
+  .badge {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--steel);
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: block;
+  }
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(26px, 4.5vw, 38px);
+    font-weight: 900;
+    color: var(--navy-deep);
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+  }
+  h1 .num { color: var(--rust); margin-right: 4px; }
+  .subtitle {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-top: 10px;
+    letter-spacing: 0.3px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 28px;
+    background: var(--paper);
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 2px 8px var(--shadow);
+    position: sticky;
+    top: 12px;
+    z-index: 50;
+  }
+  .tab {
+    flex: 1;
+    padding: 14px 16px;
+    border: none;
+    background: transparent;
+    color: var(--ink-muted);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    letter-spacing: -0.3px;
+  }
+  .tab:hover { color: var(--navy); background: var(--highlight); }
+  .tab.active {
+    background: var(--navy);
+    color: var(--paper);
+    box-shadow: 0 2px 8px rgba(30,58,95,0.25);
+  }
+
+  .panel { display: none; animation: fadeIn 0.35s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section { margin-bottom: 32px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--navy);
+  }
+  .section-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .section-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+  }
+  .section-meta {
+    margin-left: auto;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--steel);
+    font-weight: 700;
+  }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px var(--shadow);
+  }
+  .card-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--navy-deep);
+    margin-bottom: 12px;
+    padding-left: 12px;
+    border-left: 4px solid var(--navy);
+    line-height: 1.4;
+  }
+  .card-body {
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .card-body p { margin-bottom: 10px; }
+  .card-body p:last-child { margin-bottom: 0; }
+
+  .term {
+    background: linear-gradient(180deg, transparent 60%, rgba(200,148,30,0.25) 60%);
+    color: var(--ink);
+    font-weight: 700;
+    padding: 0 2px;
+  }
+  .key { color: var(--navy-deep); font-weight: 700; }
+  .em { color: var(--rust); font-weight: 700; }
+
+  .def {
+    background: var(--paper-soft);
+    border-left: 4px solid var(--steel);
+    padding: 12px 16px;
+    margin: 12px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .def-label {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    color: var(--navy);
+    margin-right: 6px;
+  }
+
+  .list { list-style: none; padding: 0; }
+  .list li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .list li::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 18px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--steel);
+  }
+
+  .principles { display: grid; gap: 12px; margin-top: 14px; }
+  .principle {
+    display: flex;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--paper-soft);
+    border-radius: 10px;
+    border: 1px solid var(--border-soft);
+  }
+  .principle-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1;
+    min-width: 28px;
+  }
+  .principle-body { flex: 1; }
+  .principle-name {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy-deep);
+    margin-bottom: 4px;
+  }
+  .principle-desc {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    background: var(--paper);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px var(--shadow);
+    font-size: 14px;
+  }
+  .compare-table th, .compare-table td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-soft);
+    line-height: 1.55;
+  }
+  .compare-table thead th {
+    background: var(--navy);
+    color: var(--paper);
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+  .compare-table tbody td:first-child {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    color: var(--navy-deep);
+    background: var(--paper-soft);
+    width: 110px;
+    text-align: center;
+  }
+  .compare-table tbody tr:last-child td { border-bottom: none; }
+
+  .summary-box {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color: var(--paper);
+    padding: 26px 28px;
+    border-radius: 14px;
+    margin-top: 20px;
+    box-shadow: 0 4px 16px rgba(30,58,95,0.20);
+  }
+  .summary-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .summary-grid { display: grid; gap: 10px; }
+  .summary-row {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 12px;
+    align-items: baseline;
+    font-size: 14px;
+  }
+  .summary-key {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 900;
+    color: #f0d893;
+    text-align: center;
+  }
+  .summary-val { color: var(--paper); }
+  .summary-val strong { color: #f0d893; font-weight: 700; }
+
+  .progress-bar {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+  }
+  .progress-text { color: var(--ink-soft); font-weight: 500; }
+  .progress-text strong {
+    color: var(--navy);
+    font-weight: 900;
+    font-size: 18px;
+    margin: 0 2px;
+    font-family: 'Noto Serif KR', serif;
+  }
+  .progress-actions { display: flex; gap: 8px; }
+  .btn-mini {
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--navy);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.2s;
+  }
+  .btn-mini:hover { background: var(--navy); color: var(--paper); }
+
+  .cat-head {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--steel);
+    margin: 24px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed var(--border);
+    letter-spacing: -0.3px;
+  }
+  .cat-head:first-child { margin-top: 0; }
+
+  .problem {
+    background: var(--paper);
+    border: 1.5px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+  }
+  .problem:hover {
+    border-color: var(--navy);
+    box-shadow: 0 3px 12px var(--shadow);
+    transform: translateY(-1px);
+  }
+  .problem.revealed {
+    background: linear-gradient(180deg, var(--paper) 0%, #f5f0d8 100%);
+    border-color: var(--gold);
+  }
+  .problem-head {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .problem-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--steel);
+    color: var(--paper);
+    flex-shrink: 0;
+  }
+  .problem-tag.basic { background: var(--rust); }
+  .problem-tag.essay { background: var(--gold); color: var(--ink); }
+  .problem-num {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 900;
+    color: var(--navy);
+    font-size: 15px;
+  }
+  .problem-q {
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.65;
+    font-weight: 500;
+  }
+  .problem-options {
+    margin-top: 10px;
+    padding-left: 16px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.9;
+  }
+  .answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, margin 0.3s ease, padding 0.3s ease;
+    margin-top: 0;
+  }
+  .problem.revealed .answer {
+    max-height: 800px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1.5px dashed var(--gold);
+  }
+  .answer-label {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--rust);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .answer-text {
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 700;
+    line-height: 1.7;
+    margin-bottom: 6px;
+  }
+  .answer-explain {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    background: rgba(255,255,255,0.5);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border-left: 3px solid var(--steel);
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--ink-muted);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 20px 12px 60px; }
+    .card { padding: 18px 18px; }
+    .section-title { font-size: 18px; }
+    .section-num { font-size: 24px; }
+    h1 { font-size: 24px; }
+    .tab { padding: 12px 8px; font-size: 13px; }
+    .problem { padding: 16px 18px; }
+    .summary-box { padding: 20px; }
+    .summary-row { grid-template-columns: 26px 1fr; gap: 10px; }
+    .compare-table { font-size: 12px; }
+    .compare-table th, .compare-table td { padding: 10px 8px; }
+    .compare-table tbody td:first-child { width: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="header">
+    <span class="badge">Ⅱ. 사회·공동체와의 관계</span>
+    <h1><span class="num">2.</span> 정의란 무엇인가</h1>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="reading">📖 본문정리</button>
+    <button class="tab" data-tab="quiz">📝 암기확인 문제</button>
+  </div>
+
+  <!-- ============ 📖 본문정리 ============ -->
+  <div class="panel active" id="panel-reading">
+
+    <!-- Section 1 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">①</span>
+        <h2 class="section-title">정의의 의미와 사회 정의의 역할</h2>
+        <span class="section-meta">82~83쪽</span>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">정의의 의미</h3>
+        <div class="card-body">
+          <div class="def">
+            <span class="def-label">정의(正義)</span>사전적 의미는 개인 간의 올바른 도리 또는 사회를 구성하고 유지하는 <span class="key">공정한 도리</span>. 사람들을 공평하고 올바르게 대하는 도리이며, 어느 쪽으로도 치우치지 않고 고르게 사회를 운영하는 도리.
+          </div>
+          <div class="def">
+            <span class="def-label">현대 사회</span>대체로 정의 = <span class="key">사회의 규칙이나 제도가 공정한 것</span>을 의미함.
+          </div>
+          <div class="def">
+            <span class="def-label">공정성</span>공명하고 올바른 성질. <span class="def-label">공평성</span>어느 쪽으로도 치우치지 않고 고른 성질.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">사회 정의의 역할 — 3가지 ⭐⭐</h3>
+        <div class="card-body">
+          <div class="principles">
+            <div class="principle">
+              <div class="principle-num">1</div>
+              <div class="principle-body">
+                <div class="principle-name">옳고 그름의 기준</div>
+                <div class="principle-desc">법을 집행하거나 도덕적 판단을 할 때 <span class="key">옳고 그름에 대한 기준</span>을 제공.</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">2</div>
+              <div class="principle-body">
+                <div class="principle-name">정당한 분배 기준</div>
+                <div class="principle-desc">사회적 재화의 <span class="key">정당한 분배 기준</span>이 되어 각자에게 그의 몫을 공정·공평하게 나눠 줌.</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">3</div>
+              <div class="principle-body">
+                <div class="principle-name">갈등·분쟁 조정 원칙</div>
+                <div class="principle-desc">분배 과정에서 발생하는 다양한 <span class="key">갈등과 분쟁을 조정하는 원칙</span>이 됨. 사회 전체가 합의한 정의 원칙에 따라 갈등 조정.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">②</span>
+        <h2 class="section-title">정의로운 사회의 조건과 추구</h2>
+        <span class="section-meta">83~85쪽</span>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">정의로운 사회의 조건 — 3가지 ⭐⭐</h3>
+        <div class="card-body">
+          <div class="principles">
+            <div class="principle">
+              <div class="principle-num">1</div>
+              <div class="principle-body">
+                <div class="principle-name">동등한 자유와 평등 보장</div>
+                <div class="principle-desc">사회 구성원 모두에게 <span class="key">동등한 자유와 평등</span> 보장. 단, 나의 자유를 위해 <span class="key">다른 사람의 자유를 방해해서는 안 됨</span>.</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">2</div>
+              <div class="principle-body">
+                <div class="principle-name">공정한 분배</div>
+                <div class="principle-desc">모든 사람에게 각자의 몫에 대한 <span class="key">공정한 분배</span>. <span class="em">"각자에게 그의 몫을 주는 것"</span> = 가장 일반적인 정의의 원칙.</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">3</div>
+              <div class="principle-body">
+                <div class="principle-name">합의한 절차·규칙 준수</div>
+                <div class="principle-desc">사회 구성원이 합의한 <span class="key">절차나 규칙을 잘 준수</span>해야 함. 모두가 합의한 규칙은 약속이며, 이를 지킬 때 사회는 모두의 선과 행복을 증진.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">정의로운 사회의 추구 — 사회 윤리의 필요성 ⭐</h3>
+        <div class="card-body">
+          <div class="def">
+            <span class="def-label">부정의한 사회</span><span class="key">잘못된 법과 제도, 불합리한 사회 관행</span>이 널리 퍼진 사회. 사회 구성원 각자가 선하게 살려고 해도 그럴 수 없는 상황이 됨.
+          </div>
+          <p style="margin-top:10px;">사회가 비도덕적이면 개인이 도덕적으로 살려고 해도 소용없게 됨. 부정의한 사회를 개선하려면:</p>
+          <ul class="list">
+            <li>개인의 도덕성을 기르는 <span class="key">개인 윤리</span>도 필요하지만,</li>
+            <li>사회를 도덕적으로 만드는 <span class="em">사회 윤리(도덕적인 사회 제도)</span>도 반드시 필요</li>
+          </ul>
+          <div class="def" style="margin-top:10px;">
+            <span class="def-label">니부어(Niebuhr)</span>"정의로운 사회를 만들기 위해서는 <span class="key">개인의 도덕성에만 의지해서는 안 되고, 도덕적인 사회 제도가 필요</span>하다." (미국의 문명 비판가·신학자)
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">정의로운 사회의 의의</h3>
+        <div class="card-body">
+          <ul class="list">
+            <li>구성원 모두가 만족과 행복을 느끼며 살 수 있음</li>
+            <li>공정한 분배가 보장될 때 사람들은 <span class="key">서로를 신뢰하면서 협력</span> → 사회 전체가 잘 돌아감</li>
+            <li>정의 실현 = <span class="em">모두의 행복한 삶, 인간다운 삶을 보장</span>하는 길</li>
+            <li><span class="em">사회의 협력과 발전의 밑거름</span>이 됨</li>
+            <li>궁극적으로 우리 사회를 <span class="em">도덕적인 공동체</span>로 만드는 길</li>
+          </ul>
+          <div class="def" style="margin-top:10px;">
+            <span class="def-label">관행</span>오래전부터 하던 것이 관습으로 굳어져 내려오는 일.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">③</span>
+        <h2 class="section-title">공정한 경쟁의 필요성</h2>
+        <span class="section-meta">86~87쪽</span>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">경쟁의 영향 — 양면성</h3>
+        <div class="card-body">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>긍정적 영향</th>
+                <th>부정적 영향</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="key">개인의 능력 향상</span>, 더 나은 상품·서비스 제공, 생활의 풍요, <span class="key">사회 발전</span></td>
+                <td>경쟁이 지나치면 갈등 발생, <span class="em">자원을 덜 가진 사람과 더 가진 사람의 격차</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="def" style="margin-top:14px;">
+            <span class="def-label">불가피하다</span>피할 수 없다. (인간은 한정된 자원을 서로 가지려 하기 때문에 경쟁이 불가피함.)
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">불공정한 경쟁의 영향</h3>
+        <div class="card-body">
+          <ul class="list">
+            <li>사람들이 정당한 방법으로 노력하기보다 <span class="em">교묘하고 불공정한 방법</span>을 이용하려 함</li>
+            <li>불공정한 경쟁이 묵인되면 <span class="key">성실하게 사는 사람들의 권리·이익이 침해</span></li>
+            <li>사회 구성원 사이의 <span class="em">신뢰가 무너짐</span> → 화합·협력 어려움</li>
+            <li><span class="em">사회적 갈등과 혼란</span> 발생</li>
+          </ul>
+          <p style="margin-top:8px;">→ 사회 발전을 이루려면 사회 구성원 간의 신뢰를 바탕으로 <span class="key">공정한 과정</span>에 따라 경쟁하는 것이 중요!</p>
+          <div class="def" style="margin-top:10px;">
+            <span class="def-label">묵인</span>모르는 체하고 슬며시 인정함.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">④</span>
+        <h2 class="section-title">공정한 경쟁의 조건 — 3가지 ⭐⭐⭐</h2>
+        <span class="section-meta">88~89쪽</span>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <p>시험 출제 1순위! 3가지 조건을 모두 정확히 암기해야 함.</p>
+          <div class="principles" style="margin-top:14px;">
+            <div class="principle">
+              <div class="principle-num">1</div>
+              <div class="principle-body">
+                <div class="principle-name">동등한 기회 제공</div>
+                <div class="principle-desc">경쟁에 참여하는 모든 사람들에게 <span class="key">경쟁에 참여할 기회를 똑같이</span> 주어야 한다. (예: 연극 동아리에서 인기 있는 후보에게만 기회를 더 주면 불공정)</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">2</div>
+              <div class="principle-body">
+                <div class="principle-name">동등한 기준으로 평가</div>
+                <div class="principle-desc"><span class="key">누구에게나 같은 기준을 적용</span>해야 한다. (예: 영업 실적 기준이 정해져 있는데 인품을 이유로 승진시키면 불공정)</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">3</div>
+              <div class="principle-body">
+                <div class="principle-name">사회적 약자 배려</div>
+                <div class="principle-desc">처음부터 출발점이 크게 차이 나는 경우 똑같이 대우하는 것이 도리어 공정하지 않음. <span class="key">조건이 불리한 사람을 배려</span>해야 함.<br>예) <span class="em">지역 균형 선발 제도, 장애인 의무 고용 제도</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="def" style="margin-top:14px;">
+            <span class="def-label">공정한 경쟁의 결과</span>경쟁의 <span class="key">절차가 공정</span>하고, <span class="key">결과가 정당</span>하여 누구나 받아들이고 인정할 수 있어야 함.
+          </div>
+          <div class="def">
+            <span class="def-label">지역 균형 선발 제도</span>대학 신입생 선발에서 지역 간 불균형 현상을 바로잡기 위해 특정 지역에 혜택을 주는 제도.
+          </div>
+          <div class="def">
+            <span class="def-label">장애인 의무 고용 제도</span>일정 규모 이상의 사용자에게 일정 비율 이상의 장애인을 고용하도록 하고, 이행하지 않으면 부담금을 납부하도록 한 제도.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">⑤</span>
+        <h2 class="section-title">부패의 의미·원인·문제점</h2>
+        <span class="section-meta">90~91쪽</span>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">부패의 의미</h3>
+        <div class="card-body">
+          <div class="def">
+            <span class="def-label">부패</span>정치, 사상, 의식 등이 타락하는 것. <span class="key">자신의 이익을 위해 공정하지 못한 방법을 이용</span>할 때 발생. <span class="em">뇌물, 친분, 권력</span> 등을 이용해 기회나 이익을 얻은 경우.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">부패의 원인 — 3가지</h3>
+        <div class="card-body">
+          <div class="principles">
+            <div class="principle">
+              <div class="principle-num">1</div>
+              <div class="principle-body">
+                <div class="principle-name">개인의 이기심</div>
+                <div class="principle-desc">눈앞의 욕심만 채우려는 어리석은 <span class="key">개인의 이기심</span> 때문에 발생.</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">2</div>
+              <div class="principle-body">
+                <div class="principle-name">잘못된 관행</div>
+                <div class="principle-desc"><span class="em">연고주의</span>(혈연·지연·학연 중시)나 <span class="em">정실주의</span> 등의 잘못된 관행으로 부패가 만연.</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">3</div>
+              <div class="principle-body">
+                <div class="principle-name">사회 구조적 원인</div>
+                <div class="principle-desc">부패를 어쩔 수 없거나 당연한 것으로 여기는 <span class="key">사회 분위기</span>, <span class="key">부패를 막을 사회 제도의 미비</span>, <span class="key">부패에 대한 처벌 부족</span>.</div>
+              </div>
+            </div>
+          </div>
+          <div class="def" style="margin-top:14px;">
+            <span class="def-label">연고주의</span>조직 내에서 혈연, 지연, 학연을 중시하여 조직을 분열시키는 것. <span class="def-label">정실주의</span>사람을 공직에 임명할 때 실적 외의 요인(혈연·지연·학연 등)으로 행하는 것. <span class="def-label">만연</span>전염병이나 나쁜 현상이 널리 퍼짐.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">부패의 문제점 — 4가지 ⭐</h3>
+        <div class="card-body">
+          <ul class="list">
+            <li><span class="key">성실하게 사는 사람들이 피해</span>를 입음</li>
+            <li>구성원 간의 <span class="em">신뢰가 무너짐</span> → 사회 발전 어려움 → <span class="em">국가 경쟁력 약화</span></li>
+            <li>자원이 옳지 않은 곳에 사용 → <span class="em">경제에 나쁜 영향</span></li>
+            <li>결국 <span class="em">국가의 흥망을 좌우</span>할 수 있음</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">⑥</span>
+        <h2 class="section-title">부패 예방을 위한 노력 — 4가지 ⭐⭐</h2>
+        <span class="section-meta">92~93쪽</span>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <p>개인적 노력 + 사회적 노력 + 국제적 노력의 조합. 시험 단골!</p>
+          <div class="principles" style="margin-top:14px;">
+            <div class="principle">
+              <div class="principle-num">1</div>
+              <div class="principle-body">
+                <div class="principle-name">청렴한 국민 의식</div>
+                <div class="principle-desc">사회 구성원이 깨끗하고 <span class="key">청렴한 국민 의식</span>을 지녀야 함. 특히 <span class="em">공직자는 더 높은 청렴 의식과 책임감</span>으로 일해야 함. (예: 덴마크 — 부패 인식 지수 1위)</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">2</div>
+              <div class="principle-body">
+                <div class="principle-name">적극적인 시민 참여</div>
+                <div class="principle-desc">금품·향응을 이용한 부탁을 <span class="key">하지도 받지도 말기</span>. <span class="em">부패에 대한 신고 정신</span>을 함양하여 부패 근절에 적극 나섬.</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">3</div>
+              <div class="principle-body">
+                <div class="principle-name">사회 제도</div>
+                <div class="principle-desc">부패 근절을 위한 제도적 장치. <span class="key">부패에 대한 처벌 법규 강화 + 법 적용 엄격</span> (예: 뉴질랜드). 시민 사회의 감시 체계 구축, 공직자 포함 국민에 대한 <span class="em">반부패 청렴 교육</span> 체계적 실시.</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">4</div>
+              <div class="principle-body">
+                <div class="principle-name">국제적 노력</div>
+                <div class="principle-desc">세계 모든 나라가 함께 노력. <span class="key">국제 연합(UN)</span>의 <span class="em">세계 반부패의 날</span>(2003년 제정, 매년 12월 9일). <span class="key">국제 투명성 기구</span>가 부패 척결을 위한 국제적 협력 지원.</div>
+              </div>
+            </div>
+          </div>
+          <div class="def" style="margin-top:14px;">
+            <span class="def-label">청렴</span>성품과 행실이 높고 맑으며, 탐욕이 없음. <span class="def-label">향응</span>특별히 융숭하게 대접함. <span class="def-label">척결</span>나쁜 부분이나 요소들을 깨끗이 없애 버림.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 중단원 마무리 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">📌</span>
+        <h2 class="section-title">중단원 마무리 — 빈칸 정답 정리</h2>
+        <span class="section-meta">96쪽</span>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-title">⭐ 시험에 꼭 나오는 핵심 키워드</div>
+        <div class="summary-grid">
+          <div class="summary-row">
+            <div class="summary-key">㉠</div>
+            <div class="summary-val"><strong>정의</strong>의 의미 — 사회의 규칙이나 제도가 공정한 것</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">㉡</div>
+            <div class="summary-val">옳고 그름에 대한 판단의 <strong>기준</strong> 제시 (정의의 역할)</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">㉢</div>
+            <div class="summary-val">사회를 도덕적으로 만드는 <strong>사회 제도</strong>가 필요 (니부어의 사회 윤리)</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">㉣</div>
+            <div class="summary-val">경쟁에 참여할 동등한 <strong>기회</strong> 제공 (공정한 경쟁의 조건 1)</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">㉤</div>
+            <div class="summary-val">출발점이 불리한 사회적 <strong>약자</strong> 배려 (공정한 경쟁의 조건 3)</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">㉥</div>
+            <div class="summary-val">청렴한 <strong>국민 의식</strong> 함양 (부패 예방 — 개인적 노력)</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">㉦</div>
+            <div class="summary-val">부패 근절을 위한 <strong>사회 제도</strong> 마련 (부패 예방 — 사회적 노력)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ 📝 암기확인 문제 ============ -->
+  <div class="panel" id="panel-quiz">
+
+    <div class="progress-bar">
+      <div class="progress-text">확인한 문제 <strong id="cnt">0</strong> / <strong id="total">0</strong></div>
+      <div class="progress-actions">
+        <button class="btn-mini" onclick="resetAll()">초기화</button>
+        <button class="btn-mini" onclick="revealAll()">전체 보기</button>
+      </div>
+    </div>
+
+    <!-- 교과서 기본 문제 -->
+    <div class="cat-head">📘 교과서 기본 문제</div>
+
+    <div class="problem" data-id="b1">
+      <div class="problem-head">
+        <span class="problem-tag basic">기본·객관식</span>
+        <span class="problem-num">기본1.</span>
+      </div>
+      <div class="problem-q">정의로운 사회의 조건을 〈보기〉에서 고른 것은?<br><br>〈보기〉<br>㉠ 공정한 분배가 이루어져야 한다.<br>㉡ 합의한 절차나 규칙을 잘 준수해야 한다.<br>㉢ 모두에게 언제나 같은 몫을 주어야 한다.<br>㉣ 모든 구성원에게 무한한 자유를 주어야 한다.</div>
+      <div class="problem-options">
+        ① ㉠, ㉡ &nbsp; ② ㉠, ㉢ &nbsp; ③ ㉡, ㉢ &nbsp; ④ ㉡, ㉣ &nbsp; ⑤ ㉢, ㉣
+      </div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">① ㉠, ㉡</div>
+        <div class="answer-explain">㉢ 모두에게 "언제나 같은 몫"이 아니라 <strong>각자의 몫에 대한 공정한 분배</strong>. ㉣ "무한한 자유"가 아니라 <strong>타인의 자유를 침해하지 않는 범위</strong> 안에서의 자유.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="b2">
+      <div class="problem-head">
+        <span class="problem-tag basic">기본·객관식</span>
+        <span class="problem-num">기본2.</span>
+      </div>
+      <div class="problem-q">사회 정의의 역할을 〈보기〉에서 고른 것은?<br><br>〈보기〉<br>㉠ 법적, 도덕적 판단에서 옳고 그름의 기준<br>㉡ 진리를 탐구하는 과학적 연구 방법의 절차<br>㉢ 각자에게 그의 몫을 주는 정당한 분배의 기준<br>㉣ 현상에 대한 사실적 진술의 진실성 판단 기준</div>
+      <div class="problem-options">
+        ① ㉠, ㉡ &nbsp; ② ㉠, ㉢ &nbsp; ③ ㉡, ㉢ &nbsp; ④ ㉡, ㉣ &nbsp; ⑤ ㉢, ㉣
+      </div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">② ㉠, ㉢</div>
+        <div class="answer-explain">사회 정의의 3가지 역할: <strong>① 옳고 그름의 기준 ② 정당한 분배 기준 ③ 갈등·분쟁 조정 원칙</strong>. ㉡·㉣은 과학·진실 판단 기준으로 정의의 역할이 아님.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="b3">
+      <div class="problem-head">
+        <span class="problem-tag basic">기본·객관식</span>
+        <span class="problem-num">기본3.</span>
+      </div>
+      <div class="problem-q">빈칸에 들어갈 알맞은 말은?<br><br>"불공정함은 당사자에게 불만이나 억울함을 주므로 (&nbsp;&nbsp;&nbsp;&nbsp;)사회의 실현은 모두의 인간다운 삶을 보장해 주는 길이며, 사회의 협력과 발전의 밑거름이 된다."</div>
+      <div class="problem-options">
+        ① 분배 &nbsp; ② 경쟁 &nbsp; ③ 참여 &nbsp; ④ 평등 &nbsp; ⑤ 정의
+      </div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">⑤ 정의</div>
+        <div class="answer-explain"><strong>정의로운 사회의 의의</strong> — 불공정 → 불만·억울. 정의 실현 → 인간다운 삶 보장 + 협력·발전의 밑거름.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="b4">
+      <div class="problem-head">
+        <span class="problem-tag essay">기본·서술</span>
+        <span class="problem-num">기본4.</span>
+      </div>
+      <div class="problem-q">정의의 의미를 서술하시오.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">정의(正義)의 사전적 의미는 <strong>개인 간의 올바른 도리 또는 사회를 구성하고 유지하는 공정한 도리</strong>이며, 현대 사회에서는 <strong>사회의 규칙이나 제도가 공정한 것</strong>을 의미한다.</div>
+        <div class="answer-explain">사전적 의미 + 현대적 의미 두 부분으로 답하면 만점. 핵심 키워드: <strong>공정한 도리</strong>, <strong>규칙·제도가 공정함</strong>.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="b5">
+      <div class="problem-head">
+        <span class="problem-tag essay">기본·서술</span>
+        <span class="problem-num">기본5.</span>
+      </div>
+      <div class="problem-q">정의로운 사회를 이루어야 하는 <span class="em">이유</span>를 서술하시오.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">정의로운 사회는 ① <strong>모두의 행복한 삶, 인간다운 삶을 보장</strong>해 주고, ② 공정한 분배가 보장될 때 사람들은 서로를 신뢰하면서 협력하여 <strong>사회의 협력과 발전의 밑거름</strong>이 되며, ③ 궁극적으로 우리 사회를 <strong>도덕적인 공동체</strong>로 만드는 길이기 때문이다.</div>
+        <div class="answer-explain">3가지 핵심: <strong>인간다운 삶 보장 + 협력·발전의 밑거름 + 도덕적 공동체</strong>.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="b6">
+      <div class="problem-head">
+        <span class="problem-tag essay">기본·서술</span>
+        <span class="problem-num">기본6.</span>
+      </div>
+      <div class="problem-q">경쟁의 과정이 <span class="em">공정해야 하는 이유</span>를 예를 들어 서술하시오.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">경쟁이 불공정하면 ① 사람들이 정당한 방법보다 <strong>교묘하고 불공정한 방법</strong>을 이용하려 하고, ② <strong>성실하게 사는 사람들의 권리와 이익이 침해</strong>되며, ③ 사회 구성원 간 <strong>신뢰가 무너져 화합·협력이 어렵고 사회적 갈등과 혼란</strong>이 발생하기 때문이다. (예: 채용 과정에서 자격 요건이 특정 인물에 맞춰 바뀌면 다른 지원자들의 권리 침해)</div>
+        <div class="answer-explain">핵심: 권리·이익 침해 + 신뢰 무너짐 + 사회 갈등·혼란. 예시도 포함하면 만점.</div>
+      </div>
+    </div>
+
+    <!-- 핵심 단답 빈칸 -->
+    <div class="cat-head">✏️ 핵심 개념 단답·빈칸 (자작 보완)</div>
+
+    <div class="problem" data-id="s1">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">1.</span>
+      </div>
+      <div class="problem-q">"공명하고 올바른 성질"을 뜻하는 용어와 "어느 쪽으로도 치우치지 않고 고른 성질"을 뜻하는 용어를 각각 쓰시오.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">공정성 / 공평성</div>
+        <div class="answer-explain">정의는 공정성·공평성과 관련된 개념.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s2">
+      <div class="problem-head">
+        <span class="problem-tag">빈칸</span>
+        <span class="problem-num">2.</span>
+      </div>
+      <div class="problem-q">사회 정의의 3가지 역할: ① ( &nbsp;&nbsp;&nbsp; )에 대한 기준 제공 ② 정당한 ( &nbsp;&nbsp;&nbsp; ) 기준 ③ ( &nbsp;&nbsp;&nbsp; )과 분쟁 조정 원칙</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">옳고 그름 / 분배 / 갈등</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s3">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">3.</span>
+      </div>
+      <div class="problem-q">"각자에게 그의 몫을 주는 것"으로 표현되는, 가장 일반적인 정의의 원칙은?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">공정한 분배</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s4">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">4.</span>
+      </div>
+      <div class="problem-q">"잘못된 법과 제도, 불합리한 사회 관행이 널리 퍼진 사회"를 무엇이라 하는가?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">부정의한 사회</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s5">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">5.</span>
+      </div>
+      <div class="problem-q">"정의로운 사회를 만들기 위해서는 개인의 도덕성에만 의지해서는 안 되고, 도덕적인 사회 제도가 필요하다"고 주장한 미국의 문명 비판가·신학자는?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">니부어</div>
+        <div class="answer-explain">개인 윤리뿐 아니라 <strong>사회 윤리</strong>의 필요성을 강조. 시험에 자주 나오는 인물.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s6">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">6.</span>
+      </div>
+      <div class="problem-q">"인간은 한정된 자원을 서로 가지려 하기 때문에" 인간 사회에서 피할 수 없는 것은?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">경쟁</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s7">
+      <div class="problem-head">
+        <span class="problem-tag">빈칸</span>
+        <span class="problem-num">7.</span>
+      </div>
+      <div class="problem-q">공정한 경쟁의 3가지 조건: ① 동등한 ( &nbsp;&nbsp;&nbsp; ) 제공 ② 동등한 ( &nbsp;&nbsp;&nbsp; )으로 평가 ③ 사회적 ( &nbsp;&nbsp;&nbsp; ) 배려</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">기회 / 기준 / 약자</div>
+        <div class="answer-explain">시험 출제 1순위! 3가지 조건 모두 정확히 암기.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s8">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">8.</span>
+      </div>
+      <div class="problem-q">대학 신입생 선발에서 지역 간 불균형을 바로잡기 위해 특정 지역에 혜택을 주는 제도는 공정한 경쟁의 어떤 조건에 해당하는가?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">사회적 약자 배려 (지역 균형 선발 제도)</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s9">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">9.</span>
+      </div>
+      <div class="problem-q">일정 규모 이상의 사용자에게 일정 비율 이상의 장애인을 고용하도록 하고, 이행하지 않으면 부담금을 납부하도록 한 제도는?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">장애인 의무 고용 제도</div>
+        <div class="answer-explain">사회적 약자 배려의 대표 제도 사례.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s10">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">10.</span>
+      </div>
+      <div class="problem-q">"정치, 사상, 의식 등이 타락하는 것" 또는 "자신의 이익을 위해 공정하지 못한 방법을 이용하는 것"을 무엇이라 하는가?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">부패</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s11">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">11.</span>
+      </div>
+      <div class="problem-q">조직 내에서 혈연·지연·학연을 중시하여 조직을 분열시키는 잘못된 관행은?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">연고주의</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s12">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">12.</span>
+      </div>
+      <div class="problem-q">사람을 공직에 임명할 때 실적 외의 요인(혈연·지연·학연 등)을 기준으로 행하는 것을 무엇이라 하는가?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">정실주의</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s13">
+      <div class="problem-head">
+        <span class="problem-tag">빈칸</span>
+        <span class="problem-num">13.</span>
+      </div>
+      <div class="problem-q">부패의 3가지 원인: ① 개인의 ( &nbsp;&nbsp;&nbsp; ) ② 잘못된 ( &nbsp;&nbsp;&nbsp; ) ③ 사회 구조적 원인 (사회 분위기·제도 미비·처벌 부족)</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">이기심 / 관행</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s14">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">14.</span>
+      </div>
+      <div class="problem-q">"성품과 행실이 높고 맑으며, 탐욕이 없음"을 뜻하는 용어로, 부패 예방을 위한 국민 의식의 핵심 키워드는?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">청렴</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s15">
+      <div class="problem-head">
+        <span class="problem-tag">빈칸</span>
+        <span class="problem-num">15.</span>
+      </div>
+      <div class="problem-q">부패 예방을 위한 4가지 노력: ① 청렴한 ( &nbsp;&nbsp;&nbsp; ) ② 적극적인 시민 ( &nbsp;&nbsp;&nbsp; ) ③ 사회 ( &nbsp;&nbsp;&nbsp; ) ④ ( &nbsp;&nbsp;&nbsp; )적 노력</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">국민 의식 / 참여 / 제도 / 국제</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s16">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">16.</span>
+      </div>
+      <div class="problem-q">국제 연합(UN)이 부패 행위를 척결하기 위해 2003년 제정한 날로, 매년 12월 9일인 날의 이름은?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">세계 반부패의 날</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s17">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">17.</span>
+      </div>
+      <div class="problem-q">"나쁜 부분이나 요소들을 깨끗이 없애 버림"을 뜻하는 용어는?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">척결</div>
+      </div>
+    </div>
+
+    <!-- OX -->
+    <div class="cat-head">⭕❌ OX로 개념 점검</div>
+
+    <div class="problem" data-id="o1">
+      <div class="problem-head">
+        <span class="problem-tag">OX</span>
+        <span class="problem-num">OX1.</span>
+      </div>
+      <div class="problem-q">정의로운 사회에서는 모든 사람에게 언제나 똑같은 몫을 나누어 주어야 한다.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">❌ X</div>
+        <div class="answer-explain">"똑같은 몫"이 아니라 <strong>"각자에게 그의 몫을 주는 것"</strong> = 공정한 분배가 정의의 원칙.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="o2">
+      <div class="problem-head">
+        <span class="problem-tag">OX</span>
+        <span class="problem-num">OX2.</span>
+      </div>
+      <div class="problem-q">니부어는 정의로운 사회를 만들기 위해 개인의 도덕성만 있으면 충분하다고 보았다.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">❌ X</div>
+        <div class="answer-explain">반대! 니부어는 개인의 도덕성에만 의지해서는 안 되고 <strong>도덕적인 사회 제도(사회 윤리)도 필요</strong>하다고 주장했다.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="o3">
+      <div class="problem-head">
+        <span class="problem-tag">OX</span>
+        <span class="problem-num">OX3.</span>
+      </div>
+      <div class="problem-q">처음부터 출발점이 크게 다른 사람들에게 똑같이 대우하는 것이 항상 공정하다.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">❌ X</div>
+        <div class="answer-explain">출발점이 크게 차이 나는 경우 똑같이 대우하는 것이 도리어 불공정. <strong>사회적 약자 배려</strong>가 필요.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="o4">
+      <div class="problem-head">
+        <span class="problem-tag">OX</span>
+        <span class="problem-num">OX4.</span>
+      </div>
+      <div class="problem-q">부패는 성실하게 사는 사람들에게 피해를 주고 결국 국가의 흥망을 좌우할 수 있다.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">⭕ O</div>
+        <div class="answer-explain">부패의 4가지 문제점: 성실한 사람 피해 → 신뢰 무너짐 → 국가 경쟁력 약화 → 경제에 악영향 → 국가 흥망 좌우.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="o5">
+      <div class="problem-head">
+        <span class="problem-tag">OX</span>
+        <span class="problem-num">OX5.</span>
+      </div>
+      <div class="problem-q">부패 예방을 위해서는 개인의 노력만으로 충분하며, 국제적 협력은 필요하지 않다.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">❌ X</div>
+        <div class="answer-explain">부패 예방은 <strong>개인적 + 사회적 + 국제적 노력</strong>이 모두 필요. 세계 반부패의 날(12월 9일), 국제 투명성 기구 등 국제 협력 활발.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    📚 서일중 도덕 시험 대비 · Ⅱ-2 정의란 무엇인가
+  </footer>
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById('panel-' + t.dataset.tab).classList.add('active');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+  });
+
+  const problems = document.querySelectorAll('.problem');
+  document.getElementById('total').textContent = problems.length;
+
+  problems.forEach(p => {
+    p.addEventListener('click', () => {
+      p.classList.toggle('revealed');
+      updateCount();
+    });
+  });
+
+  function updateCount() {
+    const revealed = document.querySelectorAll('.problem.revealed').length;
+    document.getElementById('cnt').textContent = revealed;
+  }
+
+  function resetAll() {
+    document.querySelectorAll('.problem.revealed').forEach(p => p.classList.remove('revealed'));
+    updateCount();
+  }
+
+  function revealAll() {
+    document.querySelectorAll('.problem').forEach(p => p.classList.add('revealed'));
+    updateCount();
+  }
+</script>
+
+</body>
+</html>
