@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>06 inflation-unemployment</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@600;900&display=swap');
+
+  :root {
+    --bg: #f8f6f1; --white: #ffffff; --ink: #1c1c1e; --muted: #6b6b6b;
+    --border: #e0d9ce; --accent: #2e6b8a; --accent2: #b84a1e;
+    --gold: #c89c2a; --green: #2a6b4a; --red: #c0392b; --blue: #1e4d8c;
+    --purple: #6b3a9a; --soft: #eef3f6;
+    --ans-bg: #e8f4ea; --ans-text: #1a4a2a;
+    --tag-a: #ddeeff; --tag-a-t: #1a3a6b;
+    --tag-b: #ddf0e8; --tag-b-t: #1a4a2a;
+    --tag-c: #f0e8fc; --tag-c-t: #4a1a7a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; padding-bottom: 80px; }
+
+  .header { background: var(--ink); color: #fff; padding: 22px 18px 18px; }
+  .header-meta { font-size: 0.68rem; letter-spacing: 2px; color: #aaa; text-transform: uppercase; margin-bottom: 6px; }
+  .header h1 { font-family: 'Noto Serif KR', serif; font-size: 1.35rem; font-weight: 900; line-height: 1.3; }
+  .header-sub { font-size: 0.76rem; color: #bbb; margin-top: 5px; }
+
+  .tabbar { display: flex; background: #fff; border-bottom: 2px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .tabbar-btn { flex: 1; padding: 13px 8px; font-family: 'Noto Sans KR', sans-serif; font-size: 0.8rem; font-weight: 700; border: none; background: none; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
+  .tabbar-btn.on { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .panel { display: none; }
+  .panel.on { display: block; }
+  .content-wrap { padding: 0 0 20px; }
+
+  .ch-nav { display: flex; overflow-x: auto; background: var(--soft); border-bottom: 1px solid var(--border); scrollbar-width: none; position: sticky; top: 48px; z-index: 99; }
+  .ch-nav::-webkit-scrollbar { display: none; }
+  .ch-btn { flex: none; padding: 9px 14px; font-family: 'Noto Sans KR', sans-serif; font-size: 0.74rem; font-weight: 700; border: none; background: none; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.18s; }
+  .ch-btn.on { color: var(--accent2); border-bottom-color: var(--accent2); }
+
+  .ch-section { display: none; padding: 16px 16px 0; }
+  .ch-section.on { display: block; }
+  .ch-heading { font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 900; color: var(--accent2); border-left: 4px solid var(--accent2); padding: 6px 0 6px 12px; margin-bottom: 14px; line-height: 1.4; }
+
+  .para-block { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; font-size: 0.87rem; line-height: 1.85; }
+  .para-block .para-label { font-size: 0.65rem; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; display: block; }
+  .hl  { color: var(--accent2); font-weight: 900; }
+  .hl2 { color: var(--accent);  font-weight: 900; }
+  .hl3 { color: var(--green);   font-weight: 900; }
+  .hlr { color: var(--red);     font-weight: 900; }
+  .hlp { color: var(--purple);  font-weight: 900; }
+
+  .tb { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 6px 0; }
+  .tb th { background: var(--ink); color: #fff; padding: 8px 10px; text-align: left; font-weight: 700; }
+  .tb th.r { background: var(--red); }
+  .tb th.b { background: var(--blue); }
+  .tb th.g { background: var(--green); }
+  .tb td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+  .tb tr:nth-child(even) td { background: #f9f7f3; }
+
+  .kw-box { background: #fffbf0; border: 1px solid var(--gold); border-radius: 8px; padding: 10px 14px; margin-top: 8px; font-size: 0.82rem; line-height: 1.65; }
+  .kw-box .kw-title { font-size: 0.7rem; font-weight: 900; color: #8a6200; letter-spacing: 1px; margin-bottom: 4px; display: block; }
+
+  .footnote { font-size: 0.76rem; color: var(--muted); border-top: 1px dashed var(--border); margin-top: 10px; padding-top: 8px; line-height: 1.65; }
+  .footnote span { color: var(--accent); font-weight: 700; margin-right: 4px; }
+
+  .factor-list { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+  .factor-row { display: flex; align-items: flex-start; gap: 10px; border-radius: 8px; padding: 9px 12px; font-size: 0.83rem; line-height: 1.6; background: var(--soft); }
+  .factor-tag { flex-shrink: 0; padding: 2px 9px; border-radius: 20px; font-size: 0.7rem; font-weight: 900; }
+  .ft-red { background: #fde8e4; color: var(--red); }
+  .ft-blue { background: #e4eeff; color: var(--blue); }
+  .ft-green { background: #e4f5ec; color: var(--green); }
+  .ft-purple { background: #f0e8fc; color: var(--purple); }
+
+  .impact-list { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+  .impact-row { display: flex; align-items: flex-start; gap: 10px; border-radius: 8px; padding: 9px 12px; font-size: 0.83rem; line-height: 1.6; }
+  .impact-row.neg { background: #fef0ee; border: 1px solid #f4bfb4; }
+  .impact-row.pos { background: #eefaf3; border: 1px solid #a8e4c0; }
+  .impact-icon { flex-shrink: 0; }
+
+  /* quiz */
+  .quiz-wrap { padding: 14px 16px 0; }
+  .quiz-header { background: var(--ink); border-radius: 12px; padding: 14px 16px; color: #fff; margin-bottom: 14px; font-size: 0.83rem; line-height: 1.6; }
+  .quiz-header strong { color: #f0c060; }
+
+  .qbar { display: flex; gap: 7px; margin-bottom: 10px; flex-wrap: wrap; }
+  .qbtn { padding: 6px 12px; border-radius: 20px; border: none; font-family: 'Noto Sans KR', sans-serif; font-size: 0.74rem; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+  .qbtn-outline { background: var(--white); border: 1.5px solid var(--ink); color: var(--ink); }
+  .qbtn-outline:hover { background: var(--ink); color: #fff; }
+  .qbtn-fill { background: var(--accent2); color: #fff; }
+  .qbtn-active { background: var(--accent); color: #fff; }
+
+  .prog-wrap { margin-bottom: 12px; }
+  .prog-bar { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 99px; transition: width 0.35s; width: 0%; }
+  .prog-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 3px; text-align: right; }
+
+  .q-list { display: flex; flex-direction: column; gap: 9px; }
+  .qcard { background: var(--white); border: 1.5px solid var(--border); border-radius: 11px; overflow: hidden; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: box-shadow 0.18s, border-color 0.18s; }
+  .qcard:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.07); border-color: var(--accent); }
+  .qcard.open { border-color: var(--accent); }
+  .qcard-top { display: flex; align-items: flex-start; gap: 10px; padding: 12px 13px; }
+  .qnum { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 0.68rem; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+  .qcard.open .qnum { background: var(--accent); }
+  .qbody { flex: 1; }
+  .qtag { display: inline-block; font-size: 0.62rem; font-weight: 900; padding: 2px 7px; border-radius: 20px; margin-bottom: 4px; }
+  .tA { background: var(--tag-a); color: var(--tag-a-t); }
+  .tB { background: var(--tag-b); color: var(--tag-b-t); }
+  .tC { background: var(--tag-c); color: var(--tag-c-t); }
+  .qtext { font-size: 0.87rem; font-weight: 500; line-height: 1.55; }
+  .qans { display: none; padding: 0 13px 12px 47px; }
+  .qcard.open .qans { display: block; }
+  .qans-inner { background: var(--ans-bg); border-radius: 8px; padding: 9px 12px; font-size: 0.85rem; font-weight: 700; color: var(--ans-text); line-height: 1.6; }
+  .qans-inner .albl { font-size: 0.62rem; font-weight: 900; color: var(--green); letter-spacing: 0.5px; margin-bottom: 3px; display: block; }
+
+  footer { text-align: center; padding: 20px; font-size: 0.7rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-meta">Ⅴ. 국민 경제와 국제 거래 · 2단원 · No.06</div>
+  <h1>물가와 실업</h1>
+  <div class="header-sub">물가·인플레이션 · 물가 안정 · 실업 · 고용 안정</div>
+</div>
+
+<div class="tabbar">
+  <button class="tabbar-btn on" onclick="switchTab('content',this)">📖 본문 정리</button>
+  <button class="tabbar-btn" onclick="switchTab('quiz',this)">✏️ 문제</button>
+</div>
+
+<!-- ══════ CONTENT ══════ -->
+<div class="panel on" id="panel-content">
+  <div class="content-wrap">
+    <div class="ch-nav">
+      <button class="ch-btn on" onclick="switchCh('ch1',this)">① 물가</button>
+      <button class="ch-btn" onclick="switchCh('ch2',this)">② 실업</button>
+    </div>
+
+    <!-- CH1 물가 -->
+    <div class="ch-section on" id="ch1">
+      <div class="ch-heading">① 물가는 경제생활에 어떤 영향을 미칠까?</div>
+
+      <div class="para-block">
+        <span class="para-label">물가의 의미</span>
+        시장에서는 다양한 상품이 거래되는데, 어느 시점에서 가격이 오르는 상품이 있는가 하면 가격이 내려가는 상품도 있다. 이와 같은 상품 가격의 변화는 가계의 소비 활동과 기업의 생산 활동뿐만 아니라 국민 경제 전체에도 큰 영향을 미친다.<br><br>
+        시장에서 거래되는 여러 상품의 가격을 종합하여 평균한 것을 <span class="hl">물가</span>라고 한다. 정부는 이러한 물가의 움직임을 한눈에 알아볼 수 있도록 <span class="hl2">물가 지수</span>를 작성한다. 현재 우리나라에서 작성 중인 대표적인 물가 지수에는 <strong>소비자 물가 지수, 생산자 물가 지수</strong> 등이 있다.
+        <div class="kw-box">
+          <span class="kw-title">★ 가격 vs 물가</span>
+          <strong>가격</strong>: 개별 상품의 가치를 화폐 단위로 나타낸 것<br>
+          <strong>물가</strong>: 여러 상품의 가격을 종합하여 평균적으로 나타낸 것
+        </div>
+        <div class="footnote">
+          <span>* 물가 지수</span>기준 시점의 물가를 100으로 했을 때, 비교 시점의 물가 수준을 나타낸 것. 예: 물가 지수가 110이라면 기준 연도에 비해 물가가 10% 상승하였음을 의미한다.
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">물가 상승의 요인</span>
+        일반적으로 경제 전체의 수요가 경제 전체의 공급보다 많으면 물가가 상승한다.
+        <div class="factor-list">
+          <div class="factor-row">
+            <span class="factor-tag ft-red">① 수요 증가</span>
+            <div>가계의 소비나 기업의 투자 또는 정부의 재정 지출이 증가하면 한 나라 경제 전체의 수요가 증가하는데, 경제 전체의 공급이 이에 미치지 못할 경우 물가가 상승한다.</div>
+          </div>
+          <div class="factor-row">
+            <span class="factor-tag ft-blue">② 생산비 상승</span>
+            <div>임금이나 임대료, 국내의 원자재 가격이 상승하여 생산비가 오를 경우에도 물가가 상승할 수 있다. 예) 국제 원유 가격이 상승하면 생산 원가가 높아져 많은 기업이 공급을 줄이기 때문에 물가가 상승한다.</div>
+          </div>
+          <div class="factor-row">
+            <span class="factor-tag ft-green">③ 통화량 증가</span>
+            <div>시중에 공급되는 <strong>통화량이 많아지면</strong> 소비나 투자가 활발해지고, 화폐 가치가 하락하며 물가가 상승한다.</div>
+          </div>
+        </div>
+        <div class="footnote">
+          <span>* 통화량</span>한 나라 안에서 실제로 사용되는 화폐의 양을 말한다.
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">물가 상승의 영향 — 인플레이션</span>
+        물가가 지속적으로 오르는 현상을 <span class="hl">인플레이션</span>이라고 한다. 인플레이션이 발생하면 화폐의 가치가 하락하여 일정한 금액으로 살 수 있는 재화와 서비스의 양이 줄어든다.
+        <table class="tb" style="margin-top:10px;">
+          <thead><tr><th class="r">불리해지는 사람</th><th class="g">유리해지는 사람</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>• 정해진 봉급이나 연금으로 생활하는 사람<br>• 은행에 예금을 한 사람 (화폐 가치 하락)</td>
+              <td>• 건물이나 토지 등 <strong>실물 자산을 보유한 사람</strong> (실물 자산의 가치 상승)<br>• <strong>돈을 빌린 사람</strong> (빌린 돈의 가치가 떨어져 상환 부담 감소)</td>
+            </tr>
+          </tbody>
+        </table>
+        인플레이션은 <strong>국제 거래에도 영향</strong>을 미친다. 국내 물가가 상승하면 우리나라 상품의 가격이 비싸지므로 <strong>수출이 감소</strong>하고, 상대적으로 저렴해진 외국 상품의 <strong>수입이 증가</strong>하여 무역 불균형이 발생할 수 있다.
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">물가 안정을 위한 노력</span>
+        일반적으로 인플레이션은 국민의 정상적이고 건전한 경제 활동을 어렵게 하여 경제 성장을 저해할 수 있다. 따라서 경제 주체들은 물가 안정을 위해 노력해야 한다.
+        <table class="tb" style="margin-top:8px;">
+          <thead><tr><th>경제 주체</th><th>물가 안정을 위한 노력</th></tr></thead>
+          <tbody>
+            <tr><td><strong>정부</strong></td><td>재정 지출을 줄이고 조세를 늘린다.</td></tr>
+            <tr><td><strong>중앙은행</strong></td><td>통화량을 줄여 시중 은행의 이자율이 높아지도록 함으로써 물가를 안정시키고자 한다.</td></tr>
+            <tr><td><strong>기업</strong></td><td>경영과 기술 혁신을 통해 생산의 효율성을 높인다.</td></tr>
+            <tr><td><strong>소비자</strong></td><td>합리적인 소비 생활을 함으로써 물가 안정에 기여할 수 있다.</td></tr>
+          </tbody>
+        </table>
+        <div class="footnote">
+          <span>* 재정</span>정부의 수입과 지출에 관한 활동을 말한다.
+        </div>
+      </div>
+    </div>
+
+    <!-- CH2 실업 -->
+    <div class="ch-section" id="ch2">
+      <div class="ch-heading">② 실업은 경제생활에 어떤 영향을 미칠까?</div>
+
+      <div class="para-block">
+        <span class="para-label">실업의 의미</span>
+        일할 능력과 의사가 있는데도 일자리를 구하지 못하는 상태를 <span class="hl">실업</span>이라고 한다.<br><br>
+        사람들은 흔히 일자리가 없는 사람을 실업자라고 생각하지만, 실업의 의미를 고려할 때 <strong>일할 능력이 없는 어린이나 노약자, 일할 의사가 없는 학생이나 전업주부, 취업하려고 했으나 뜻대로 되지 않아 일자리 구하기를 포기한 사람 등은 실업자에 포함되지 않는다.</strong>
+        <div class="kw-box">
+          <span class="kw-title">★ 인구 분류</span>
+          노동 가능 인구(15세 이상)<br>
+          &nbsp;├ 경제 활동 인구: 일할 능력과 의사가 있는 사람<br>
+          &nbsp;│&nbsp;&nbsp;├ 취업자<br>
+          &nbsp;│&nbsp;&nbsp;└ 실업자 (일할 의사·능력 있으나 일자리 없음)<br>
+          &nbsp;└ 비경제 활동 인구: 학생, 전업주부, 구직 포기자 등
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">실업의 원인</span>
+        <div class="factor-list">
+          <div class="factor-row"><span class="factor-tag ft-red">① 경기 침체</span><div>경기 침체로 기업이 고용을 줄이는 경우</div></div>
+          <div class="factor-row"><span class="factor-tag ft-blue">② 산업 구조 변화</span><div>자동화나 산업 구조의 변화 등으로 관련 부문의 일자리가 사라지는 경우</div></div>
+          <div class="factor-row"><span class="factor-tag ft-green">③ 계절 변화</span><div>계절의 변화에 따라 고용 기회가 줄어드는 경우</div></div>
+          <div class="factor-row"><span class="factor-tag ft-purple">④ 자발적 이직</span><div>더 나은 조건의 직장을 구하기 위해 일시적으로 현재의 직장을 그만두는 경우</div></div>
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">실업의 영향</span>
+        <div class="impact-list">
+          <div class="impact-row neg"><div class="impact-icon">👤</div><div><strong>[개인적 측면]</strong> 소득이 감소하여 생계가 곤란해질 수 있다. 자아실현의 기회를 잃고 자존감을 상실하는 등 정신적 고통을 겪게 될 수 있다.</div></div>
+          <div class="impact-row neg"><div class="impact-icon">👥</div><div><strong>[사회적 측면]</strong> 인적 자원의 낭비를 가져온다. 실업자가 많아지면 빈곤 확산, 가족 해체, 생계형 범죄 증가 등으로 사회 불안을 초래할 수 있다.</div></div>
+          <div class="impact-row neg"><div class="impact-icon">🏭</div><div><strong>[국민 경제 측면]</strong> 가계의 소득이 감소하여 소비 활동이 줄어들며, 기업의 생산 활동과 투자가 위축되어 경기가 침체되는 문제가 나타날 수 있다.</div></div>
+        </div>
+        <div class="footnote">
+          <span>* 인적 자원</span>국민 경제가 필요로 하는 상품의 생산에 투입될 수 있는 인간의 노동력을 말한다.
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">고용 안정을 위한 노력</span>
+        실업은 국민 개개인의 삶뿐만 아니라 사회의 안정 및 경제 성장에도 큰 영향을 미치므로, 실업을 줄이고 안정된 고용 수준을 유지하는 것은 매우 중요하다.
+        <table class="tb" style="margin-top:8px;">
+          <thead><tr><th>경제 주체</th><th>고용 안정을 위한 노력</th></tr></thead>
+          <tbody>
+            <tr><td><strong>정부</strong></td><td>경기 침체 시 재정 지출을 확대하여 일자리를 늘린다. 체계적인 직업 교육을 실시하고 인력 개발 프로그램을 마련한다. (실업 급여 지급, 직업 능력 향상 훈련 지원, 취업 정보 제공 등)</td></tr>
+            <tr><td><strong>근로자</strong></td><td>필요한 기술을 습득하고 꾸준히 자기 계발을 해야 한다.</td></tr>
+            <tr><td><strong>기업</strong></td><td>고용 안정과 일자리 창출을 위한 경영 방안을 모색해야 한다.</td></tr>
+            <tr><td><strong>근로자·기업</strong></td><td>신뢰를 바탕으로 서로 협력하여 바람직한 노사 관계를 확립해야 한다.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ QUIZ ══════ -->
+<div class="panel" id="panel-quiz">
+  <div class="quiz-wrap">
+    <div class="quiz-header">📝 카드를 <strong>클릭</strong>하면 답이 보이고, 다시 클릭하면 숨겨집니다.<br>자주 봐서 <strong>장기 기억</strong>으로 만들어 보세요!</div>
+    <div class="qbar">
+      <button class="qbtn qbtn-outline" onclick="revealAll()">전체 보기</button>
+      <button class="qbtn qbtn-outline" onclick="hideAll()">전체 숨기기</button>
+      <button class="qbtn qbtn-fill" onclick="shuffleQ()">🔀 섞기</button>
+    </div>
+    <div class="qbar" style="padding-top:0;">
+      <button class="qbtn qbtn-active" id="fbtn-all" onclick="filterQ('all')">전체</button>
+      <button class="qbtn qbtn-outline" id="fbtn-A" onclick="filterQ('A')">①물가</button>
+      <button class="qbtn qbtn-outline" id="fbtn-B" onclick="filterQ('B')">②실업</button>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-bar"><div class="prog-fill" id="pFill"></div></div>
+      <div class="prog-lbl" id="pLbl">0 / 52 확인</div>
+    </div>
+    <div class="q-list" id="qList"></div>
+  </div>
+</div>
+
+<footer>No.06 — 물가와 실업 · Ⅴ. 국민 경제와 국제 거래</footer>
+
+<script>
+const ALL_Q = [
+  // ── A: 물가 ──
+  // 용어→설명
+  {id:1,  cat:'A', tag:'용어 설명', q:'물가란 무엇인가?', a:'시장에서 거래되는 여러 상품의 가격을 종합하여 평균한 것'},
+  {id:2,  cat:'A', tag:'용어 설명', q:'물가 지수란 무엇인가?', a:'기준 시점의 물가를 100으로 했을 때, 비교 시점의 물가 수준을 나타낸 것. 예) 물가 지수 110 = 기준 연도 대비 물가 10% 상승'},
+  {id:3,  cat:'A', tag:'용어 설명', q:'인플레이션이란 무엇인가?', a:'물가가 지속적으로 오르는 현상'},
+  {id:4,  cat:'A', tag:'용어 설명', q:'통화량이란 무엇인가?', a:'한 나라 안에서 실제로 사용되는 화폐의 양'},
+  // 설명→용어
+  {id:5,  cat:'A', tag:'설명→용어', q:'"시장에서 거래되는 여러 상품의 가격을 종합하여 평균한 것"을 무엇이라 하는가?', a:'물가'},
+  {id:6,  cat:'A', tag:'설명→용어', q:'"기준 시점의 물가를 100으로 했을 때 비교 시점의 물가 수준을 나타낸 것"을 무엇이라 하는가?', a:'물가 지수'},
+  {id:7,  cat:'A', tag:'설명→용어', q:'"물가가 지속적으로 오르는 현상"을 무엇이라 하는가?', a:'인플레이션'},
+  {id:8,  cat:'A', tag:'설명→용어', q:'"한 나라 안에서 실제로 사용되는 화폐의 양"을 무엇이라 하는가?', a:'통화량'},
+  // 물가 상승 요인
+  {id:9,  cat:'A', tag:'물가 상승 요인', q:'물가 상승의 요인 세 가지를 쓰시오.', a:'① 경제 전체의 수요 증가 (가계 소비·기업 투자·정부 재정 지출 증가) ② 생산비 상승 (임금·임대료·원자재 가격 상승) ③ 통화량 증가'},
+  {id:10, cat:'A', tag:'물가 상승 요인', q:'가계의 소비나 기업의 투자가 증가하여 경제 전체의 수요가 증가하면 물가는 어떻게 되는가?', a:'물가가 상승한다. (공급이 수요에 미치지 못할 경우)'},
+  {id:11, cat:'A', tag:'물가 상승 요인', q:'국제 원유 가격이 상승하면 왜 물가가 오르는가?', a:'생산 원가가 높아져 많은 기업이 공급을 줄이기 때문에 물가가 상승한다.'},
+  {id:12, cat:'A', tag:'물가 상승 요인', q:'시중에 공급되는 통화량이 많아지면 물가는 어떻게 되는가?', a:'소비나 투자가 활발해지고 화폐 가치가 하락하며 물가가 상승한다.'},
+  // 인플레이션 영향
+  {id:13, cat:'A', tag:'인플레이션 영향', q:'인플레이션이 발생하면 화폐 가치는 어떻게 되는가?', a:'화폐의 가치가 하락하여 일정한 금액으로 살 수 있는 재화와 서비스의 양이 줄어든다.'},
+  {id:14, cat:'A', tag:'인플레이션 영향', q:'인플레이션 발생 시 불리해지는 사람은 누구인가?', a:'정해진 봉급이나 연금으로 생활하는 사람, 은행에 예금을 한 사람'},
+  {id:15, cat:'A', tag:'인플레이션 영향', q:'인플레이션 발생 시 유리해지는 사람은 누구인가?', a:'건물·토지 등 실물 자산을 보유한 사람, 돈을 빌린 사람 (상환 부담 감소)'},
+  {id:16, cat:'A', tag:'인플레이션 영향', q:'인플레이션 발생 시 돈을 빌린 사람이 유리한 이유는?', a:'빌린 돈의 가치가 떨어져 상환 부담이 줄어들기 때문이다.'},
+  {id:17, cat:'A', tag:'인플레이션 영향', q:'국내 물가가 상승하면 수출과 수입은 어떻게 변하는가?', a:'우리나라 상품 가격이 비싸져 수출이 감소하고, 상대적으로 저렴해진 외국 상품의 수입이 증가하여 무역 불균형이 발생할 수 있다.'},
+  // 물가 안정 노력
+  {id:18, cat:'A', tag:'물가 안정', q:'인플레이션이 우려될 경우 정부가 하는 물가 안정 노력은?', a:'재정 지출을 줄이고 조세를 늘린다.'},
+  {id:19, cat:'A', tag:'물가 안정', q:'인플레이션이 우려될 경우 중앙은행이 하는 물가 안정 노력은?', a:'통화량을 줄여 시중 은행의 이자율이 높아지도록 함으로써 물가를 안정시키고자 한다.'},
+  {id:20, cat:'A', tag:'물가 안정', q:'물가 안정을 위한 기업의 노력은?', a:'경영과 기술 혁신을 통해 생산의 효율성을 높인다.'},
+  {id:21, cat:'A', tag:'물가 안정', q:'물가 안정을 위한 소비자의 노력은?', a:'합리적인 소비 생활을 한다.'},
+  // O/X
+  {id:22, cat:'A', tag:'O/X', q:'물가는 개별 상품의 가치를 화폐 단위로 나타낸 것이다. (O/X)', a:'X — 그것은 가격에 대한 설명이다. 물가는 여러 상품의 가격을 종합하여 평균적으로 나타낸 것이다.'},
+  {id:23, cat:'A', tag:'O/X', q:'인플레이션이 발생하면 실물 자산을 보유한 사람은 유리해진다. (O/X)', a:'O — 실물 자산의 가치가 높아지기 때문이다.'},
+  {id:24, cat:'A', tag:'O/X', q:'인플레이션이 발생하면 돈을 빌려준 사람이 빌린 사람보다 유리해진다. (O/X)', a:'X — 빌린 돈의 가치가 떨어져 상환 부담이 줄어드는 돈을 빌린 사람이 유리해진다.'},
+  {id:25, cat:'A', tag:'O/X', q:'국내 물가가 상승하면 수출이 감소하고 수입이 증가할 수 있다. (O/X)', a:'O'},
+  {id:26, cat:'A', tag:'O/X', q:'인플레이션이 우려될 때 중앙은행은 통화량을 늘린다. (O/X)', a:'X — 통화량을 줄여 이자율이 높아지도록 한다.'},
+
+  // ── B: 실업 ──
+  // 용어→설명
+  {id:27, cat:'B', tag:'용어 설명', q:'실업이란 무엇인가?', a:'일할 능력과 의사가 있는데도 일자리를 구하지 못하는 상태'},
+  {id:28, cat:'B', tag:'용어 설명', q:'경제 활동 인구란 무엇인가?', a:'노동 가능 인구 가운데 일할 능력과 의사가 있는 사람들. 취업자와 실업자로 구분된다.'},
+  {id:29, cat:'B', tag:'용어 설명', q:'비경제 활동 인구란 무엇인가?', a:'노동 가능 인구 가운데 경제 활동 인구가 아닌 사람들. 학생, 전업주부, 구직 포기자 등이 포함된다.'},
+  {id:30, cat:'B', tag:'용어 설명', q:'인적 자원이란 무엇인가?', a:'국민 경제가 필요로 하는 상품의 생산에 투입될 수 있는 인간의 노동력'},
+  // 설명→용어
+  {id:31, cat:'B', tag:'설명→용어', q:'"일할 능력과 의사가 있는데도 일자리를 구하지 못하는 상태"를 무엇이라 하는가?', a:'실업'},
+  {id:32, cat:'B', tag:'설명→용어', q:'"노동 가능 인구 중 일할 능력과 의사가 있는 사람"을 무엇이라 하는가?', a:'경제 활동 인구'},
+  {id:33, cat:'B', tag:'설명→용어', q:'"노동 가능 인구 중 학생·전업주부·구직 포기자 등"을 무엇이라 하는가?', a:'비경제 활동 인구'},
+  // 실업자 해당 여부
+  {id:34, cat:'B', tag:'실업자 판단', q:'취업하려고 했으나 뜻대로 되지 않아 일자리 구하기를 포기한 사람은 실업자인가?', a:'실업자에 포함되지 않는다. (일자리 구하기를 포기한 사람은 비경제 활동 인구)'},
+  {id:35, cat:'B', tag:'실업자 판단', q:'일할 의사가 없는 전업주부는 실업자인가?', a:'실업자에 포함되지 않는다. (일할 의사가 없으므로 비경제 활동 인구)'},
+  {id:36, cat:'B', tag:'실업자 판단', q:'더 나은 직장을 구하기 위해 일시적으로 현재 직장을 그만둔 사람은 실업자인가?', a:'실업자에 해당한다. (일할 능력과 의사가 있으나 일자리를 구하고 있는 상태)'},
+  // 실업의 원인
+  {id:37, cat:'B', tag:'실업 원인', q:'실업이 발생하는 원인 네 가지를 쓰시오.', a:'① 경기 침체로 기업이 고용 감소 ② 자동화·산업 구조 변화로 일자리 소멸 ③ 계절 변화에 따른 고용 기회 감소 ④ 더 나은 직장을 위한 자발적 이직'},
+  // 실업의 영향
+  {id:38, cat:'B', tag:'실업 영향', q:'실업이 개인에게 미치는 영향 두 가지를 쓰시오.', a:'① 소득 감소로 생계 곤란 ② 자아실현 기회 상실, 자존감 하락 등 정신적 고통'},
+  {id:39, cat:'B', tag:'실업 영향', q:'실업이 사회에 미치는 영향 두 가지를 쓰시오.', a:'① 인적 자원의 낭비 ② 빈곤 확산, 가족 해체, 생계형 범죄 증가 등 사회 불안 초래'},
+  {id:40, cat:'B', tag:'실업 영향', q:'실업이 국민 경제에 미치는 영향은?', a:'가계의 소득 감소 → 소비 위축 → 기업의 생산·투자 위축 → 경기 침체'},
+  {id:41, cat:'B', tag:'실업 영향', q:'실업이 "인적 자원의 낭비"를 가져온다는 것은 어떤 의미인가?', a:'일할 능력이 있는 사람이 생산 활동에 참여하지 못하게 되기 때문이다.'},
+  // 고용 안정 노력
+  {id:42, cat:'B', tag:'고용 안정', q:'경기 침체 시 정부가 고용 안정을 위해 하는 노력은?', a:'재정 지출을 확대하여 일자리를 늘린다.'},
+  {id:43, cat:'B', tag:'고용 안정', q:'고용 안정을 위한 정부의 구체적인 정책 세 가지는?', a:'① 실업 급여 지급 ② 직업 능력 향상을 위한 훈련 지원 ③ 취업 정보 제공 (워크넷 등)'},
+  {id:44, cat:'B', tag:'고용 안정', q:'고용 안정을 위한 근로자의 노력은?', a:'필요한 기술을 습득하고 꾸준히 자기 계발을 해야 한다.'},
+  {id:45, cat:'B', tag:'고용 안정', q:'고용 안정을 위한 기업의 노력은?', a:'고용 안정과 일자리 창출을 위한 경영 방안을 모색해야 한다.'},
+  {id:46, cat:'B', tag:'고용 안정', q:'근로자와 기업이 함께 해야 하는 고용 안정 노력은?', a:'신뢰를 바탕으로 서로 협력하여 바람직한 노사 관계를 확립해야 한다.'},
+  // O/X
+  {id:47, cat:'B', tag:'O/X', q:'일할 능력이 없는 어린이나 노약자는 실업자에 해당한다. (O/X)', a:'X — 실업자는 일할 능력과 의사가 있는데도 일자리를 구하지 못하는 사람이다. 어린이·노약자는 해당하지 않는다.'},
+  {id:48, cat:'B', tag:'O/X', q:'일할 의사는 있지만 학교에 다니는 학생은 실업자에 해당한다. (O/X)', a:'X — 학생은 비경제 활동 인구로 실업자에 포함되지 않는다.'},
+  {id:49, cat:'B', tag:'O/X', q:'실업은 개인의 생계 문제뿐만 아니라 사회 불안과 경기 침체를 초래할 수 있다. (O/X)', a:'O'},
+  // 종합
+  {id:50, cat:'A', tag:'종합', q:'(스스로 확인) 시장에서 거래되는 여러 상품의 가격을 종합하여 평균한 것을 ( )라고 한다.', a:'물가'},
+  {id:51, cat:'A', tag:'종합', q:'(스스로 확인) 인플레이션이 발생하면 화폐의 가치가 ( )하여 정해진 봉급으로 생활하는 사람들은 불리해진다.', a:'하락'},
+  {id:52, cat:'B', tag:'종합', q:'(스스로 확인) 일할 능력과 의사가 있는데도 일자리를 구하지 못하는 상태를 ( )이라고 한다.', a:'실업'},
+];
+
+const TOTAL = ALL_Q.length;
+let curFilter = 'all';
+let revSet = new Set();
+let ordQ = [...ALL_Q];
+
+function tc(c) { return c==='A'?'tA':c==='B'?'tB':'tC'; }
+function getFiltered() { return curFilter==='all'?ordQ:ordQ.filter(q=>q.cat===curFilter); }
+
+function renderQ() {
+  document.getElementById('qList').innerHTML = getFiltered().map((q,i)=>{
+    const o = revSet.has(q.id);
+    return `<div class="qcard${o?' open':''}" onclick="toggleQ(${q.id})">
+      <div class="qcard-top"><div class="qnum">${i+1}</div>
+      <div class="qbody"><span class="qtag ${tc(q.cat)}">${q.tag}</span>
+      <div class="qtext">${q.q}</div></div></div>
+      <div class="qans"><div class="qans-inner"><span class="albl">▶ 정답</span>${q.a}</div></div>
+    </div>`;
+  }).join('');
+  updateProg();
+}
+
+function toggleQ(id) { revSet.has(id)?revSet.delete(id):revSet.add(id); renderQ(); }
+function updateProg() {
+  const n=revSet.size;
+  document.getElementById('pFill').style.width=Math.round(n/TOTAL*100)+'%';
+  document.getElementById('pLbl').textContent=`${n} / ${TOTAL} 확인`;
+}
+function revealAll() { getFiltered().forEach(q=>revSet.add(q.id)); renderQ(); }
+function hideAll()   { getFiltered().forEach(q=>revSet.delete(q.id)); renderQ(); }
+function shuffleQ() {
+  for(let i=ordQ.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ordQ[i],ordQ[j]]=[ordQ[j],ordQ[i]];}
+  renderQ();
+}
+function filterQ(f) {
+  curFilter=f;
+  ['all','A','B'].forEach(k=>{
+    const b=document.getElementById('fbtn-'+k);
+    if(b) b.className=k===f?'qbtn qbtn-active':'qbtn qbtn-outline';
+  });
+  renderQ();
+}
+function switchTab(t,btn) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tabbar-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('panel-'+t).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function switchCh(id,btn) {
+  document.querySelectorAll('.ch-section').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.ch-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+renderQ();
+</script>
+</body>
+</html>

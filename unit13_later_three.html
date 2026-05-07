@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>신라가 분열하여 후삼국이 성립하다 — 기말 대비</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F2EDE6;--card:#FFF;--red:#8B1A1A;--red-mid:#B83030;--red-light:#E8C4C4;--gold:#C8960C;--gold-light:#F5E4A0;--dark:#1A1008;--muted:#6B5040;--border:#D8CCBC;--correct:#2A6B2A;--correct-bg:#E8F5E8;--wrong:#8B1A1A;--wrong-bg:#F5E8E8;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Noto Sans KR",sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;padding:0 0 80px;}
+  .top-bar{background:var(--red);color:#F5EDE0;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(139,26,26,.3);}
+  .top-bar h1{font-family:"Noto Serif KR",serif;font-size:15px;font-weight:700;}
+  .top-bar .meta{font-size:11px;color:rgba(245,237,224,.7);letter-spacing:1px;margin-bottom:2px;}
+  .score-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 12px;font-size:12px;font-weight:600;color:#F5E4A0;border-radius:20px;white-space:nowrap;}
+  .tabs{display:flex;background:#2A1008;border-bottom:2px solid var(--red);}
+  .tab{flex:1;padding:11px 0;text-align:center;font-size:13px;font-weight:600;color:rgba(245,237,224,.5);cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+  .tab.active{color:#F5E4A0;border-bottom:3px solid var(--gold);margin-bottom:-2px;}
+  .progress-wrap{padding:10px 20px 0;background:var(--bg);}
+  .progress-info{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px;}
+  .progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .4s ease;border-radius:2px;}
+  .page{display:none;} .page.active{display:block;}
+  .content-wrap{max-width:720px;margin:0 auto;padding:20px 16px;}
+  .section-card{background:var(--card);border:1px solid var(--border);margin-bottom:12px;overflow:hidden;}
+  .section-head{background:var(--red);color:#F5EDE0;padding:10px 16px;display:flex;align-items:center;gap:10px;}
+  .section-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold-light);letter-spacing:2px;}
+  .section-title{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;}
+  .section-body{padding:16px;font-size:14px;line-height:1.95;color:#1A1008;}
+  .section-body strong{color:var(--red);font-weight:700;}
+  .section-body .kw{background:var(--gold-light);color:#5A3808;padding:1px 5px;font-weight:600;border-radius:2px;}
+  .quiz-wrap{max-width:720px;margin:0 auto;padding:16px;}
+  .block{margin-bottom:20px;}
+  .para-box{background:var(--card);border:1px solid var(--border);border-bottom:none;border-left:4px solid var(--red);overflow:hidden;}
+  .para-box strong{color:var(--red);font-weight:700;}
+  .para-box .kw{background:var(--gold-light);color:#5A3808;padding:1px 4px;font-weight:600;}
+  .para-header{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;cursor:pointer;user-select:none;background:#FBF6EE;border-bottom:1px solid var(--border);transition:background .15s;}
+  .para-header:hover{background:#F5EDD8;}
+  .para-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:600;}
+  .para-toggle-btn{font-size:11px;color:var(--red);font-weight:600;display:flex;align-items:center;gap:5px;}
+  .para-arrow{display:inline-block;transition:transform .25s ease;font-size:9px;color:var(--muted);}
+  .para-arrow.open{transform:rotate(180deg);}
+  .para-content{font-size:13.5px;line-height:1.85;color:#1A1008;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s ease;padding:0 16px;}
+  .para-content.open{max-height:600px;padding:12px 16px 14px;}
+  .q-list{border:1px solid var(--border);border-top:2px solid var(--gold);background:#FDFAF4;}
+  .q-item{padding:13px 16px;border-bottom:1px solid var(--border);}
+  .q-item:last-child{border-bottom:none;}
+  .q-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:9px;}
+  .q-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold);font-weight:700;min-width:24px;padding-top:2px;}
+  .q-text{font-size:13.5px;line-height:1.65;color:#1A1008;flex:1;font-weight:500;}
+  /* 단답형 - 정답 보기/숨기기 토글 */
+  .ans-toggle{display:block;margin-left:34px;padding:9px 16px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--muted);cursor:pointer;text-align:left;transition:all .15s;width:calc(100% - 34px);border-radius:0;}
+  .ans-toggle:hover{border-color:var(--red);color:var(--red);}
+  .ans-toggle.open{border-color:var(--correct);color:var(--correct);background:var(--correct-bg);}
+  /* 정답 카드 */
+  .ans-card{display:none;margin-left:34px;padding:10px 16px;border-left:3px solid var(--correct);background:var(--correct-bg);width:calc(100% - 34px);}
+  .ans-card.show{display:block;}
+  .ans-label{font-size:10px;letter-spacing:1.5px;color:var(--correct);font-weight:600;margin-bottom:4px;}
+  .ans-text{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;color:#1A1008;}
+  /* OX / 2지선택 */
+  .ox-wrap{display:flex;gap:10px;margin-left:34px;}
+  .ox-btn{width:56px;height:40px;border:1.5px solid var(--border);background:#fff;font-size:20px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;border-radius:4px;}
+  .ox-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .ox-btn.ok{background:var(--correct-bg);border-color:var(--correct);}
+  .ox-btn.no{background:var(--wrong-bg);border-color:var(--wrong);}
+  .ox-btn:disabled{cursor:default;}
+  .two-wrap{display:flex;gap:10px;margin-left:34px;flex-wrap:wrap;}
+  .two-btn{flex:1;min-width:120px;padding:9px 10px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--dark);cursor:pointer;transition:all .15s;text-align:center;font-weight:500;}
+  .two-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .two-btn.ok{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);font-weight:700;}
+  .two-btn.no{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong);}
+  .two-btn:disabled{cursor:default;}
+  .feedback{margin-left:34px;margin-top:7px;font-size:12.5px;padding:7px 11px;border-radius:2px;display:none;line-height:1.55;cursor:pointer;transition:opacity .2s,filter .2s;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--correct-bg);color:var(--correct);border-left:3px solid var(--correct);}
+  .feedback.no{background:var(--wrong-bg);color:var(--wrong);border-left:3px solid var(--wrong);}
+  .feedback.hidden{opacity:0.07;filter:blur(4px);user-select:none;}
+  .sdiv{display:flex;align-items:center;gap:12px;margin:24px 0 14px;}
+  .sdiv span{font-family:"Noto Serif KR",serif;font-size:12px;color:var(--red);letter-spacing:1.5px;font-weight:700;white-space:nowrap;}
+  .sdiv::before,.sdiv::after{content:"";flex:1;height:1px;background:var(--red-light);}
+  .result-bar{max-width:720px;margin:0 auto;padding:0 16px;}
+  .result-card{background:var(--card);border:2px solid var(--red);padding:36px 24px;text-align:center;margin-top:24px;}
+  .result-title{font-family:"Noto Serif KR",serif;font-size:20px;font-weight:900;color:var(--red);margin-bottom:6px;}
+  .result-score{font-family:"Noto Serif KR",serif;font-size:56px;font-weight:900;color:var(--dark);line-height:1;margin:20px 0 6px;}
+  .result-sub{font-size:13px;color:var(--muted);margin-bottom:16px;}
+  .result-msg{font-size:15px;font-weight:600;color:var(--red);margin-bottom:28px;}
+  .retry-btn{background:var(--red);color:#fff;border:none;padding:13px 36px;font-size:14px;font-weight:600;font-family:"Noto Sans KR",sans-serif;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background .2s;}
+  .retry-btn:hover{background:var(--red-mid);}
+  .submit-wrap{text-align:center;margin-top:20px;padding-bottom:10px;}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <div><div class="meta">남북국 시대의 전개</div><h1>신라가 분열하여 후삼국이 성립하다</h1></div>
+  <div class="score-badge" id="scoreBadge">0 / 0</div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('content')">📖 본문</div>
+  <div class="tab" onclick="switchTab('quiz')">✏️ 문제</div>
+</div>
+<div class="page active" id="page-content">
+  <div class="content-wrap"><div class="section-card"><div class="section-head"><span class="section-num">§01</span><span class="section-title">신라 말의 정치적 동요</span></div><div class="section-body">통일 이후 정치적 안정을 이룬 신라는 8세기 후반부터 흔들리기 시작하였다. 소수의 진골 귀족에게 권력이 집중되자 왕권이 약해지고 진골 귀족 세력이 분열하였다. 결국 어린 나이에 즉위한 <strong>혜공왕</strong>이 진골 귀족들의 반란으로 피살되어 무열왕계 왕위 세습이 끊어졌다. 이후 약 150년 동안 <strong>20명의 왕이 바뀌는 혼란</strong>이 이어졌다.<br><br>귀족들의 반란은 지방에서도 일어났다. 9세기 전반에 웅주 도독 <strong>김헌창</strong>이 무열왕의 직계 자손인 아버지 <span class='kw'>김주원</span>이 왕이 되지 못한 것에 불만을 품고 난을 일으켰다(822). 해상 활동으로 세력을 키운 <strong>장보고</strong>도 중앙의 왕위 다툼에 관여하여 반란을 일으켰다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§02</span><span class="section-title">농민의 봉기</span></div><div class="section-body">정치적 혼란 속에서 귀족의 수탈은 더욱 심해졌다. 전염병이 돌고 자연재해가 겹쳐 일부 농민은 토지를 잃고 떠돌거나 도적이 되었다. 9세기 말 <strong>진성 여왕</strong>이 관리를 보내 조세를 독촉하자 농민의 분노가 폭발하였다. 그리하여 <span class='kw'>원종과 애노의 난</span>을 시작으로 전국 각지에서 농민이 봉기하였다(889). 이들은 세금 납부를 거부하고 관아를 습격하였다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§03</span><span class="section-title">호족의 성장과 6두품의 사회 비판</span></div><div class="section-body">중앙 정부의 통치력이 약해지자 지방에서는 <strong>호족</strong>이 성장하였다. 호족은 자신의 근거지에 성을 쌓고 스스로를 <span class='kw'>성주</span> 또는 <span class='kw'>장군</span>이라 부르며 지방의 군사와 행정을 장악하였다. 호족은 대부분 토착 세력인 <span class='kw'>촌주 출신</span>이었으며, 중앙에서 내려온 귀족·해상 세력·군진 세력이 성장한 경우도 있었다.<br><br>당에 유학한 일부 <strong>6두품</strong> 세력은 개인의 능력보다 혈통을 중시하는 골품제를 비판하며 유교 사상을 바탕으로 한 개혁을 주장하였다. 대표적인 인물이 <span class='kw'>최치원</span>이다. 그러나 중앙 정부가 개혁안을 받아들이지 않자, 정치를 멀리하거나 호족과 힘을 합쳐 새로운 사회를 건설하려 하였다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§04</span><span class="section-title">선종과 풍수지리설의 유행</span></div><div class="section-body">신라 말에는 새로운 불교 종파인 <strong>선종</strong>이 유행하였다. 경전 연구와 교리를 중시한 교종과 달리 선종은 경전에 의지하지 않고 누구나 일상생활 속에서 내면의 진리를 발견할 수 있다고 가르쳤다. 이러한 선종은 호족과 백성의 큰 호응을 얻었고, 호족의 후원으로 전국에 선종 사찰이 세워졌다.<br><br><span class='kw'>풍수지리설</span>은 산과 하천의 형세가 인간 생활에 영향을 준다는 사상이다. 선종 승려인 <span class='kw'>도선</span>이 널리 보급한 이 사상은 경주 중심의 지리 개념에서 벗어나 지방의 중요성을 강조하였다. 풍수지리설은 선종과 함께 지방 호족의 <strong>사상적 기반</strong>이 되었다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§05</span><span class="section-title">후삼국의 성립</span></div><div class="section-body">신라 말에 등장한 여러 지방 세력 중 <strong>견훤</strong>과 <strong>궁예</strong>는 나라를 세우고 왕이 되었다.<br><br>상주 출신 <strong>견훤</strong>은 서남 해안을 지키는 군진의 장교였는데, 진성 여왕 때 농민 봉기를 틈타 독자적인 세력을 이루었다. 견훤은 남서부 지역에서 세력을 키워 <span class='kw'>후백제</span>를 세우고(900) <span class='kw'>완산주(전주)</span>에 도읍하였다. 후백제는 오늘날 전라도와 충청도, 경상도의 일부를 지배하였다.<br><br>신라의 왕족 출신으로 알려진 <strong>궁예</strong>는 북원(원주) 지역 호족인 양길의 부하로 있다가 자립하였다. 세력을 키워 고구려 부흥을 내세우며 <span class='kw'>후고구려</span>를 세웠다(901). 궁예는 이후 나라 이름을 <span class='kw'>마진</span>으로 고쳤고, <span class='kw'>철원</span>으로 도읍을 옮긴 뒤 다시 <span class='kw'>태봉</span>으로 고쳤다.<br><br>후백제와 후고구려의 성립으로 한반도는 다시 삼국이 세력을 다투는 <strong>후삼국의 형세</strong>를 이루었다. 신라의 영토는 경상도 일대로 축소되었다.</div></div></div>
+</div>
+<div class="page" id="page-quiz">
+  <div class="progress-wrap">
+    <div class="progress-info"><span id="progressTxt">0 / 17 완료</span><span id="progressPct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div class="quiz-wrap">
+    <div class="sdiv"><span>§01 · 신라 말의 정치적 동요</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">소수의 <strong>진골 귀족</strong>에게 권력이 집중되자 왕권이 약해졌다. <strong>혜공왕</strong>이 피살되어 무열왕계 왕위 세습이 끊어졌다. 이후 약 150년 동안 <strong>20명의 왕</strong>이 바뀌는 혼란이 이어졌다.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q1</span><span class="q-text">신라 말 정치 혼란의 핵심 원인은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q1',this,true)">소수의 진골 귀족에게 권력이 집중되어 왕권이 약화</button>
+    <button class="two-btn" onclick="checkTwo('q1',this,false)">지방 호족들이 중앙 정치를 장악</button>
+  </div>
+  <div class="feedback" id="q1-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q2</span><span class="q-text">8세기 말 진골 귀족의 반란으로 피살된 신라 왕은?</span></div>
+  <button class="ans-toggle" id="q2-tb" onclick="toggleAns('q2')">▶ 정답 보기</button>
+  <div class="ans-card" id="q2-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">혜공왕</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q3</span><span class="q-text">9세기 전반 웅주 도독으로 난을 일으킨 인물은?</span></div>
+  <button class="ans-toggle" id="q3-tb" onclick="toggleAns('q3')">▶ 정답 보기</button>
+  <div class="ans-card" id="q3-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">김헌창</div>
+  </div>
+</div></div></div><div class="sdiv"><span>§02 · 농민의 봉기</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">진성 여왕이 조세를 독촉하자 농민의 분노가 폭발하여 <span class='kw'>원종과 애노의 난</span>을 시작으로 전국 각지에서 농민이 봉기하였다(889).</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q4</span><span class="q-text">889년 전국 농민 봉기의 시작이 된 사건은?</span></div>
+  <button class="ans-toggle" id="q4-tb" onclick="toggleAns('q4')">▶ 정답 보기</button>
+  <div class="ans-card" id="q4-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">원종과 애노의 난</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q5</span><span class="q-text">농민 봉기대의 두 가지 행동은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q5',this,true)">세금 납부 거부와 관아 습격</button>
+    <button class="two-btn" onclick="checkTwo('q5',this,false)">성을 쌓고 독자적인 세력 형성</button>
+  </div>
+  <div class="feedback" id="q5-fb"></div>
+</div></div></div><div class="sdiv"><span>§03 · 호족과 6두품</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">호족은 스스로를 <span class='kw'>성주</span> 또는 <span class='kw'>장군</span>이라 부르며 지방의 군사와 행정을 장악하였다. 대부분 토착 세력인 <span class='kw'>촌주 출신</span>이었다. <strong>6두품</strong>의 대표적 인물 <span class='kw'>최치원</span>은 골품제를 비판하며 유교적 개혁을 주장하였다.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q6</span><span class="q-text">호족이 스스로를 부른 두 가지 칭호는?</span></div>
+  <button class="ans-toggle" id="q6-tb" onclick="toggleAns('q6')">▶ 정답 보기</button>
+  <div class="ans-card" id="q6-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">성주, 장군</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q7</span><span class="q-text">호족의 출신 중 가장 많은 비중을 차지한 계층은?</span></div>
+  <button class="ans-toggle" id="q7-tb" onclick="toggleAns('q7')">▶ 정답 보기</button>
+  <div class="ans-card" id="q7-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">촌주 출신</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q8</span><span class="q-text">골품제를 비판하며 유교 개혁을 주장한 6두품의 대표 인물은?</span></div>
+  <button class="ans-toggle" id="q8-tb" onclick="toggleAns('q8')">▶ 정답 보기</button>
+  <div class="ans-card" id="q8-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">최치원</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q9</span><span class="q-text">(OX) 6두품은 개혁안이 받아들여지지 않자 호족과 힘을 합쳐 새로운 사회를 건설하려 하였다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q9',this,'O','O')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q9',this,'X','O')">❌</button>
+  </div>
+  <div class="feedback" id="q9-fb"></div>
+</div></div></div><div class="sdiv"><span>§04 · 선종과 풍수지리설</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">선종은 경전 없이 <strong>일상생활 속에서 내면의 진리</strong>를 발견할 수 있다고 가르쳤다. <span class='kw'>풍수지리설</span>은 <span class='kw'>도선</span>이 널리 보급하여 경주 중심의 지리 개념을 벗어나 <strong>지방의 중요성</strong>을 강조하였다. 선종과 풍수지리설은 지방 호족의 <strong>사상적 기반</strong>이 되었다.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q10</span><span class="q-text">선종이 교종과 다른 점은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q10',this,true)">경전에 의지하지 않고 일상에서 내면의 진리 발견 강조</button>
+    <button class="two-btn" onclick="checkTwo('q10',this,false)">경전 연구와 교리를 중시</button>
+  </div>
+  <div class="feedback" id="q10-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q11</span><span class="q-text">풍수지리설을 신라 말에 널리 보급한 선종 승려는?</span></div>
+  <button class="ans-toggle" id="q11-tb" onclick="toggleAns('q11')">▶ 정답 보기</button>
+  <div class="ans-card" id="q11-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">도선</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q12</span><span class="q-text">선종과 풍수지리설이 신라 말에 유행한 공통 배경은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q12',this,true)">지방 호족의 호응과 후원</button>
+    <button class="two-btn" onclick="checkTwo('q12',this,false)">중앙 정부의 적극적인 장려</button>
+  </div>
+  <div class="feedback" id="q12-fb"></div>
+</div></div></div><div class="sdiv"><span>§05 · 후삼국의 성립</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content"><strong>견훤</strong>: 후백제 건국(900), 도읍 <span class='kw'>완산주(전주)</span>. <strong>궁예</strong>: 후고구려 건국(901), 이후 <span class='kw'>마진→태봉</span>으로 국호 변경, 도읍 <span class='kw'>철원</span>.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q13</span><span class="q-text">견훤이 후백제를 건국한 도읍지는?</span></div>
+  <button class="ans-toggle" id="q13-tb" onclick="toggleAns('q13')">▶ 정답 보기</button>
+  <div class="ans-card" id="q13-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">완산주(전주)</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q14</span><span class="q-text">궁예가 세운 나라의 변천 순서는?</span></div>
+  <button class="ans-toggle" id="q14-tb" onclick="toggleAns('q14')">▶ 정답 보기</button>
+  <div class="ans-card" id="q14-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">후고구려 → 마진 → 태봉</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q15</span><span class="q-text">궁예가 최종 도읍으로 삼은 곳은?</span></div>
+  <button class="ans-toggle" id="q15-tb" onclick="toggleAns('q15')">▶ 정답 보기</button>
+  <div class="ans-card" id="q15-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">철원</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q16</span><span class="q-text">후삼국 성립 이후 신라의 영토는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q16',this,true)">경상도 일대로 축소</button>
+    <button class="two-btn" onclick="checkTwo('q16',this,false)">전라도 일대로 확대</button>
+  </div>
+  <div class="feedback" id="q16-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q17</span><span class="q-text">(OX) 후백제는 오늘날 전라도와 충청도, 경상도의 일부를 지배하였다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q17',this,'O','O')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q17',this,'X','O')">❌</button>
+  </div>
+  <div class="feedback" id="q17-fb"></div>
+</div></div></div>
+    <div class="submit-wrap"><button class="retry-btn" onclick="showResult()">채점 결과 보기</button></div>
+  </div>
+  
+<div class="result-bar" id="resultSection" style="display:none;">
+  <div class="result-card">
+    <div class="result-title">채점 완료</div>
+    <div class="result-score" id="resultScore">—</div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <button class="retry-btn" onclick="resetAll()">다시 풀기</button>
+  </div>
+</div>
+</div>
+<script>
+const TOTAL = 17;
+let answered = new Set();
+let score = 0;
+
+function togglePara(h) {
+  const c = h.nextElementSibling;
+  const a = h.querySelector('.para-arrow');
+  const l = h.querySelector('.para-toggle-btn');
+  const o = c.classList.contains('open');
+  c.classList.toggle('open', !o);
+  a.classList.toggle('open', !o);
+  l.innerHTML = o ? '<span class="para-arrow">▼</span> 펼치기' : '<span class="para-arrow open">▼</span> 접기';
+}
+
+function updateProgress() {
+  const n = answered.size;
+  const p = Math.round(n / TOTAL * 100);
+  document.getElementById('progressTxt').textContent = n + ' / ' + TOTAL + ' 완료';
+  document.getElementById('progressPct').textContent = p + '%';
+  document.getElementById('progressFill').style.width = p + '%';
+  document.getElementById('scoreBadge').textContent = score + ' / ' + TOTAL;
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.tab').forEach((x, i) =>
+    x.classList.toggle('active', (i===0 && t==='content') || (i===1 && t==='quiz')));
+  document.getElementById('page-content').classList.toggle('active', t === 'content');
+  document.getElementById('page-quiz').classList.toggle('active', t === 'quiz');
+}
+
+// 단답형: 토글 버튼 클릭 → 정답 보이기/숨기기
+function toggleAns(id) {
+  const btn = document.getElementById(id + '-tb');
+  const card = document.getElementById(id + '-ac');
+  const isOpen = card.classList.contains('show');
+  if (isOpen) {
+    card.classList.remove('show');
+    btn.classList.remove('open');
+    btn.textContent = '▶ 정답 보기';
+  } else {
+    card.classList.add('show');
+    btn.classList.add('open');
+    btn.textContent = '▼ 정답 숨기기';
+    if (!answered.has(id)) {
+      answered.add(id);
+      score++;
+      updateProgress();
+    }
+  }
+}
+
+// 2지선택
+function checkTwo(id, btn, isOk) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.two-btn').forEach(b => { if (b !== btn) b.classList.add('ok'); });
+  wrap.querySelectorAll('.two-btn').forEach(b => b.disabled = true);
+  fb.textContent = isOk ? '✓ 정답입니다!' : '✗ 정답을 확인하세요.';
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+// OX형
+function checkOX(id, btn, sel, cor) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  const isOk = sel === cor;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.ox-btn').forEach(b => {
+    const v = b.getAttribute('onclick').includes(",'O'") ? 'O' : 'X';
+    if (v === cor) b.classList.add('ok');
+  });
+  wrap.querySelectorAll('.ox-btn').forEach(b => b.disabled = true);
+  const ex = {"q9": "6두품은 개혁이 좌절되자 정치를 멀리하거나 호족과 연합하였습니다.", "q17": "후백제는 전라도·충청도·경상도 일부를 지배하였습니다."};
+  fb.textContent = (isOk ? '✓ 정답! ' : '✗ 오답. ') + (ex[id] || '');
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+function showResult() {
+  const p = Math.round(score / TOTAL * 100);
+  const m = p>=90 ? '완벽해요! 🏆' : p>=70 ? '잘했어요! 👍' : p>=50 ? '본문을 한 번 더 읽어봐요 📖' : '처음부터 다시 해봐요 💪';
+  document.getElementById('resultScore').textContent = score + ' / ' + TOTAL;
+  document.getElementById('resultSub').textContent = '정답률 ' + p + '%';
+  document.getElementById('resultMsg').textContent = m;
+  document.getElementById('resultSection').style.display = 'block';
+  document.getElementById('resultSection').scrollIntoView({behavior: 'smooth'});
+}
+
+function resetAll() {
+  answered.clear(); score = 0; updateProgress();
+  // 단답형 초기화
+  document.querySelectorAll('.ans-toggle').forEach(e => { e.classList.remove('open'); e.textContent = '▶ 정답 보기'; });
+  document.querySelectorAll('.ans-card').forEach(e => e.classList.remove('show', 'hidden'));
+  // OX / 2지선택 초기화
+  document.querySelectorAll('.two-btn, .ox-btn').forEach(e => { e.disabled = false; e.classList.remove('ok','no'); });
+  document.querySelectorAll('.feedback').forEach(e => { e.className = 'feedback'; e.textContent = ''; e.onclick = null; });
+  // 본문힌트 닫기
+  document.querySelectorAll('.para-content').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-arrow').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-toggle-btn').forEach(e => { e.innerHTML = '<span class="para-arrow">▼</span> 펼치기'; });
+  document.getElementById('resultSection').style.display = 'none';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+updateProgress();
+</script>
+</body>
+</html>

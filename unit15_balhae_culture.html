@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>발해, 다양한 문화를 융합하다 — 기말 대비</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F2EDE6;--card:#FFF;--red:#8B1A1A;--red-mid:#B83030;--red-light:#E8C4C4;--gold:#C8960C;--gold-light:#F5E4A0;--dark:#1A1008;--muted:#6B5040;--border:#D8CCBC;--correct:#2A6B2A;--correct-bg:#E8F5E8;--wrong:#8B1A1A;--wrong-bg:#F5E8E8;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Noto Sans KR",sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;padding:0 0 80px;}
+  .top-bar{background:var(--red);color:#F5EDE0;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(139,26,26,.3);}
+  .top-bar h1{font-family:"Noto Serif KR",serif;font-size:15px;font-weight:700;}
+  .top-bar .meta{font-size:11px;color:rgba(245,237,224,.7);letter-spacing:1px;margin-bottom:2px;}
+  .score-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 12px;font-size:12px;font-weight:600;color:#F5E4A0;border-radius:20px;white-space:nowrap;}
+  .tabs{display:flex;background:#2A1008;border-bottom:2px solid var(--red);}
+  .tab{flex:1;padding:11px 0;text-align:center;font-size:13px;font-weight:600;color:rgba(245,237,224,.5);cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+  .tab.active{color:#F5E4A0;border-bottom:3px solid var(--gold);margin-bottom:-2px;}
+  .progress-wrap{padding:10px 20px 0;background:var(--bg);}
+  .progress-info{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px;}
+  .progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .4s ease;border-radius:2px;}
+  .page{display:none;} .page.active{display:block;}
+  .content-wrap{max-width:720px;margin:0 auto;padding:20px 16px;}
+  .section-card{background:var(--card);border:1px solid var(--border);margin-bottom:12px;overflow:hidden;}
+  .section-head{background:var(--red);color:#F5EDE0;padding:10px 16px;display:flex;align-items:center;gap:10px;}
+  .section-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold-light);letter-spacing:2px;}
+  .section-title{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;}
+  .section-body{padding:16px;font-size:14px;line-height:1.95;color:#1A1008;}
+  .section-body strong{color:var(--red);font-weight:700;}
+  .section-body .kw{background:var(--gold-light);color:#5A3808;padding:1px 5px;font-weight:600;border-radius:2px;}
+  .quiz-wrap{max-width:720px;margin:0 auto;padding:16px;}
+  .block{margin-bottom:20px;}
+  .para-box{background:var(--card);border:1px solid var(--border);border-bottom:none;border-left:4px solid var(--red);overflow:hidden;}
+  .para-box strong{color:var(--red);font-weight:700;}
+  .para-box .kw{background:var(--gold-light);color:#5A3808;padding:1px 4px;font-weight:600;}
+  .para-header{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;cursor:pointer;user-select:none;background:#FBF6EE;border-bottom:1px solid var(--border);transition:background .15s;}
+  .para-header:hover{background:#F5EDD8;}
+  .para-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:600;}
+  .para-toggle-btn{font-size:11px;color:var(--red);font-weight:600;display:flex;align-items:center;gap:5px;}
+  .para-arrow{display:inline-block;transition:transform .25s ease;font-size:9px;color:var(--muted);}
+  .para-arrow.open{transform:rotate(180deg);}
+  .para-content{font-size:13.5px;line-height:1.85;color:#1A1008;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s ease;padding:0 16px;}
+  .para-content.open{max-height:600px;padding:12px 16px 14px;}
+  .q-list{border:1px solid var(--border);border-top:2px solid var(--gold);background:#FDFAF4;}
+  .q-item{padding:13px 16px;border-bottom:1px solid var(--border);}
+  .q-item:last-child{border-bottom:none;}
+  .q-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:9px;}
+  .q-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold);font-weight:700;min-width:24px;padding-top:2px;}
+  .q-text{font-size:13.5px;line-height:1.65;color:#1A1008;flex:1;font-weight:500;}
+  /* 단답형 - 정답 보기/숨기기 토글 */
+  .ans-toggle{display:block;margin-left:34px;padding:9px 16px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--muted);cursor:pointer;text-align:left;transition:all .15s;width:calc(100% - 34px);border-radius:0;}
+  .ans-toggle:hover{border-color:var(--red);color:var(--red);}
+  .ans-toggle.open{border-color:var(--correct);color:var(--correct);background:var(--correct-bg);}
+  /* 정답 카드 */
+  .ans-card{display:none;margin-left:34px;padding:10px 16px;border-left:3px solid var(--correct);background:var(--correct-bg);width:calc(100% - 34px);}
+  .ans-card.show{display:block;}
+  .ans-label{font-size:10px;letter-spacing:1.5px;color:var(--correct);font-weight:600;margin-bottom:4px;}
+  .ans-text{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;color:#1A1008;}
+  /* OX / 2지선택 */
+  .ox-wrap{display:flex;gap:10px;margin-left:34px;}
+  .ox-btn{width:56px;height:40px;border:1.5px solid var(--border);background:#fff;font-size:20px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;border-radius:4px;}
+  .ox-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .ox-btn.ok{background:var(--correct-bg);border-color:var(--correct);}
+  .ox-btn.no{background:var(--wrong-bg);border-color:var(--wrong);}
+  .ox-btn:disabled{cursor:default;}
+  .two-wrap{display:flex;gap:10px;margin-left:34px;flex-wrap:wrap;}
+  .two-btn{flex:1;min-width:120px;padding:9px 10px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--dark);cursor:pointer;transition:all .15s;text-align:center;font-weight:500;}
+  .two-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .two-btn.ok{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);font-weight:700;}
+  .two-btn.no{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong);}
+  .two-btn:disabled{cursor:default;}
+  .feedback{margin-left:34px;margin-top:7px;font-size:12.5px;padding:7px 11px;border-radius:2px;display:none;line-height:1.55;cursor:pointer;transition:opacity .2s,filter .2s;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--correct-bg);color:var(--correct);border-left:3px solid var(--correct);}
+  .feedback.no{background:var(--wrong-bg);color:var(--wrong);border-left:3px solid var(--wrong);}
+  .feedback.hidden{opacity:0.07;filter:blur(4px);user-select:none;}
+  .sdiv{display:flex;align-items:center;gap:12px;margin:24px 0 14px;}
+  .sdiv span{font-family:"Noto Serif KR",serif;font-size:12px;color:var(--red);letter-spacing:1.5px;font-weight:700;white-space:nowrap;}
+  .sdiv::before,.sdiv::after{content:"";flex:1;height:1px;background:var(--red-light);}
+  .result-bar{max-width:720px;margin:0 auto;padding:0 16px;}
+  .result-card{background:var(--card);border:2px solid var(--red);padding:36px 24px;text-align:center;margin-top:24px;}
+  .result-title{font-family:"Noto Serif KR",serif;font-size:20px;font-weight:900;color:var(--red);margin-bottom:6px;}
+  .result-score{font-family:"Noto Serif KR",serif;font-size:56px;font-weight:900;color:var(--dark);line-height:1;margin:20px 0 6px;}
+  .result-sub{font-size:13px;color:var(--muted);margin-bottom:16px;}
+  .result-msg{font-size:15px;font-weight:600;color:var(--red);margin-bottom:28px;}
+  .retry-btn{background:var(--red);color:#fff;border:none;padding:13px 36px;font-size:14px;font-weight:600;font-family:"Noto Sans KR",sans-serif;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background .2s;}
+  .retry-btn:hover{background:var(--red-mid);}
+  .submit-wrap{text-align:center;margin-top:20px;padding-bottom:10px;}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <div><div class="meta">남북국 시대의 문화와 대외 관계</div><h1>발해, 다양한 문화를 융합하다</h1></div>
+  <div class="score-badge" id="scoreBadge">0 / 0</div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('content')">📖 본문</div>
+  <div class="tab" onclick="switchTab('quiz')">✏️ 문제</div>
+</div>
+<div class="page active" id="page-content">
+  <div class="content-wrap"><div class="section-card"><div class="section-head"><span class="section-num">§01</span><span class="section-title">유학과 불교문화의 발달</span></div><div class="section-body">발해는 유학을 중요시하여 통치 이념에 반영하였고, 교육 기관인 <span class='kw'>주자감</span>을 설치하여 유학을 가르쳤다. 발해의 유학자 중에는 당에 유학하여 <span class='kw'>빈공과</span>에 합격한 사람이 많았다. 또한 유학자들은 사절단으로 일본에 가서 발해의 높은 한문학 수준을 보여 주었다. <span class='kw'>정혜 공주</span>와 <span class='kw'>정효 공주</span>의 묘지석에는 유교 경전의 내용이 인용되어 있어 발해의 유학 수준이 높았음을 알 수 있다.<br><br>유학과 더불어 발해에서는 지배층을 중심으로 <strong>불교</strong>가 유행하였다. 발해의 수도였던 상경성과 중경성 일대에는 절터 유적이 많이 남아 있다. 상경성에 남아 있는 거대한 <span class='kw'>석등</span>은 융성하였던 불교의 모습을 짐작하게 한다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§02</span><span class="section-title">융합적인 발해 문화</span></div><div class="section-body">발해는 <strong>고구려 문화를 기반</strong>으로 당의 문화를 받아들이고 말갈의 토착 문화를 흡수하였다.<br><br>가장 오랜 기간 발해의 수도였던 <span class='kw'>상경성</span>은 당의 장안성을 모방하여 건설한 계획도시로서 <span class='kw'>외성</span>과 <span class='kw'>내성</span>, <span class='kw'>주작대로</span>를 갖추었다. 상경성에는 궁궐터와 성벽의 흔적이 남아 있으며, 이곳에서 고구려 문화의 전통을 이어받은 <strong>온돌 시설</strong>과 불상, 기와 등이 발견되었다.<br><br>발해의 대표적인 고분으로는 <span class='kw'>정혜 공주 묘</span>와 <span class='kw'>정효 공주 묘</span>가 있다. <strong>정혜 공주 묘</strong>는 고구려 고분 양식을 계승하여 모줄임천장 구조를 갖춘 <span class='kw'>굴식 돌방무덤</span> 양식으로 만들었다. <strong>정효 공주 묘</strong>는 당의 영향을 받아 <span class='kw'>벽돌무덤</span>으로 만들었지만, 내부의 천장은 고구려의 양식을 계승하였다.<br><br>한편, 발해의 일반 백성들이 주로 만든 <span class='kw'>흙무덤</span>과 <span class='kw'>말갈식 토기</span> 등은 말갈의 문화 전통을 보여 준다.</div></div></div>
+</div>
+<div class="page" id="page-quiz">
+  <div class="progress-wrap">
+    <div class="progress-info"><span id="progressTxt">0 / 12 완료</span><span id="progressPct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div class="quiz-wrap">
+    <div class="sdiv"><span>§01 · 유학과 불교</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">발해는 교육 기관 <span class='kw'>주자감</span>을 설치하여 유학을 가르쳤다. 발해의 유학 수준이 높았음을 보여 주는 유물은 <span class='kw'>정혜 공주</span>와 <span class='kw'>정효 공주</span>의 묘지석이다.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q1</span><span class="q-text">발해에서 유학 교육을 위해 설치한 교육 기관은?</span></div>
+  <button class="ans-toggle" id="q1-tb" onclick="toggleAns('q1')">▶ 정답 보기</button>
+  <div class="ans-card" id="q1-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">주자감</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q2</span><span class="q-text">발해의 유학 수준이 높았음을 보여 주는 묘지석의 주인공 두 명은?</span></div>
+  <button class="ans-toggle" id="q2-tb" onclick="toggleAns('q2')">▶ 정답 보기</button>
+  <div class="ans-card" id="q2-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">정혜 공주, 정효 공주</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q3</span><span class="q-text">상경성에 남아 있는 거대한 석등이 짐작하게 하는 것은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q3',this,true)">발해에서 불교가 융성하였다는 사실</button>
+    <button class="two-btn" onclick="checkTwo('q3',this,false)">발해가 유학을 중시했다는 사실</button>
+  </div>
+  <div class="feedback" id="q3-fb"></div>
+</div></div></div><div class="sdiv"><span>§02 · 융합적인 발해 문화</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">발해 문화의 기반: <strong>고구려 문화</strong> + 당의 문화 + 말갈 토착 문화. <span class='kw'>상경성</span>은 당의 <span class='kw'>장안성</span>을 모방한 계획 도시로 <span class='kw'>외성·내성·주작대로</span>를 갖추었다.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q4</span><span class="q-text">발해 문화의 세 가지 구성 요소는?</span></div>
+  <button class="ans-toggle" id="q4-tb" onclick="toggleAns('q4')">▶ 정답 보기</button>
+  <div class="ans-card" id="q4-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">고구려 문화, 당의 문화, 말갈 토착 문화</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q5</span><span class="q-text">발해가 가장 오랜 기간 수도로 삼은 도시는?</span></div>
+  <button class="ans-toggle" id="q5-tb" onclick="toggleAns('q5')">▶ 정답 보기</button>
+  <div class="ans-card" id="q5-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">상경성</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q6</span><span class="q-text">상경성이 당의 장안성을 모방했음을 보여 주는 구조는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q6',this,true)">외성·내성·주작대로를 갖춘 계획도시 구조</button>
+    <button class="two-btn" onclick="checkTwo('q6',this,false)">온돌 시설과 고구려식 기와</button>
+  </div>
+  <div class="feedback" id="q6-fb"></div>
+</div></div></div><div class="sdiv"><span>§02 · 발해의 고분</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content"><strong>정혜 공주 묘</strong>: <span class='kw'>굴식 돌방무덤</span> + 모줄임천장 → <strong>고구려 양식 계승</strong>. <strong>정효 공주 묘</strong>: <span class='kw'>벽돌무덤</span>(당 영향) + 천장은 <strong>고구려 양식</strong>.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q7</span><span class="q-text">정혜 공주 묘의 무덤 양식은?</span></div>
+  <button class="ans-toggle" id="q7-tb" onclick="toggleAns('q7')">▶ 정답 보기</button>
+  <div class="ans-card" id="q7-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">굴식 돌방무덤</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q8</span><span class="q-text">정혜 공주 묘가 고구려 양식을 계승했음을 보여 주는 특징은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q8',this,true)">모줄임천장 구조를 갖춘 굴식 돌방무덤</button>
+    <button class="two-btn" onclick="checkTwo('q8',this,false)">벽돌로 만든 외벽 구조</button>
+  </div>
+  <div class="feedback" id="q8-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q9</span><span class="q-text">정효 공주 묘에서 고구려와 당의 문화가 동시에 나타나는 부분은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q9',this,true)">외형은 당의 벽돌무덤, 내부 천장은 고구려 양식</button>
+    <button class="two-btn" onclick="checkTwo('q9',this,false)">외형은 고구려 양식, 내부 벽화는 당 양식</button>
+  </div>
+  <div class="feedback" id="q9-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q10</span><span class="q-text">(OX) 발해 일반 백성들이 주로 만든 흙무덤과 말갈식 토기는 말갈의 문화 전통을 보여 준다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q10',this,'O','O')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q10',this,'X','O')">❌</button>
+  </div>
+  <div class="feedback" id="q10-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q11</span><span class="q-text">(OX) 발해는 고구려 문화만을 계승하여 독자적인 문화를 발전시켰다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q11',this,'O','X')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q11',this,'X','X')">❌</button>
+  </div>
+  <div class="feedback" id="q11-fb"></div>
+</div></div></div><div class="sdiv"><span>§02 · 고구려 계승 증거</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">상경성에서 발견된 <strong>온돌 시설</strong>은 고구려 문화의 전통을 계승한 증거다. 발해와 고구려 유적 모두에서 <strong>ㄱ자·ㄷ자·ㄴ자 모양</strong>의 온돌이 발견되었다.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q12</span><span class="q-text">발해가 고구려 문화를 계승한 근거로 적절한 것은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q12',this,true)">상경성에서 발견된 온돌 시설과 고구려식 기와</button>
+    <button class="two-btn" onclick="checkTwo('q12',this,false)">상경성의 바둑판 모양 도시 구조</button>
+  </div>
+  <div class="feedback" id="q12-fb"></div>
+</div></div></div>
+    <div class="submit-wrap"><button class="retry-btn" onclick="showResult()">채점 결과 보기</button></div>
+  </div>
+  
+<div class="result-bar" id="resultSection" style="display:none;">
+  <div class="result-card">
+    <div class="result-title">채점 완료</div>
+    <div class="result-score" id="resultScore">—</div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <button class="retry-btn" onclick="resetAll()">다시 풀기</button>
+  </div>
+</div>
+</div>
+<script>
+const TOTAL = 12;
+let answered = new Set();
+let score = 0;
+
+function togglePara(h) {
+  const c = h.nextElementSibling;
+  const a = h.querySelector('.para-arrow');
+  const l = h.querySelector('.para-toggle-btn');
+  const o = c.classList.contains('open');
+  c.classList.toggle('open', !o);
+  a.classList.toggle('open', !o);
+  l.innerHTML = o ? '<span class="para-arrow">▼</span> 펼치기' : '<span class="para-arrow open">▼</span> 접기';
+}
+
+function updateProgress() {
+  const n = answered.size;
+  const p = Math.round(n / TOTAL * 100);
+  document.getElementById('progressTxt').textContent = n + ' / ' + TOTAL + ' 완료';
+  document.getElementById('progressPct').textContent = p + '%';
+  document.getElementById('progressFill').style.width = p + '%';
+  document.getElementById('scoreBadge').textContent = score + ' / ' + TOTAL;
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.tab').forEach((x, i) =>
+    x.classList.toggle('active', (i===0 && t==='content') || (i===1 && t==='quiz')));
+  document.getElementById('page-content').classList.toggle('active', t === 'content');
+  document.getElementById('page-quiz').classList.toggle('active', t === 'quiz');
+}
+
+// 단답형: 토글 버튼 클릭 → 정답 보이기/숨기기
+function toggleAns(id) {
+  const btn = document.getElementById(id + '-tb');
+  const card = document.getElementById(id + '-ac');
+  const isOpen = card.classList.contains('show');
+  if (isOpen) {
+    card.classList.remove('show');
+    btn.classList.remove('open');
+    btn.textContent = '▶ 정답 보기';
+  } else {
+    card.classList.add('show');
+    btn.classList.add('open');
+    btn.textContent = '▼ 정답 숨기기';
+    if (!answered.has(id)) {
+      answered.add(id);
+      score++;
+      updateProgress();
+    }
+  }
+}
+
+// 2지선택
+function checkTwo(id, btn, isOk) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.two-btn').forEach(b => { if (b !== btn) b.classList.add('ok'); });
+  wrap.querySelectorAll('.two-btn').forEach(b => b.disabled = true);
+  fb.textContent = isOk ? '✓ 정답입니다!' : '✗ 정답을 확인하세요.';
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+// OX형
+function checkOX(id, btn, sel, cor) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  const isOk = sel === cor;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.ox-btn').forEach(b => {
+    const v = b.getAttribute('onclick').includes(",'O'") ? 'O' : 'X';
+    if (v === cor) b.classList.add('ok');
+  });
+  wrap.querySelectorAll('.ox-btn').forEach(b => b.disabled = true);
+  const ex = {"q10": "흙무덤과 말갈식 토기는 발해가 말갈 토착 문화도 흡수하였음을 보여 줍니다.", "q11": "발해는 고구려 문화를 기반으로 당의 문화와 말갈의 토착 문화를 함께 흡수하였습니다."};
+  fb.textContent = (isOk ? '✓ 정답! ' : '✗ 오답. ') + (ex[id] || '');
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+function showResult() {
+  const p = Math.round(score / TOTAL * 100);
+  const m = p>=90 ? '완벽해요! 🏆' : p>=70 ? '잘했어요! 👍' : p>=50 ? '본문을 한 번 더 읽어봐요 📖' : '처음부터 다시 해봐요 💪';
+  document.getElementById('resultScore').textContent = score + ' / ' + TOTAL;
+  document.getElementById('resultSub').textContent = '정답률 ' + p + '%';
+  document.getElementById('resultMsg').textContent = m;
+  document.getElementById('resultSection').style.display = 'block';
+  document.getElementById('resultSection').scrollIntoView({behavior: 'smooth'});
+}
+
+function resetAll() {
+  answered.clear(); score = 0; updateProgress();
+  // 단답형 초기화
+  document.querySelectorAll('.ans-toggle').forEach(e => { e.classList.remove('open'); e.textContent = '▶ 정답 보기'; });
+  document.querySelectorAll('.ans-card').forEach(e => e.classList.remove('show', 'hidden'));
+  // OX / 2지선택 초기화
+  document.querySelectorAll('.two-btn, .ox-btn').forEach(e => { e.disabled = false; e.classList.remove('ok','no'); });
+  document.querySelectorAll('.feedback').forEach(e => { e.className = 'feedback'; e.textContent = ''; e.onclick = null; });
+  // 본문힌트 닫기
+  document.querySelectorAll('.para-content').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-arrow').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-toggle-btn').forEach(e => { e.innerHTML = '<span class="para-arrow">▼</span> 펼치기'; });
+  document.getElementById('resultSection').style.display = 'none';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+updateProgress();
+</script>
+</body>
+</html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>고구려가 수·당의 침략을 막아 내다 — 기말 대비</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F2EDE6;--card:#FFF;--red:#8B1A1A;--red-mid:#B83030;--red-light:#E8C4C4;--gold:#C8960C;--gold-light:#F5E4A0;--dark:#1A1008;--muted:#6B5040;--border:#D8CCBC;--correct:#2A6B2A;--correct-bg:#E8F5E8;--wrong:#8B1A1A;--wrong-bg:#F5E8E8;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Noto Sans KR",sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;padding:0 0 80px;}
+  .top-bar{background:var(--red);color:#F5EDE0;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(139,26,26,.3);}
+  .top-bar h1{font-family:"Noto Serif KR",serif;font-size:15px;font-weight:700;}
+  .top-bar .meta{font-size:11px;color:rgba(245,237,224,.7);letter-spacing:1px;margin-bottom:2px;}
+  .score-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 12px;font-size:12px;font-weight:600;color:#F5E4A0;border-radius:20px;white-space:nowrap;}
+  .tabs{display:flex;background:#2A1008;border-bottom:2px solid var(--red);}
+  .tab{flex:1;padding:11px 0;text-align:center;font-size:13px;font-weight:600;color:rgba(245,237,224,.5);cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+  .tab.active{color:#F5E4A0;border-bottom:3px solid var(--gold);margin-bottom:-2px;}
+  .progress-wrap{padding:10px 20px 0;background:var(--bg);}
+  .progress-info{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px;}
+  .progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .4s ease;border-radius:2px;}
+  .page{display:none;} .page.active{display:block;}
+  .content-wrap{max-width:720px;margin:0 auto;padding:20px 16px;}
+  .section-card{background:var(--card);border:1px solid var(--border);margin-bottom:12px;overflow:hidden;}
+  .section-head{background:var(--red);color:#F5EDE0;padding:10px 16px;display:flex;align-items:center;gap:10px;}
+  .section-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold-light);letter-spacing:2px;}
+  .section-title{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;}
+  .section-body{padding:16px;font-size:14px;line-height:1.95;color:#1A1008;}
+  .section-body strong{color:var(--red);font-weight:700;}
+  .section-body .kw{background:var(--gold-light);color:#5A3808;padding:1px 5px;font-weight:600;border-radius:2px;}
+  .quiz-wrap{max-width:720px;margin:0 auto;padding:16px;}
+  .block{margin-bottom:20px;}
+  .para-box{background:var(--card);border:1px solid var(--border);border-bottom:none;border-left:4px solid var(--red);overflow:hidden;}
+  .para-box strong{color:var(--red);font-weight:700;}
+  .para-box .kw{background:var(--gold-light);color:#5A3808;padding:1px 4px;font-weight:600;}
+  .para-header{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;cursor:pointer;user-select:none;background:#FBF6EE;border-bottom:1px solid var(--border);transition:background .15s;}
+  .para-header:hover{background:#F5EDD8;}
+  .para-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:600;}
+  .para-toggle-btn{font-size:11px;color:var(--red);font-weight:600;display:flex;align-items:center;gap:5px;}
+  .para-arrow{display:inline-block;transition:transform .25s ease;font-size:9px;color:var(--muted);}
+  .para-arrow.open{transform:rotate(180deg);}
+  .para-content{font-size:13.5px;line-height:1.85;color:#1A1008;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s ease;padding:0 16px;}
+  .para-content.open{max-height:600px;padding:12px 16px 14px;}
+  .q-list{border:1px solid var(--border);border-top:2px solid var(--gold);background:#FDFAF4;}
+  .q-item{padding:13px 16px;border-bottom:1px solid var(--border);}
+  .q-item:last-child{border-bottom:none;}
+  .q-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:9px;}
+  .q-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold);font-weight:700;min-width:24px;padding-top:2px;}
+  .q-text{font-size:13.5px;line-height:1.65;color:#1A1008;flex:1;font-weight:500;}
+  /* 단답형 - 정답 보기/숨기기 토글 */
+  .ans-toggle{display:block;margin-left:34px;padding:9px 16px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--muted);cursor:pointer;text-align:left;transition:all .15s;width:calc(100% - 34px);border-radius:0;}
+  .ans-toggle:hover{border-color:var(--red);color:var(--red);}
+  .ans-toggle.open{border-color:var(--correct);color:var(--correct);background:var(--correct-bg);}
+  /* 정답 카드 */
+  .ans-card{display:none;margin-left:34px;padding:10px 16px;border-left:3px solid var(--correct);background:var(--correct-bg);width:calc(100% - 34px);}
+  .ans-card.show{display:block;}
+  .ans-label{font-size:10px;letter-spacing:1.5px;color:var(--correct);font-weight:600;margin-bottom:4px;}
+  .ans-text{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;color:#1A1008;}
+  /* OX / 2지선택 */
+  .ox-wrap{display:flex;gap:10px;margin-left:34px;}
+  .ox-btn{width:56px;height:40px;border:1.5px solid var(--border);background:#fff;font-size:20px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;border-radius:4px;}
+  .ox-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .ox-btn.ok{background:var(--correct-bg);border-color:var(--correct);}
+  .ox-btn.no{background:var(--wrong-bg);border-color:var(--wrong);}
+  .ox-btn:disabled{cursor:default;}
+  .two-wrap{display:flex;gap:10px;margin-left:34px;flex-wrap:wrap;}
+  .two-btn{flex:1;min-width:120px;padding:9px 10px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--dark);cursor:pointer;transition:all .15s;text-align:center;font-weight:500;}
+  .two-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .two-btn.ok{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);font-weight:700;}
+  .two-btn.no{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong);}
+  .two-btn:disabled{cursor:default;}
+  .feedback{margin-left:34px;margin-top:7px;font-size:12.5px;padding:7px 11px;border-radius:2px;display:none;line-height:1.55;cursor:pointer;transition:opacity .2s,filter .2s;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--correct-bg);color:var(--correct);border-left:3px solid var(--correct);}
+  .feedback.no{background:var(--wrong-bg);color:var(--wrong);border-left:3px solid var(--wrong);}
+  .feedback.hidden{opacity:0.07;filter:blur(4px);user-select:none;}
+  .sdiv{display:flex;align-items:center;gap:12px;margin:24px 0 14px;}
+  .sdiv span{font-family:"Noto Serif KR",serif;font-size:12px;color:var(--red);letter-spacing:1.5px;font-weight:700;white-space:nowrap;}
+  .sdiv::before,.sdiv::after{content:"";flex:1;height:1px;background:var(--red-light);}
+  .result-bar{max-width:720px;margin:0 auto;padding:0 16px;}
+  .result-card{background:var(--card);border:2px solid var(--red);padding:36px 24px;text-align:center;margin-top:24px;}
+  .result-title{font-family:"Noto Serif KR",serif;font-size:20px;font-weight:900;color:var(--red);margin-bottom:6px;}
+  .result-score{font-family:"Noto Serif KR",serif;font-size:56px;font-weight:900;color:var(--dark);line-height:1;margin:20px 0 6px;}
+  .result-sub{font-size:13px;color:var(--muted);margin-bottom:16px;}
+  .result-msg{font-size:15px;font-weight:600;color:var(--red);margin-bottom:28px;}
+  .retry-btn{background:var(--red);color:#fff;border:none;padding:13px 36px;font-size:14px;font-weight:600;font-family:"Noto Sans KR",sans-serif;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background .2s;}
+  .retry-btn:hover{background:var(--red-mid);}
+  .submit-wrap{text-align:center;margin-top:20px;padding-bottom:10px;}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <div><div class="meta">남북국 시대의 전개</div><h1>고구려가 수·당의 침략을 막아 내다</h1></div>
+  <div class="score-badge" id="scoreBadge">0 / 0</div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('content')">📖 본문</div>
+  <div class="tab" onclick="switchTab('quiz')">✏️ 문제</div>
+</div>
+<div class="page active" id="page-content">
+  <div class="content-wrap"><div class="section-card"><div class="section-head"><span class="section-num">§01</span><span class="section-title">6세기 후반 동아시아 정세</span></div><div class="section-body">6세기 중반 신라는 한강 유역을 차지하여 삼국 경쟁에서 주도권을 잡았지만, 고구려와 백제의 공격으로 어려움을 겪었다. 이 무렵 중국에서는 <strong>수</strong>가 대륙을 통일하여(589) 동아시아의 국제 정세가 크게 바뀌었다.<br><br>수의 등장에 위협을 느낀 고구려는 북쪽의 <span class='kw'>돌궐</span>과 손을 잡고, 남쪽의 백제·왜와 연결을 꾀하였다. 신라는 고구려와 백제의 공격에 맞서기 위해 수에 도움을 요청하였다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§02</span><span class="section-title">고구려와 수의 전쟁</span></div><div class="section-body">수가 고구려에 복속을 요구하자, 고구려는 이를 거절하고 <strong>요서 지방</strong>을 공격하였다. 수 문제가 침략하였으나 홍수와 전염병으로 실패하였다.<br><br>수 양제는 <span class='kw'>113만 명</span>이 넘는 군사를 이끌고 다시 침략하였다. 양제는 우중문에게 <span class='kw'>30만 명</span>의 별동대를 이끌고 평양성을 공격하도록 하였다. 그러나 <strong>을지문덕</strong>이 이끄는 고구려군은 도망치는 척하며 수군을 유인한 뒤, 후퇴하는 수군이 <span class='kw'>살수</span>를 건널 때 총공격하여 크게 무찔렀다(<strong>살수 대첩, 612</strong>). 수는 무리한 고구려 원정으로 국력이 소모되어 결국 멸망하였다(618).</div></div><div class="section-card"><div class="section-head"><span class="section-num">§03</span><span class="section-title">연개소문의 집권</span></div><div class="section-body">수의 뒤를 이은 <strong>당</strong>은 건국 초기에 고구려와 친선 관계를 맺었다. 그러나 당 태종이 즉위한 뒤에는 고구려를 압박하였다. 이에 고구려는 국경에 <span class='kw'>천리장성</span>을 쌓고 군사력을 길렀다.<br><br>이 무렵 <strong>연개소문</strong>은 정변을 일으켜 <span class='kw'>보장왕</span>을 세우고 <span class='kw'>대막리지</span>가 되었다. 대막리지는 행정권과 군사권을 장악한 최고 관직이다. 권력을 잡은 연개소문은 신라를 공격하고 당을 견제하는 강경한 태도를 취하였다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§04</span><span class="section-title">고구려와 당의 전쟁 — 안시성 싸움</span></div><div class="section-body">당 태종은 연개소문의 정변을 구실로 고구려를 침략하였다. 당군은 요동성·백암성을 차례로 무너뜨리고 <strong>안시성</strong>을 포위하였다. 그러나 안시성의 <span class='kw'>성주와 백성</span>은 결사적으로 저항하여 당의 공격을 끝내 물리쳤다(<strong>안시성 싸움, 645</strong>).<br><br>고구려는 수·당의 침략을 물리쳐 <strong>중국 중심의 국제 질서에 복속되지 않고 독자적인 세력을 유지</strong>하였다. 그러나 오랜 전쟁으로 국토가 황폐해지고 국력이 약해졌다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§05</span><span class="section-title">고구려의 방어 원동력</span></div><div class="section-body"><strong>① 산성을 이용한 방어 체제:</strong> 험준한 지형에 산성을 쌓아 방어력을 높였다. 전쟁이 일어나면 평지의 농작물과 건물을 태워 적이 이용할 수 없게 하고(<span class='kw'>청야 전술</span>), 산성에서 장기전으로 항전하였다.<br><br><strong>② 우수한 전투력:</strong> 기병과 보병이 각각 다른 활을 사용하였다. 머리부터 발끝까지 철갑으로 무장한 <span class='kw'>개마 무사</span>는 고구려의 강한 군사력을 상징한다.<br><br><strong>③ 뛰어난 제련 기술:</strong> <span class='kw'>요동 지방의 철광 지대</span>를 확보하고 우수한 제련 기술로 강력한 철제 무기와 갑옷을 만들었다.</div></div></div>
+</div>
+<div class="page" id="page-quiz">
+  <div class="progress-wrap">
+    <div class="progress-info"><span id="progressTxt">0 / 14 완료</span><span id="progressPct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div class="quiz-wrap">
+    <div class="sdiv"><span>§01 · 6세기 후반 정세</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">수의 등장에 위협을 느낀 고구려는 북쪽의 <strong>___</strong>과 손을 잡고, 남쪽의 백제·왜와 연결을 꾀하였다.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q1</span><span class="q-text">수 등장 후 고구려가 손을 잡은 북쪽 유목 세력은?</span></div>
+  <button class="ans-toggle" id="q1-tb" onclick="toggleAns('q1')">▶ 정답 보기</button>
+  <div class="ans-card" id="q1-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">돌궐</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q2</span><span class="q-text">(OX) 신라는 수의 등장 이후 고구려·백제의 공격에 맞서 수에 도움을 요청하였다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q2',this,'O','O')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q2',this,'X','O')">❌</button>
+  </div>
+  <div class="feedback" id="q2-fb"></div>
+</div></div></div><div class="sdiv"><span>§02 · 고구려와 수의 전쟁</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content"><strong>을지문덕</strong>이 이끄는 고구려군은 도망치는 척하며 수군을 유인한 뒤, 후퇴하는 수군이 <span class='kw'>살수</span>를 건널 때 총공격하여 크게 무찔렀다. 수는 무리한 고구려 원정으로 결국 멸망하였다.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q3</span><span class="q-text">살수 대첩에서 고구려군을 이끈 장수는?</span></div>
+  <button class="ans-toggle" id="q3-tb" onclick="toggleAns('q3')">▶ 정답 보기</button>
+  <div class="ans-card" id="q3-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">을지문덕</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q4</span><span class="q-text">을지문덕의 전술은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q4',this,true)">도망치는 척 유인 후 살수에서 총공격</button>
+    <button class="two-btn" onclick="checkTwo('q4',this,false)">성에서 굳게 버티며 수군이 지치길 기다림</button>
+  </div>
+  <div class="feedback" id="q4-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q5</span><span class="q-text">수가 멸망한 원인은?</span></div>
+  <button class="ans-toggle" id="q5-tb" onclick="toggleAns('q5')">▶ 정답 보기</button>
+  <div class="ans-card" id="q5-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">무리한 고구려 원정으로 국력 소모</div>
+  </div>
+</div></div></div><div class="sdiv"><span>§03 · 연개소문의 집권</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content"><strong>연개소문</strong>이 정변을 일으켜 <span class='kw'>보장왕</span>을 세우고 <span class='kw'>대막리지</span>가 되었다. 대막리지는 행정권과 군사권을 장악한 최고 관직이다.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q6</span><span class="q-text">연개소문이 오른 최고 관직의 이름은?</span></div>
+  <button class="ans-toggle" id="q6-tb" onclick="toggleAns('q6')">▶ 정답 보기</button>
+  <div class="ans-card" id="q6-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">대막리지</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q7</span><span class="q-text">대막리지가 장악한 두 가지 권한은?</span></div>
+  <button class="ans-toggle" id="q7-tb" onclick="toggleAns('q7')">▶ 정답 보기</button>
+  <div class="ans-card" id="q7-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">행정권과 군사권</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q8</span><span class="q-text">(OX) 연개소문은 당과의 관계를 강화하고 신라에는 유화적인 태도를 취하였다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q8',this,'O','X')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q8',this,'X','X')">❌</button>
+  </div>
+  <div class="feedback" id="q8-fb"></div>
+</div></div></div><div class="sdiv"><span>§04 · 안시성 싸움</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">당 태종은 <strong>연개소문의 정변</strong>을 구실로 고구려를 침략하였다. 안시성의 성주와 백성은 결사적으로 저항하여 당의 공격을 물리쳤다. 고구려는 수·당의 침략을 물리쳐 <strong>독자적인 세력을 유지</strong>하였으나, 오랜 전쟁으로 국력이 약해졌다.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q9</span><span class="q-text">당 태종이 고구려를 침략한 구실은?</span></div>
+  <button class="ans-toggle" id="q9-tb" onclick="toggleAns('q9')">▶ 정답 보기</button>
+  <div class="ans-card" id="q9-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">연개소문의 정변</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q10</span><span class="q-text">수·당의 침략을 막아낸 결과, 고구려가 유지한 것은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q10',this,true)">중국에 복속되지 않는 독자적 세력</button>
+    <button class="two-btn" onclick="checkTwo('q10',this,false)">중국 중심 국제 질서 편입</button>
+  </div>
+  <div class="feedback" id="q10-fb"></div>
+</div></div></div><div class="sdiv"><span>§05 · 고구려의 방어 원동력</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">고구려는 험준한 지형에 <strong>산성</strong>을 쌓았다. 전쟁 시 평지의 농작물과 건물을 태워 적의 보급을 끊었다(<span class='kw'>청야 전술</span>). 머리부터 발끝까지 철갑으로 무장한 <span class='kw'>개마 무사</span>는 고구려 군사력의 상징이다. <span class='kw'>요동 지방의 철광 지대</span>에서 확보한 철로 강력한 무기를 만들었다.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q11</span><span class="q-text">고구려가 전쟁 시 평지의 농작물과 건물을 태운 이유는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q11',this,true)">적이 이용할 수 없게 하기 위해</button>
+    <button class="two-btn" onclick="checkTwo('q11',this,false)">산성으로 신속히 이동하기 위해</button>
+  </div>
+  <div class="feedback" id="q11-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q12</span><span class="q-text">머리부터 발끝까지 철갑으로 무장한 고구려 기병을 무엇이라 하는가?</span></div>
+  <button class="ans-toggle" id="q12-tb" onclick="toggleAns('q12')">▶ 정답 보기</button>
+  <div class="ans-card" id="q12-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">개마 무사</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q13</span><span class="q-text">고구려의 철제 무기 생산 기반이 된 지역은?</span></div>
+  <button class="ans-toggle" id="q13-tb" onclick="toggleAns('q13')">▶ 정답 보기</button>
+  <div class="ans-card" id="q13-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">요동 지방의 철광 지대</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q14</span><span class="q-text">(OX) 고구려 기병과 보병은 같은 종류의 활을 사용하여 전투력을 높였다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q14',this,'O','X')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q14',this,'X','X')">❌</button>
+  </div>
+  <div class="feedback" id="q14-fb"></div>
+</div></div></div>
+    <div class="submit-wrap"><button class="retry-btn" onclick="showResult()">채점 결과 보기</button></div>
+  </div>
+  
+<div class="result-bar" id="resultSection" style="display:none;">
+  <div class="result-card">
+    <div class="result-title">채점 완료</div>
+    <div class="result-score" id="resultScore">—</div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <button class="retry-btn" onclick="resetAll()">다시 풀기</button>
+  </div>
+</div>
+</div>
+<script>
+const TOTAL = 14;
+let answered = new Set();
+let score = 0;
+
+function togglePara(h) {
+  const c = h.nextElementSibling;
+  const a = h.querySelector('.para-arrow');
+  const l = h.querySelector('.para-toggle-btn');
+  const o = c.classList.contains('open');
+  c.classList.toggle('open', !o);
+  a.classList.toggle('open', !o);
+  l.innerHTML = o ? '<span class="para-arrow">▼</span> 펼치기' : '<span class="para-arrow open">▼</span> 접기';
+}
+
+function updateProgress() {
+  const n = answered.size;
+  const p = Math.round(n / TOTAL * 100);
+  document.getElementById('progressTxt').textContent = n + ' / ' + TOTAL + ' 완료';
+  document.getElementById('progressPct').textContent = p + '%';
+  document.getElementById('progressFill').style.width = p + '%';
+  document.getElementById('scoreBadge').textContent = score + ' / ' + TOTAL;
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.tab').forEach((x, i) =>
+    x.classList.toggle('active', (i===0 && t==='content') || (i===1 && t==='quiz')));
+  document.getElementById('page-content').classList.toggle('active', t === 'content');
+  document.getElementById('page-quiz').classList.toggle('active', t === 'quiz');
+}
+
+// 단답형: 토글 버튼 클릭 → 정답 보이기/숨기기
+function toggleAns(id) {
+  const btn = document.getElementById(id + '-tb');
+  const card = document.getElementById(id + '-ac');
+  const isOpen = card.classList.contains('show');
+  if (isOpen) {
+    card.classList.remove('show');
+    btn.classList.remove('open');
+    btn.textContent = '▶ 정답 보기';
+  } else {
+    card.classList.add('show');
+    btn.classList.add('open');
+    btn.textContent = '▼ 정답 숨기기';
+    if (!answered.has(id)) {
+      answered.add(id);
+      score++;
+      updateProgress();
+    }
+  }
+}
+
+// 2지선택
+function checkTwo(id, btn, isOk) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.two-btn').forEach(b => { if (b !== btn) b.classList.add('ok'); });
+  wrap.querySelectorAll('.two-btn').forEach(b => b.disabled = true);
+  fb.textContent = isOk ? '✓ 정답입니다!' : '✗ 정답을 확인하세요.';
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+// OX형
+function checkOX(id, btn, sel, cor) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  const isOk = sel === cor;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.ox-btn').forEach(b => {
+    const v = b.getAttribute('onclick').includes(",'O'") ? 'O' : 'X';
+    if (v === cor) b.classList.add('ok');
+  });
+  wrap.querySelectorAll('.ox-btn').forEach(b => b.disabled = true);
+  const ex = {"q2": "신라는 수에 도움을 요청하였습니다.", "q8": "연개소문은 신라를 공격하고 당을 견제하는 강경한 태도를 취하였습니다.", "q14": "기병과 보병은 각각 다른 활을 사용하였습니다."};
+  fb.textContent = (isOk ? '✓ 정답! ' : '✗ 오답. ') + (ex[id] || '');
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+function showResult() {
+  const p = Math.round(score / TOTAL * 100);
+  const m = p>=90 ? '완벽해요! 🏆' : p>=70 ? '잘했어요! 👍' : p>=50 ? '본문을 한 번 더 읽어봐요 📖' : '처음부터 다시 해봐요 💪';
+  document.getElementById('resultScore').textContent = score + ' / ' + TOTAL;
+  document.getElementById('resultSub').textContent = '정답률 ' + p + '%';
+  document.getElementById('resultMsg').textContent = m;
+  document.getElementById('resultSection').style.display = 'block';
+  document.getElementById('resultSection').scrollIntoView({behavior: 'smooth'});
+}
+
+function resetAll() {
+  answered.clear(); score = 0; updateProgress();
+  // 단답형 초기화
+  document.querySelectorAll('.ans-toggle').forEach(e => { e.classList.remove('open'); e.textContent = '▶ 정답 보기'; });
+  document.querySelectorAll('.ans-card').forEach(e => e.classList.remove('show', 'hidden'));
+  // OX / 2지선택 초기화
+  document.querySelectorAll('.two-btn, .ox-btn').forEach(e => { e.disabled = false; e.classList.remove('ok','no'); });
+  document.querySelectorAll('.feedback').forEach(e => { e.className = 'feedback'; e.textContent = ''; e.onclick = null; });
+  // 본문힌트 닫기
+  document.querySelectorAll('.para-content').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-arrow').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-toggle-btn').forEach(e => { e.innerHTML = '<span class="para-arrow">▼</span> 펼치기'; });
+  document.getElementById('resultSection').style.display = 'none';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+updateProgress();
+</script>
+</body>
+</html>

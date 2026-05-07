@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>04 시장 가격의 변동</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@600;900&display=swap');
+
+  :root {
+    --bg: #f8f6f1; --white: #ffffff; --ink: #1c1c1e; --muted: #6b6b6b;
+    --border: #e0d9ce; --accent: #2e6b8a; --accent2: #b84a1e;
+    --gold: #c89c2a; --green: #2a6b4a; --red: #c0392b; --blue: #1e4d8c;
+    --purple: #6b3a9a; --soft: #eef3f6;
+    --ans-bg: #e8f4ea; --ans-text: #1a4a2a;
+    --tag-a: #ddeeff; --tag-a-t: #1a3a6b;
+    --tag-b: #ddf0e8; --tag-b-t: #1a4a2a;
+    --tag-c: #f0e8fc; --tag-c-t: #4a1a7a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; padding-bottom: 80px; }
+
+  .header { background: var(--ink); color: #fff; padding: 22px 18px 18px; }
+  .header-meta { font-size: 0.68rem; letter-spacing: 2px; color: #aaa; text-transform: uppercase; margin-bottom: 6px; }
+  .header h1 { font-family: 'Noto Serif KR', serif; font-size: 1.35rem; font-weight: 900; line-height: 1.3; }
+  .header-sub { font-size: 0.76rem; color: #bbb; margin-top: 5px; }
+
+  .tabbar { display: flex; background: #fff; border-bottom: 2px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .tabbar-btn { flex: 1; padding: 13px 8px; font-family: 'Noto Sans KR', sans-serif; font-size: 0.8rem; font-weight: 700; border: none; background: none; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
+  .tabbar-btn.on { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .panel { display: none; }
+  .panel.on { display: block; }
+  .content-wrap { padding: 0 0 20px; }
+
+  .ch-nav { display: flex; overflow-x: auto; background: var(--soft); border-bottom: 1px solid var(--border); scrollbar-width: none; position: sticky; top: 48px; z-index: 99; }
+  .ch-nav::-webkit-scrollbar { display: none; }
+  .ch-btn { flex: none; padding: 9px 14px; font-family: 'Noto Sans KR', sans-serif; font-size: 0.74rem; font-weight: 700; border: none; background: none; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.18s; }
+  .ch-btn.on { color: var(--accent2); border-bottom-color: var(--accent2); }
+
+  .ch-section { display: none; padding: 16px 16px 0; }
+  .ch-section.on { display: block; }
+  .ch-heading { font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 900; color: var(--accent2); border-left: 4px solid var(--accent2); padding: 6px 0 6px 12px; margin-bottom: 14px; line-height: 1.4; }
+
+  .para-block { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; font-size: 0.87rem; line-height: 1.85; }
+  .para-block .para-label { font-size: 0.65rem; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; display: block; }
+  .hl  { color: var(--accent2); font-weight: 900; }
+  .hl2 { color: var(--accent);  font-weight: 900; }
+  .hl3 { color: var(--green);   font-weight: 900; }
+  .hlr { color: var(--red);     font-weight: 900; }
+  .hlb { color: var(--blue);    font-weight: 900; }
+  .hlp { color: var(--purple);  font-weight: 900; }
+
+  .tb { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 6px 0; }
+  .tb th { background: var(--ink); color: #fff; padding: 8px 10px; text-align: left; font-weight: 700; }
+  .tb th.red { background: var(--red); }
+  .tb th.blue { background: var(--blue); }
+  .tb th.purple { background: var(--purple); }
+  .tb td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+  .tb tr:nth-child(even) td { background: #f9f7f3; }
+  .tb td.ct { text-align: center; }
+
+  .kw-box { background: #fffbf0; border: 1px solid var(--gold); border-radius: 8px; padding: 10px 14px; margin-top: 8px; font-size: 0.82rem; line-height: 1.65; }
+  .kw-box .kw-title { font-size: 0.7rem; font-weight: 900; color: #8a6200; letter-spacing: 1px; margin-bottom: 4px; display: block; }
+
+  .footnote { font-size: 0.76rem; color: var(--muted); border-top: 1px dashed var(--border); margin-top: 10px; padding-top: 8px; line-height: 1.65; }
+  .footnote span { color: var(--accent); font-weight: 700; margin-right: 4px; }
+
+  /* factor tags */
+  .factor-list { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+  .factor-row { display: flex; align-items: flex-start; gap: 10px; background: var(--soft); border-radius: 8px; padding: 9px 12px; font-size: 0.83rem; line-height: 1.6; }
+  .factor-tag { flex-shrink: 0; padding: 2px 9px; border-radius: 20px; font-size: 0.7rem; font-weight: 900; }
+  .ft-red { background: #fde8e4; color: var(--red); }
+  .ft-blue { background: #e4eeff; color: var(--blue); }
+  .ft-green { background: #e4f5ec; color: var(--green); }
+  .ft-purple { background: #f0e8fc; color: var(--purple); }
+
+  /* result arrows */
+  .result-box { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin: 6px 0; font-size: 0.82rem; line-height: 1.6; }
+  .arr { color: var(--muted); }
+
+  /* quiz */
+  .quiz-wrap { padding: 14px 16px 0; }
+  .quiz-header { background: var(--ink); border-radius: 12px; padding: 14px 16px; color: #fff; margin-bottom: 14px; font-size: 0.83rem; line-height: 1.6; }
+  .quiz-header strong { color: #f0c060; }
+
+  .qbar { display: flex; gap: 7px; margin-bottom: 10px; flex-wrap: wrap; }
+  .qbtn { padding: 6px 12px; border-radius: 20px; border: none; font-family: 'Noto Sans KR', sans-serif; font-size: 0.74rem; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+  .qbtn-outline { background: var(--white); border: 1.5px solid var(--ink); color: var(--ink); }
+  .qbtn-outline:hover { background: var(--ink); color: #fff; }
+  .qbtn-fill { background: var(--accent2); color: #fff; }
+  .qbtn-active { background: var(--accent); color: #fff; }
+
+  .prog-wrap { margin-bottom: 12px; }
+  .prog-bar { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 99px; transition: width 0.35s; width: 0%; }
+  .prog-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 3px; text-align: right; }
+
+  .q-list { display: flex; flex-direction: column; gap: 9px; }
+  .qcard { background: var(--white); border: 1.5px solid var(--border); border-radius: 11px; overflow: hidden; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: box-shadow 0.18s, border-color 0.18s; }
+  .qcard:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.07); border-color: var(--accent); }
+  .qcard.open { border-color: var(--accent); }
+  .qcard-top { display: flex; align-items: flex-start; gap: 10px; padding: 12px 13px; }
+  .qnum { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 0.68rem; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+  .qcard.open .qnum { background: var(--accent); }
+  .qbody { flex: 1; }
+  .qtag { display: inline-block; font-size: 0.62rem; font-weight: 900; padding: 2px 7px; border-radius: 20px; margin-bottom: 4px; }
+  .tA { background: var(--tag-a); color: var(--tag-a-t); }
+  .tB { background: var(--tag-b); color: var(--tag-b-t); }
+  .tC { background: var(--tag-c); color: var(--tag-c-t); }
+  .qtext { font-size: 0.87rem; font-weight: 500; line-height: 1.55; }
+  .qans { display: none; padding: 0 13px 12px 47px; }
+  .qcard.open .qans { display: block; }
+  .qans-inner { background: var(--ans-bg); border-radius: 8px; padding: 9px 12px; font-size: 0.85rem; font-weight: 700; color: var(--ans-text); line-height: 1.6; }
+  .qans-inner .albl { font-size: 0.62rem; font-weight: 900; color: var(--green); letter-spacing: 0.5px; margin-bottom: 3px; display: block; }
+
+  footer { text-align: center; padding: 20px; font-size: 0.7rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-meta">Ⅳ. 시장 경제와 가격 · 3단원 · No.04</div>
+  <h1>시장 가격의 변동</h1>
+  <div class="header-sub">수요 변화 요인 · 공급 변화 요인 · 시장 가격의 기능</div>
+</div>
+
+<div class="tabbar">
+  <button class="tabbar-btn on" onclick="switchTab('content',this)">📖 본문 정리</button>
+  <button class="tabbar-btn" onclick="switchTab('quiz',this)">✏️ 문제</button>
+</div>
+
+<!-- ══════════ CONTENT ══════════ -->
+<div class="panel on" id="panel-content">
+  <div class="content-wrap">
+    <div class="ch-nav">
+      <button class="ch-btn on" onclick="switchCh('ch1',this)">① 수요 변화</button>
+      <button class="ch-btn" onclick="switchCh('ch2',this)">② 공급 변화</button>
+      <button class="ch-btn" onclick="switchCh('ch3',this)">③ 가격의 기능</button>
+    </div>
+
+    <!-- CH1 -->
+    <div class="ch-section on" id="ch1">
+      <div class="ch-heading">① 수요의 변화에 따라 가격이 변동한다</div>
+
+      <div class="para-block">
+        <span class="para-label">수요의 변화 요인 — 핵심 구분</span>
+        상품의 가격이 변하면 수요량이 변하지만, <strong>상품 가격 이외의 요인이 변하면 수요 자체가 증가하거나 감소한다.</strong><br><br>
+        수요를 변화시키는 요인은 다음과 같다.
+      </div>
+
+      <div class="factor-list">
+        <div class="factor-row">
+          <span class="factor-tag ft-red">① 소득</span>
+          <div>대부분의 사람은 소득이 늘어나면 상품의 수요를 <strong>늘리고</strong>, 소득이 줄어들면 수요를 <strong>줄이는</strong> 경향이 있다.</div>
+        </div>
+        <div class="factor-row">
+          <span class="factor-tag ft-blue">② 관련 상품 가격</span>
+          <div>
+            • <span class="hlr">대체재</span> 관계: 한 상품의 가격이 오르면 대체재의 수요가 <strong>증가</strong>한다.<br>
+            &nbsp;&nbsp;(예) 돼지고기 가격↑ → 닭고기 수요↑<br>
+            • <span class="hlb">보완재</span> 관계: 한 상품의 가격이 오르면 보완재의 수요가 <strong>감소</strong>한다.<br>
+            &nbsp;&nbsp;(예) 돼지고기 가격↑ → 상추 수요↓
+          </div>
+        </div>
+        <div class="factor-row">
+          <span class="factor-tag ft-green">③ 소비자 기호</span>
+          <div>어떤 음식이 건강에 좋다는 방송이 나오면 그 음식에 대한 관심이 높아져 수요가 <strong>증가</strong>한다. 기호가 줄어들면 수요가 <strong>감소</strong>한다.</div>
+        </div>
+        <div class="factor-row">
+          <span class="factor-tag ft-purple">④ 미래 가격 예상</span>
+          <div>
+            • 미래에 가격이 <strong>오를 것</strong>으로 예상 → 미리 사두려 해 수요 <strong>증가</strong><br>
+            • <strong>신제품 출시</strong> 소식 → 기존 상품의 수요 <strong>감소</strong>
+          </div>
+        </div>
+        <div class="factor-row">
+          <span class="factor-tag ft-red">⑤ 인구수</span>
+          <div>인구가 증가하여 수요자의 수가 늘어나면 수요도 그만큼 <strong>증가</strong>할 수 있다.</div>
+        </div>
+      </div>
+
+      <div class="footnote">
+        <span>* 대체재</span>서로 용도가 비슷하여 한 상품을 대신해서 사용할 수 있는 경쟁 관계의 재화이다.<br>
+        <span>* 보완재</span>함께 소비할 때 만족도가 커지는 보완 관계의 재화이다.<br>
+        <span>* 기호</span>어떤 재화나 서비스를 좋아하는 성향을 말한다.
+      </div>
+
+      <div class="para-block" style="margin-top:10px;">
+        <span class="para-label">수요의 변화에 따른 가격 변동</span>
+        공급이 일정할 때, 수요에 영향을 미치는 요인이 변하면 가격은 다음과 같이 변한다.
+        <table class="tb" style="margin-top:8px;">
+          <thead><tr><th class="red">수요 증가 시</th><th class="blue">수요 감소 시</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>수요 곡선이 <strong>오른쪽으로 이동</strong><br>→ 균형 가격 <strong>상승</strong>, 균형 거래량 <strong>증가</strong></td>
+              <td>수요 곡선이 <strong>왼쪽으로 이동</strong><br>→ 균형 가격 <strong>하락</strong>, 균형 거래량 <strong>감소</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="kw-box">
+          <span class="kw-title">★ 핵심 공식</span>
+          수요 증가 → 수요 곡선 오른쪽 이동 → 균형 가격 ↑, 균형 거래량 ↑<br>
+          수요 감소 → 수요 곡선 왼쪽 이동 → 균형 가격 ↓, 균형 거래량 ↓
+        </div>
+      </div>
+    </div>
+
+    <!-- CH2 -->
+    <div class="ch-section" id="ch2">
+      <div class="ch-heading">② 공급의 변화에 따라 가격이 변동한다</div>
+
+      <div class="para-block">
+        <span class="para-label">공급의 변화 요인 — 핵심 구분</span>
+        상품의 가격이 변하면 공급량이 변하지만, <strong>상품 가격 이외의 요인이 변하면 공급 자체가 증가하거나 감소한다.</strong>
+      </div>
+
+      <div class="factor-list">
+        <div class="factor-row">
+          <span class="factor-tag ft-red">① 생산 요소 가격</span>
+          <div>
+            원자재 가격, 임금, 이자 등 생산 요소의 가격이 <strong>하락</strong>하면 동일한 비용으로 더 많은 상품을 생산할 수 있어 공급 <strong>증가</strong>.<br>
+            반대로 생산 요소 가격이 <strong>상승</strong>하면 이윤이 줄어 공급 <strong>감소</strong>.
+          </div>
+        </div>
+        <div class="factor-row">
+          <span class="factor-tag ft-blue">② 생산 기술 발달</span>
+          <div>어떤 상품을 생산하는 기술이 발달하여 <span class="hlb">생산성</span>이 높아지면 공급자는 동일한 비용으로 더 많은 상품을 생산할 수 있게 된다. 즉, 생산 비용이 줄어드는 효과로 공급이 <strong>증가</strong>한다.</div>
+        </div>
+        <div class="factor-row">
+          <span class="factor-tag ft-green">③ 공급자 수 변화</span>
+          <div>
+            상품을 공급하는 기업의 수가 <strong>증가</strong>하면 공급 <strong>증가</strong>.<br>
+            일부 기업이 생산을 중단하여 공급자의 수가 <strong>감소</strong>하면 공급 <strong>감소</strong>.
+          </div>
+        </div>
+        <div class="factor-row">
+          <span class="factor-tag ft-purple">④ 미래 가격 예상</span>
+          <div>
+            미래에 가격이 <strong>오를 것</strong>으로 예상 → 가격이 오른 후 팔려고 공급 <strong>감소</strong>.<br>
+            미래에 가격이 <strong>내릴 것</strong>으로 예상 → 공급 <strong>증가</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div class="footnote">
+        <span>* 원자재</span>상품을 생산하는 데 필요한 재료를 말한다.<br>
+        <span>* 생산성</span>생산 과정에서 생산 요소를 얼마나 효율적으로 사용하였는지를 나타내는 정도이다.
+      </div>
+
+      <div class="para-block" style="margin-top:10px;">
+        <span class="para-label">공급의 변화에 따른 가격 변동</span>
+        수요가 일정할 때, 공급에 영향을 미치는 요인이 변하면 가격은 다음과 같이 변한다.
+        <table class="tb" style="margin-top:8px;">
+          <thead><tr><th class="red">공급 증가 시</th><th class="blue">공급 감소 시</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>공급 곡선이 <strong>오른쪽으로 이동</strong><br>→ 균형 가격 <strong>하락</strong>, 균형 거래량 <strong>증가</strong></td>
+              <td>공급 곡선이 <strong>왼쪽으로 이동</strong><br>→ 균형 가격 <strong>상승</strong>, 균형 거래량 <strong>감소</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="kw-box">
+          <span class="kw-title">★ 핵심 공식 (수요와 반대!)</span>
+          공급 증가 → 공급 곡선 오른쪽 이동 → 균형 가격 ↓, 균형 거래량 ↑<br>
+          공급 감소 → 공급 곡선 왼쪽 이동 → 균형 가격 ↑, 균형 거래량 ↓
+        </div>
+      </div>
+
+      <div class="para-block" style="margin-top:4px;">
+        <span class="para-label">수요·공급 변화와 가격 변동 종합 비교</span>
+        <table class="tb">
+          <thead><tr><th></th><th class="red">증가 시 → 가격</th><th class="blue">감소 시 → 가격</th></tr></thead>
+          <tbody>
+            <tr><td><strong>수요 변화</strong></td><td class="ct">가격 ↑ 상승</td><td class="ct">가격 ↓ 하락</td></tr>
+            <tr><td><strong>공급 변화</strong></td><td class="ct">가격 ↓ 하락</td><td class="ct">가격 ↑ 상승</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CH3 -->
+    <div class="ch-section" id="ch3">
+      <div class="ch-heading">③ 시장 가격은 어떤 기능을 할까?</div>
+
+      <div class="para-block">
+        <span class="para-label">시장 경제의 신호등 기능</span>
+        시장에서 가격이 결정되면 소비자들은 이 가격에서 상품을 구매할 것인지, 말 것인지를 결정한다. 생산자들도 역시 가격을 보고 어떤 상품을 더 생산할 것인지, 덜 생산할 것인지를 결정한다.<br><br>
+        상품의 가격이 오르면 <strong>소비자</strong>는 소비를 자제하거나 더 값싼 상품을 찾을 것이고, <strong>생산자</strong>는 더 많은 이윤을 얻을 수 있으므로 그 상품의 생산을 늘릴 것이다. 반대로 상품의 가격이 내리면 소비자는 소비를 더 늘릴 것이며, 생산자는 이윤이 감소할 것으로 예상하여 생산을 줄일 것이다.<br><br>
+        이와 같이 <span class="hl">시장 가격은 소비자와 생산자에게 경제 활동을 어떻게 조절할 것인지 알려 주는 <strong>시장 경제의 신호등</strong>과 같은 기능을 한다.</span>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">자원의 효율적 배분 기능</span>
+        시장 가격은 시장에서 같은 상품을 <strong>가장 낮은 비용으로 생산하는 사람이 상품을 공급</strong>하게 한다. 소비자들은 상품의 질이 같을 경우 가격이 낮은 상품을 선택하려고 한다. 이에 따라 생산자들은 생산비를 절감하여 값싸고 질 좋은 상품을 생산하려고 노력할 것이다.<br><br>
+        또한 시장 가격은 같은 상품에 대해 <strong>가장 높은 가격을 지불할 의사가 있는 소비자가 상품을 구매</strong>하게 한다. 높은 가격을 지불하고서라도 어떤 상품을 구매할 의사가 있다는 것은 그만큼 자신에게 그 상품이 필요하다는 것을 의미한다. 즉, 시장 가격은 그 상품을 소비하여 가장 큰 만족을 얻을 수 있는 소비자에게 상품이 돌아가게 한다.<br><br>
+        이처럼 <span class="hl3">시장 가격은 그 사회에 필요한 적당한 양의 상품을 가장 효율적인 방법으로 생산하게 하고, 이를 효율적으로 배분하는 기능을 한다.</span>
+
+        <div class="kw-box" style="margin-top:12px;">
+          <span class="kw-title">★ 시장 가격의 두 가지 기능</span>
+          <strong>① 시장 경제의 신호등 기능</strong>: 소비자와 생산자에게 경제 활동을 어떻게 조절할지 알려 줌<br>
+          <strong>② 자원의 효율적 배분 기능</strong>: 적당한 양의 상품이 가장 효율적으로 생산·배분되게 함
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ QUIZ ══════════ -->
+<div class="panel" id="panel-quiz">
+  <div class="quiz-wrap">
+    <div class="quiz-header">📝 카드를 <strong>클릭</strong>하면 답이 보이고, 다시 클릭하면 숨겨집니다.<br>자주 봐서 <strong>장기 기억</strong>으로 만들어 보세요!</div>
+    <div class="qbar">
+      <button class="qbtn qbtn-outline" onclick="revealAll()">전체 보기</button>
+      <button class="qbtn qbtn-outline" onclick="hideAll()">전체 숨기기</button>
+      <button class="qbtn qbtn-fill" onclick="shuffleQ()">🔀 섞기</button>
+    </div>
+    <div class="qbar" style="padding-top:0;">
+      <button class="qbtn qbtn-active" id="fbtn-all" onclick="filterQ('all')">전체</button>
+      <button class="qbtn qbtn-outline" id="fbtn-A" onclick="filterQ('A')">①수요 변화</button>
+      <button class="qbtn qbtn-outline" id="fbtn-B" onclick="filterQ('B')">②공급 변화</button>
+      <button class="qbtn qbtn-outline" id="fbtn-C" onclick="filterQ('C')">③가격 기능</button>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-bar"><div class="prog-fill" id="pFill"></div></div>
+      <div class="prog-lbl" id="pLbl">0 / 55 확인</div>
+    </div>
+    <div class="q-list" id="qList"></div>
+  </div>
+</div>
+
+<footer>No.04 — 시장 가격의 변동 · Ⅳ. 시장 경제와 가격</footer>
+
+<script>
+const ALL_Q = [
+  // ── A: 수요 변화 ──
+  // 용어→설명
+  {id:1,  cat:'A', tag:'용어 설명', q:'대체재란 무엇인가?', a:'서로 용도가 비슷하여 한 상품을 대신해서 사용할 수 있는 경쟁 관계의 재화. 예) 돼지고기와 닭고기'},
+  {id:2,  cat:'A', tag:'용어 설명', q:'보완재란 무엇인가?', a:'함께 소비할 때 만족도가 커지는 보완 관계의 재화. 예) 돼지고기와 상추'},
+  {id:3,  cat:'A', tag:'용어 설명', q:'기호란 무엇인가?', a:'어떤 재화나 서비스를 좋아하는 성향'},
+  // 설명→용어
+  {id:4,  cat:'A', tag:'설명→용어', q:'"서로 용도가 비슷하여 한 상품을 대신해서 사용할 수 있는 경쟁 관계의 재화"를 무엇이라 하는가?', a:'대체재'},
+  {id:5,  cat:'A', tag:'설명→용어', q:'"함께 소비할 때 만족도가 커지는 보완 관계의 재화"를 무엇이라 하는가?', a:'보완재'},
+  // 내용 이해 — 수요 변화 요인
+  {id:6,  cat:'A', tag:'수요 변화 요인', q:'수요를 변화시키는 요인 다섯 가지를 쓰시오.', a:'① 소득의 변화 ② 관련 상품의 가격 변화 ③ 소비자의 기호 변화 ④ 미래 가격에 대한 예상 ⑤ 인구수의 변화'},
+  {id:7,  cat:'A', tag:'수요 변화 요인', q:'소득이 늘어나면 수요는 어떻게 변하는가?', a:'수요가 증가한다.'},
+  {id:8,  cat:'A', tag:'수요 변화 요인', q:'대체재 관계에서 한 상품의 가격이 오르면 다른 상품의 수요는 어떻게 되는가?', a:'대체재의 수요가 증가한다. (예: 돼지고기 가격↑ → 닭고기 수요↑)'},
+  {id:9,  cat:'A', tag:'수요 변화 요인', q:'보완재 관계에서 한 상품의 가격이 오르면 보완재의 수요는 어떻게 되는가?', a:'보완재의 수요가 감소한다. (예: 돼지고기 가격↑ → 상추 수요↓)'},
+  {id:10, cat:'A', tag:'수요 변화 요인', q:'미래에 가격이 오를 것으로 예상되면 현재의 수요는 어떻게 되는가?', a:'현재의 수요가 증가한다. (미리 사두려 하기 때문)'},
+  {id:11, cat:'A', tag:'수요 변화 요인', q:'신제품이 출시될 것이라는 소식이 들리면 기존 상품의 수요는?', a:'기존 상품의 수요가 감소한다.'},
+  {id:12, cat:'A', tag:'수요 변화 요인', q:'인구가 증가하면 수요는 어떻게 되는가?', a:'수요도 증가한다. (수요자의 수가 늘어나기 때문)'},
+  // 수요 변화 → 가격 변동
+  {id:13, cat:'A', tag:'가격 변동', q:'수요가 증가하면 수요 곡선은 어느 방향으로 이동하는가?', a:'오른쪽으로 이동'},
+  {id:14, cat:'A', tag:'가격 변동', q:'수요가 감소하면 수요 곡선은 어느 방향으로 이동하는가?', a:'왼쪽으로 이동'},
+  {id:15, cat:'A', tag:'가격 변동', q:'수요가 증가하면 균형 가격과 균형 거래량은 어떻게 변하는가?', a:'균형 가격 상승, 균형 거래량 증가'},
+  {id:16, cat:'A', tag:'가격 변동', q:'수요가 감소하면 균형 가격과 균형 거래량은 어떻게 변하는가?', a:'균형 가격 하락, 균형 거래량 감소'},
+  // O/X
+  {id:17, cat:'A', tag:'O/X', q:'소득이 늘어나면 수요가 증가한다. (O/X)', a:'O'},
+  {id:18, cat:'A', tag:'O/X', q:'상품의 가격 이외의 요인이 변하면 수요량만 변할 뿐 수요 자체는 변하지 않는다. (O/X)', a:'X — 상품 가격 이외의 요인이 변하면 수요 자체(수요 곡선)가 증가하거나 감소한다.'},
+  {id:19, cat:'A', tag:'O/X', q:'소비자의 기호가 증가하면 수요가 증가한다. (O/X)', a:'O'},
+
+  // ── B: 공급 변화 ──
+  // 용어→설명
+  {id:20, cat:'B', tag:'용어 설명', q:'원자재란 무엇인가?', a:'상품을 생산하는 데 필요한 재료'},
+  {id:21, cat:'B', tag:'용어 설명', q:'생산성이란 무엇인가?', a:'생산 과정에서 생산 요소를 얼마나 효율적으로 사용하였는지를 나타내는 정도'},
+  // 설명→용어
+  {id:22, cat:'B', tag:'설명→용어', q:'"상품을 생산하는 데 필요한 재료"를 무엇이라 하는가?', a:'원자재'},
+  {id:23, cat:'B', tag:'설명→용어', q:'"생산 과정에서 생산 요소를 얼마나 효율적으로 사용하였는지를 나타내는 정도"를 무엇이라 하는가?', a:'생산성'},
+  // 내용 이해 — 공급 변화 요인
+  {id:24, cat:'B', tag:'공급 변화 요인', q:'공급을 변화시키는 요인 네 가지를 쓰시오.', a:'① 생산 요소의 가격 변화 ② 생산 기술의 발달 ③ 공급자의 수 변화 ④ 미래 가격에 대한 예상'},
+  {id:25, cat:'B', tag:'공급 변화 요인', q:'생산 요소(원자재·임금·이자)의 가격이 하락하면 공급은 어떻게 되는가?', a:'공급이 증가한다. (동일한 생산 비용으로 더 많이 생산 가능)'},
+  {id:26, cat:'B', tag:'공급 변화 요인', q:'생산 요소의 가격이 상승하면 공급은 어떻게 되는가?', a:'공급이 감소한다. (이윤이 줄어들기 때문)'},
+  {id:27, cat:'B', tag:'공급 변화 요인', q:'생산 기술이 발달하여 생산성이 높아지면 공급은 어떻게 되는가?', a:'공급이 증가한다. (동일한 비용으로 더 많이 생산 가능 → 생산 비용 절감 효과)'},
+  {id:28, cat:'B', tag:'공급 변화 요인', q:'상품을 공급하는 기업(공급자)의 수가 증가하면 공급은?', a:'공급이 증가한다.'},
+  {id:29, cat:'B', tag:'공급 변화 요인', q:'미래에 가격이 오를 것으로 예상되면 현재의 공급은 어떻게 되는가?', a:'공급이 감소한다. (가격이 오른 후 팔기 위해 공급을 미루기 때문)'},
+  {id:30, cat:'B', tag:'공급 변화 요인', q:'미래에 가격이 내릴 것으로 예상되면 현재의 공급은 어떻게 되는가?', a:'공급이 증가한다.'},
+  // 공급 변화 → 가격 변동
+  {id:31, cat:'B', tag:'가격 변동', q:'공급이 증가하면 공급 곡선은 어느 방향으로 이동하는가?', a:'오른쪽으로 이동'},
+  {id:32, cat:'B', tag:'가격 변동', q:'공급이 감소하면 공급 곡선은 어느 방향으로 이동하는가?', a:'왼쪽으로 이동'},
+  {id:33, cat:'B', tag:'가격 변동', q:'공급이 증가하면 균형 가격과 균형 거래량은 어떻게 변하는가?', a:'균형 가격 하락, 균형 거래량 증가'},
+  {id:34, cat:'B', tag:'가격 변동', q:'공급이 감소하면 균형 가격과 균형 거래량은 어떻게 변하는가?', a:'균형 가격 상승, 균형 거래량 감소'},
+  // 수요·공급 비교
+  {id:35, cat:'B', tag:'수요·공급 비교', q:'수요 증가 시와 공급 증가 시 균형 가격 변화를 비교하시오.', a:'수요 증가 → 가격 상승 / 공급 증가 → 가격 하락 (서로 반대 방향)'},
+  {id:36, cat:'B', tag:'수요·공급 비교', q:'수요 감소 시와 공급 감소 시 균형 가격 변화를 비교하시오.', a:'수요 감소 → 가격 하락 / 공급 감소 → 가격 상승 (서로 반대 방향)'},
+  // O/X
+  {id:37, cat:'B', tag:'O/X', q:'생산 요소의 가격이 하락하면 공급이 증가한다. (O/X)', a:'O'},
+  {id:38, cat:'B', tag:'O/X', q:'생산 기술이 발달하여 생산성이 높아지면 공급이 감소한다. (O/X)', a:'X — 생산 기술 발달로 생산성이 높아지면 공급이 증가한다.'},
+  {id:39, cat:'B', tag:'O/X', q:'공급이 증가하면 균형 가격이 상승한다. (O/X)', a:'X — 공급이 증가하면 균형 가격이 하락한다.'},
+  {id:40, cat:'B', tag:'O/X', q:'공급자의 수가 증가하면 공급이 증가한다. (O/X)', a:'O'},
+
+  // ── C: 시장 가격의 기능 ──
+  // 용어→설명
+  {id:41, cat:'C', tag:'용어 설명', q:'시장 가격의 신호등 기능이란 무엇인가?', a:'시장 가격이 소비자와 생산자에게 경제 활동을 어떻게 조절할 것인지 알려 주는 기능. 가격이 오르면 소비자는 소비를 줄이고 생산자는 생산을 늘리는 신호가 된다.'},
+  {id:42, cat:'C', tag:'용어 설명', q:'시장 가격의 자원의 효율적 배분 기능이란 무엇인가?', a:'시장 가격을 통해 적당한 양의 상품이 가장 효율적인 방법으로 생산되고 배분되는 기능'},
+  // 설명→용어
+  {id:43, cat:'C', tag:'설명→용어', q:'"시장 가격이 소비자와 생산자에게 경제 활동을 어떻게 조절할 것인지 알려 주는 기능"을 무엇이라 하는가?', a:'시장 경제의 신호등 기능'},
+  {id:44, cat:'C', tag:'설명→용어', q:'"시장 가격을 통해 적당한 양의 상품이 가장 효율적으로 생산·배분되는 기능"을 무엇이라 하는가?', a:'자원의 효율적 배분 기능'},
+  // 내용 이해
+  {id:45, cat:'C', tag:'가격 기능', q:'시장 가격의 두 가지 기능은?', a:'① 시장 경제의 신호등 기능 ② 자원의 효율적 배분 기능'},
+  {id:46, cat:'C', tag:'가격 기능', q:'상품의 가격이 오를 때 소비자와 생산자는 각각 어떻게 행동하는가?', a:'소비자: 소비를 자제하거나 더 값싼 상품을 찾는다. / 생산자: 더 많은 이윤을 얻을 수 있으므로 생산을 늘린다.'},
+  {id:47, cat:'C', tag:'가격 기능', q:'상품의 가격이 내릴 때 소비자와 생산자는 각각 어떻게 행동하는가?', a:'소비자: 소비를 더 늘린다. / 생산자: 이윤이 감소할 것으로 예상하여 생산을 줄인다.'},
+  {id:48, cat:'C', tag:'가격 기능', q:'자원의 효율적 배분 측면에서, 같은 상품 가격이 같을 때 생산자는 어떤 사람이 공급하게 되는가?', a:'가장 낮은 비용으로 생산하는 사람이 상품을 공급하게 된다.'},
+  {id:49, cat:'C', tag:'가격 기능', q:'자원의 효율적 배분 측면에서, 시장 가격은 어떤 소비자가 상품을 구매하게 하는가?', a:'같은 상품에 대해 가장 높은 가격을 지불할 의사가 있는 소비자(= 그 상품을 소비하여 가장 큰 만족을 얻을 수 있는 소비자)가 상품을 구매하게 한다.'},
+  {id:50, cat:'C', tag:'가격 기능', q:'시장 가격이 신호등 역할을 하는 결과로, 생산자들이 생산비를 절감하려고 노력하는 이유는?', a:'소비자들이 질이 같으면 가격이 낮은 상품을 선택하기 때문에, 생산자들은 값싸고 질 좋은 상품을 생산하려고 노력한다.'},
+  // O/X
+  {id:51, cat:'C', tag:'O/X', q:'시장 가격은 소비자와 생산자에게 경제 활동을 어떻게 조절할 것인지 알려 주는 신호등 기능을 한다. (O/X)', a:'O'},
+  {id:52, cat:'C', tag:'O/X', q:'가격이 오르면 생산자는 생산을 줄인다. (O/X)', a:'X — 가격이 오르면 생산자는 더 많은 이윤을 얻을 수 있으므로 생산을 늘린다.'},
+  {id:53, cat:'C', tag:'O/X', q:'시장 가격은 그 사회에 필요한 적당한 양의 상품을 가장 효율적인 방법으로 생산하게 하고 배분하는 기능을 한다. (O/X)', a:'O'},
+  // 종합
+  {id:54, cat:'A', tag:'종합', q:'(스스로 확인) 소득이 늘어나면 수요는 (증가, 감소)한다.', a:'증가'},
+  {id:55, cat:'B', tag:'종합', q:'(스스로 확인) 생산 요소의 가격이 하락하면 공급은 (증가, 감소)한다.', a:'증가'},
+];
+
+const TOTAL = ALL_Q.length;
+let curFilter = 'all';
+let revSet = new Set();
+let ordQ = [...ALL_Q];
+
+function tc(c) { return c==='A'?'tA':c==='B'?'tB':'tC'; }
+function getFiltered() { return curFilter==='all'?ordQ:ordQ.filter(q=>q.cat===curFilter); }
+
+function renderQ() {
+  document.getElementById('qList').innerHTML = getFiltered().map((q,i)=>{
+    const o = revSet.has(q.id);
+    return `<div class="qcard${o?' open':''}" onclick="toggleQ(${q.id})">
+      <div class="qcard-top"><div class="qnum">${i+1}</div>
+      <div class="qbody"><span class="qtag ${tc(q.cat)}">${q.tag}</span>
+      <div class="qtext">${q.q}</div></div></div>
+      <div class="qans"><div class="qans-inner"><span class="albl">▶ 정답</span>${q.a}</div></div>
+    </div>`;
+  }).join('');
+  updateProg();
+}
+
+function toggleQ(id) { revSet.has(id)?revSet.delete(id):revSet.add(id); renderQ(); }
+function updateProg() {
+  const n=revSet.size;
+  document.getElementById('pFill').style.width=Math.round(n/TOTAL*100)+'%';
+  document.getElementById('pLbl').textContent=`${n} / ${TOTAL} 확인`;
+}
+function revealAll() { getFiltered().forEach(q=>revSet.add(q.id)); renderQ(); }
+function hideAll()   { getFiltered().forEach(q=>revSet.delete(q.id)); renderQ(); }
+function shuffleQ() {
+  for(let i=ordQ.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ordQ[i],ordQ[j]]=[ordQ[j],ordQ[i]];}
+  renderQ();
+}
+function filterQ(f) {
+  curFilter=f;
+  ['all','A','B','C'].forEach(k=>{
+    const b=document.getElementById('fbtn-'+k);
+    if(b) b.className=k===f?'qbtn qbtn-active':'qbtn qbtn-outline';
+  });
+  renderQ();
+}
+function switchTab(t,btn) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tabbar-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('panel-'+t).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function switchCh(id,btn) {
+  document.querySelectorAll('.ch-section').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.ch-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+renderQ();
+</script>
+</body>
+</html>

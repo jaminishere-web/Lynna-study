@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>몽골의 침략을 극복하다 — 기말 대비</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F2EDE6;--card:#FFF;--red:#8B1A1A;--red-mid:#B83030;--red-light:#E8C4C4;--gold:#C8960C;--gold-light:#F5E4A0;--dark:#1A1008;--muted:#6B5040;--border:#D8CCBC;--correct:#2A6B2A;--correct-bg:#E8F5E8;--wrong:#8B1A1A;--wrong-bg:#F5E8E8;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Noto Sans KR",sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;padding:0 0 80px;}
+  .top-bar{background:var(--red);color:#F5EDE0;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(139,26,26,.3);}
+  .top-bar h1{font-family:"Noto Serif KR",serif;font-size:15px;font-weight:700;}
+  .top-bar .meta{font-size:11px;color:rgba(245,237,224,.7);letter-spacing:1px;margin-bottom:2px;}
+  .score-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 12px;font-size:12px;font-weight:600;color:#F5E4A0;border-radius:20px;white-space:nowrap;}
+  .tabs{display:flex;background:#2A1008;border-bottom:2px solid var(--red);}
+  .tab{flex:1;padding:11px 0;text-align:center;font-size:13px;font-weight:600;color:rgba(245,237,224,.5);cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+  .tab.active{color:#F5E4A0;border-bottom:3px solid var(--gold);margin-bottom:-2px;}
+  .progress-wrap{padding:10px 20px 0;background:var(--bg);}
+  .progress-info{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px;}
+  .progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .4s ease;border-radius:2px;}
+  .page{display:none;} .page.active{display:block;}
+  .content-wrap{max-width:720px;margin:0 auto;padding:20px 16px;}
+  .section-card{background:var(--card);border:1px solid var(--border);margin-bottom:12px;overflow:hidden;}
+  .section-head{background:var(--red);color:#F5EDE0;padding:10px 16px;display:flex;align-items:center;gap:10px;}
+  .section-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold-light);letter-spacing:2px;}
+  .section-title{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;}
+  .section-body{padding:16px;font-size:14px;line-height:1.95;color:#1A1008;}
+  .section-body strong{color:var(--red);font-weight:700;}
+  .section-body .kw{background:var(--gold-light);color:#5A3808;padding:1px 5px;font-weight:600;border-radius:2px;}
+  .quiz-wrap{max-width:720px;margin:0 auto;padding:16px;}
+  .block{margin-bottom:20px;}
+  .para-box{background:var(--card);border:1px solid var(--border);border-bottom:none;border-left:4px solid var(--red);overflow:hidden;}
+  .para-box strong{color:var(--red);font-weight:700;}
+  .para-box .kw{background:var(--gold-light);color:#5A3808;padding:1px 4px;font-weight:600;}
+  .para-header{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;cursor:pointer;user-select:none;background:#FBF6EE;border-bottom:1px solid var(--border);transition:background .15s;}
+  .para-header:hover{background:#F5EDD8;}
+  .para-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:600;}
+  .para-toggle-btn{font-size:11px;color:var(--red);font-weight:600;display:flex;align-items:center;gap:5px;}
+  .para-arrow{display:inline-block;transition:transform .25s ease;font-size:9px;color:var(--muted);}
+  .para-arrow.open{transform:rotate(180deg);}
+  .para-content{font-size:13.5px;line-height:1.85;color:#1A1008;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s ease;padding:0 16px;}
+  .para-content.open{max-height:600px;padding:12px 16px 14px;}
+  .q-list{border:1px solid var(--border);border-top:2px solid var(--gold);background:#FDFAF4;}
+  .q-item{padding:13px 16px;border-bottom:1px solid var(--border);}
+  .q-item:last-child{border-bottom:none;}
+  .q-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:9px;}
+  .q-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold);font-weight:700;min-width:24px;padding-top:2px;}
+  .q-text{font-size:13.5px;line-height:1.65;color:#1A1008;flex:1;font-weight:500;}
+  /* 단답형 - 정답 보기/숨기기 토글 */
+  .ans-toggle{display:block;margin-left:34px;padding:9px 16px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--muted);cursor:pointer;text-align:left;transition:all .15s;width:calc(100% - 34px);border-radius:0;}
+  .ans-toggle:hover{border-color:var(--red);color:var(--red);}
+  .ans-toggle.open{border-color:var(--correct);color:var(--correct);background:var(--correct-bg);}
+  /* 정답 카드 */
+  .ans-card{display:none;margin-left:34px;padding:10px 16px;border-left:3px solid var(--correct);background:var(--correct-bg);width:calc(100% - 34px);}
+  .ans-card.show{display:block;}
+  .ans-label{font-size:10px;letter-spacing:1.5px;color:var(--correct);font-weight:600;margin-bottom:4px;}
+  .ans-text{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;color:#1A1008;}
+  /* OX / 2지선택 */
+  .ox-wrap{display:flex;gap:10px;margin-left:34px;}
+  .ox-btn{width:56px;height:40px;border:1.5px solid var(--border);background:#fff;font-size:20px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;border-radius:4px;}
+  .ox-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .ox-btn.ok{background:var(--correct-bg);border-color:var(--correct);}
+  .ox-btn.no{background:var(--wrong-bg);border-color:var(--wrong);}
+  .ox-btn:disabled{cursor:default;}
+  .two-wrap{display:flex;gap:10px;margin-left:34px;flex-wrap:wrap;}
+  .two-btn{flex:1;min-width:120px;padding:9px 10px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--dark);cursor:pointer;transition:all .15s;text-align:center;font-weight:500;}
+  .two-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .two-btn.ok{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);font-weight:700;}
+  .two-btn.no{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong);}
+  .two-btn:disabled{cursor:default;}
+  .feedback{margin-left:34px;margin-top:7px;font-size:12.5px;padding:7px 11px;border-radius:2px;display:none;line-height:1.55;cursor:pointer;transition:opacity .2s,filter .2s;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--correct-bg);color:var(--correct);border-left:3px solid var(--correct);}
+  .feedback.no{background:var(--wrong-bg);color:var(--wrong);border-left:3px solid var(--wrong);}
+  .feedback.hidden{opacity:0.07;filter:blur(4px);user-select:none;}
+  .sdiv{display:flex;align-items:center;gap:12px;margin:24px 0 14px;}
+  .sdiv span{font-family:"Noto Serif KR",serif;font-size:12px;color:var(--red);letter-spacing:1.5px;font-weight:700;white-space:nowrap;}
+  .sdiv::before,.sdiv::after{content:"";flex:1;height:1px;background:var(--red-light);}
+  .result-bar{max-width:720px;margin:0 auto;padding:0 16px;}
+  .result-card{background:var(--card);border:2px solid var(--red);padding:36px 24px;text-align:center;margin-top:24px;}
+  .result-title{font-family:"Noto Serif KR",serif;font-size:20px;font-weight:900;color:var(--red);margin-bottom:6px;}
+  .result-score{font-family:"Noto Serif KR",serif;font-size:56px;font-weight:900;color:var(--dark);line-height:1;margin:20px 0 6px;}
+  .result-sub{font-size:13px;color:var(--muted);margin-bottom:16px;}
+  .result-msg{font-size:15px;font-weight:600;color:var(--red);margin-bottom:28px;}
+  .retry-btn{background:var(--red);color:#fff;border:none;padding:13px 36px;font-size:14px;font-weight:600;font-family:"Noto Sans KR",sans-serif;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background .2s;}
+  .retry-btn:hover{background:var(--red-mid);}
+  .submit-wrap{text-align:center;margin-top:20px;padding-bottom:10px;}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <div><div class="meta">고려의 성립과 변천</div><h1>몽골의 침략을 극복하다</h1></div>
+  <div class="score-badge" id="scoreBadge">0 / 0</div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('content')">📖 본문</div>
+  <div class="tab" onclick="switchTab('quiz')">✏️ 문제</div>
+</div>
+<div class="page active" id="page-content">
+  <div class="content-wrap"><div class="section-card"><div class="section-head"><span class="section-num">§01</span><span class="section-title">몽골과의 접촉과 몽골의 침략</span></div><div class="section-body">13세기 초 중국에서는 금이 쇠퇴하고 몽골이 세력을 확대하였다. 몽골이 금을 공격하자 금의 지배를 받던 거란인이 반란을 일으켰다가 몽골군에 쫓겨 고려에 침입하였다. 고려는 몽골군과 연합하여 거란인이 있던 강동성을 함락하였고, 이 사건을 계기로 고려는 몽골과 국교를 맺었다.<br><br>그러나 몽골은 고려를 복속국으로 취급하며 많은 공물을 요구하여 고려와 갈등을 빚었다. 이러한 상황에서 고려에 온 몽골 사신이 귀국하는 길에 살해되자, 몽골은 국교를 끊고 고려를 침략하였다(<strong>1231</strong>). 몽골의 침입에 맞서 귀주성을 비롯한 북방의 여러 성에서는 백성과 관군이 필사적으로 저항하여 성을 지켰다. 그러나 많은 성이 함락되고 고려의 방어군이 패배하자 최씨 정권은 몽골과 강화를 맺었다. 몽골군은 북방의 점령지와 개경에 <span class='kw'>다루가치</span>를 두고 돌아갔다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§02</span><span class="section-title">강화 천도와 장기간의 항전</span></div><div class="section-body">몽골의 간섭에 맞서 최씨 정권은 수도를 <span class='kw'>강화도</span>로 옮기고, 백성을 산성과 섬으로 들어가게 하여 항전을 준비하였다. 고려가 강경한 태도를 보이자 몽골은 다시 침략하였지만 <span class='kw'>처인성 전투</span>에서 패배하여 돌아갔다(1232). 이후에도 몽골은 여러 차례 침략하였으나 고려의 관군과 백성이 합심하여 항쟁하였다. 이때 사회적으로 차별받던 특수 행정 구역의 주민과 노비도 단결하여 몽골에 저항하였다.<br><br>한편, 고려 정부는 민심을 모으고 불교의 힘으로 몽골을 물리치고자 <span class='kw'>팔만대장경</span>을 제작하였다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§03</span><span class="section-title">전쟁의 피해와 강화</span></div><div class="section-body">고려는 몽골과의 오랜 전쟁으로 국토가 황폐해졌고, 많은 백성이 죽거나 포로로 끌려갔다. 대구 부인사의 대장경 판목과 경주의 <span class='kw'>황룡사 9층 목탑</span> 등 많은 문화유산이 불에 타는 피해를 입었다.<br><br>이러한 상황에서 몽골이 강화를 제안하자 받아들이자는 여론이 높아졌다. 그러나 최씨 정권은 정권을 유지하기 위해 항전을 주장하였다. 결국 무신들은 최씨 정권을 무너뜨리고 몽골과의 강화를 추진하였다.<br><br>당시 태자였던 원종은 쿠빌라이를 만나 고려의 독립과 풍속을 유지하는 조건으로 강화를 맺었다. 쿠빌라이는 고려의 수도를 다시 개경으로 옮기고, 일본 원정에 필요한 인력과 물자를 제공하라고 요구하였다. 무신 정권은 다시 몽골에 저항하려 하였으나 내분으로 무너졌고, 고려 정부는 개경으로 돌아왔다(1270).</div></div><div class="section-card"><div class="section-head"><span class="section-num">§04</span><span class="section-title">삼별초의 항쟁</span></div><div class="section-body">무신 정권의 군사적 기반이었던 <strong>삼별초</strong>는 개경으로 돌아가는 데 반대하며 봉기하였다. 이들은 <span class='kw'>진도</span>를 근거지로 삼아 남해안 일대를 장악하였다. 그러나 고려와 몽골 연합군의 공격으로 진도가 함락되고, 남은 세력이 <span class='kw'>제주도</span>로 옮겨 가 항쟁을 계속하였지만 결국 진압되었다(1273).</div></div><div class="section-card"><div class="section-head"><span class="section-num">§05</span><span class="section-title">팔만대장경</span></div><div class="section-body">몽골 침략 중 고려 정부는 불교의 힘으로 몽골을 물리치고자 <span class='kw'>팔만대장경</span>을 제작하였다. 총 81,258판, 총무게 280톤, 제작 기간 16년이 걸렸다. 팔만대장경은 경판을 쌓으면 약 3,200미터(1,066층 아파트 높이)에 달한다. 현재 <span class='kw'>합천 해인사</span>에 보관되어 있으며, <span class='kw'>유네스코 세계 기록 유산</span>으로 등재되었다.</div></div></div>
+</div>
+<div class="page" id="page-quiz">
+  <div class="progress-wrap">
+    <div class="progress-info"><span id="progressTxt">0 / 17 완료</span><span id="progressPct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div class="quiz-wrap">
+    <div class="sdiv"><span>§01 · 몽골의 침략 배경</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">고려에 온 몽골 사신이 귀국 길에 살해 → 몽골이 국교를 끊고 침략(<strong>1231</strong>). 최씨 정권이 강화를 맺자 몽골군은 개경에 <span class='kw'>다루가치</span>를 두고 돌아갔다.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q1</span><span class="q-text">몽골이 고려를 1231년 침략한 직접적인 구실은?</span></div>
+  <button class="ans-toggle" id="q1-tb" onclick="toggleAns('q1')">▶ 정답 보기</button>
+  <div class="ans-card" id="q1-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">몽골 사신이 귀국 길에 살해됨</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q2</span><span class="q-text">몽골이 고려를 지배하기 위해 개경에 파견한 감독관은?</span></div>
+  <button class="ans-toggle" id="q2-tb" onclick="toggleAns('q2')">▶ 정답 보기</button>
+  <div class="ans-card" id="q2-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">다루가치</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q3</span><span class="q-text">고려와 몽골이 처음 국교를 맺게 된 계기는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q3',this,true)">고려·몽골 연합군이 강동성에서 거란인을 함락한 사건</button>
+    <button class="two-btn" onclick="checkTwo('q3',this,false)">몽골이 고려에 대규모 사신단을 파견한 사건</button>
+  </div>
+  <div class="feedback" id="q3-fb"></div>
+</div></div></div><div class="sdiv"><span>§02 · 강화 천도와 항전</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">최씨 정권이 <span class='kw'>강화도</span>로 천도. 처인성 전투(1232)에서 몽골군 격퇴. 민심 결집 위해 <span class='kw'>팔만대장경</span> 제작.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q4</span><span class="q-text">몽골의 침략에 맞서 최씨 정권이 수도를 옮긴 곳은?</span></div>
+  <button class="ans-toggle" id="q4-tb" onclick="toggleAns('q4')">▶ 정답 보기</button>
+  <div class="ans-card" id="q4-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">강화도</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q5</span><span class="q-text">1232년 몽골 2차 침입 때 승려 김윤후가 이끌어 몽골군을 격퇴한 전투는?</span></div>
+  <button class="ans-toggle" id="q5-tb" onclick="toggleAns('q5')">▶ 정답 보기</button>
+  <div class="ans-card" id="q5-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">처인성 전투</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q6</span><span class="q-text">강화도를 수도로 선택한 이유는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q6',this,true)">농사지을 땅이 많고 물살이 거세어 기병 위주의 몽골군이 접근하기 어려워서</button>
+    <button class="two-btn" onclick="checkTwo('q6',this,false)">개경과 가까워 내륙과의 연결이 편리해서</button>
+  </div>
+  <div class="feedback" id="q6-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q7</span><span class="q-text">(OX) 사회적으로 차별받던 특수 행정 구역 주민과 노비도 단결하여 몽골에 저항하였다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q7',this,'O','O')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q7',this,'X','O')">❌</button>
+  </div>
+  <div class="feedback" id="q7-fb"></div>
+</div></div></div><div class="sdiv"><span>§03 · 전쟁의 피해와 강화</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">몽골 침략으로 <span class='kw'>황룡사 9층 목탑</span> 등 많은 문화유산 소실. 최씨 정권 붕괴 후 원종이 쿠빌라이와 강화 → 개경 환도(1270).</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q8</span><span class="q-text">몽골 침략으로 소실된 대표적인 고려 문화유산은?</span></div>
+  <button class="ans-toggle" id="q8-tb" onclick="toggleAns('q8')">▶ 정답 보기</button>
+  <div class="ans-card" id="q8-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">황룡사 9층 목탑</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q9</span><span class="q-text">최씨 정권이 항전을 주장한 실질적인 이유는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q9',this,true)">정권을 유지하기 위해</button>
+    <button class="two-btn" onclick="checkTwo('q9',this,false)">몽골을 실제로 물리칠 수 있다고 판단해서</button>
+  </div>
+  <div class="feedback" id="q9-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q10</span><span class="q-text">원종이 쿠빌라이와 강화를 맺은 후 고려 정부가 돌아온 연도는?</span></div>
+  <button class="ans-toggle" id="q10-tb" onclick="toggleAns('q10')">▶ 정답 보기</button>
+  <div class="ans-card" id="q10-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">1270년</div>
+  </div>
+</div></div></div><div class="sdiv"><span>§04 · 삼별초의 항쟁</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content"><strong>삼별초</strong>: 개경 환도 반대 봉기 → <span class='kw'>진도</span> 근거지 → 몽골·고려 연합군에 진도 함락 → <span class='kw'>제주도</span>로 이동 → 1273년 최종 진압.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q11</span><span class="q-text">삼별초가 개경 환도에 반대하며 근거지로 삼은 두 곳은?</span></div>
+  <button class="ans-toggle" id="q11-tb" onclick="toggleAns('q11')">▶ 정답 보기</button>
+  <div class="ans-card" id="q11-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">진도, 제주도</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q12</span><span class="q-text">삼별초가 봉기한 이유는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q12',this,true)">개경 환도에 반대하며 몽골에 계속 저항하기 위해</button>
+    <button class="two-btn" onclick="checkTwo('q12',this,false)">최씨 정권을 다시 세우기 위해</button>
+  </div>
+  <div class="feedback" id="q12-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q13</span><span class="q-text">(OX) 삼별초는 최종적으로 제주도에서 진압되었다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q13',this,'O','O')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q13',this,'X','O')">❌</button>
+  </div>
+  <div class="feedback" id="q13-fb"></div>
+</div></div></div><div class="sdiv"><span>§05 · 팔만대장경</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">팔만대장경: 총 <strong>81,258판</strong>, 제작 기간 <strong>16년</strong>. 현재 <span class='kw'>합천 해인사</span> 보관. <span class='kw'>유네스코 세계 기록 유산</span>.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q14</span><span class="q-text">팔만대장경의 총 판수는?</span></div>
+  <button class="ans-toggle" id="q14-tb" onclick="toggleAns('q14')">▶ 정답 보기</button>
+  <div class="ans-card" id="q14-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">81,258판</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q15</span><span class="q-text">팔만대장경이 현재 보관된 곳은?</span></div>
+  <button class="ans-toggle" id="q15-tb" onclick="toggleAns('q15')">▶ 정답 보기</button>
+  <div class="ans-card" id="q15-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">합천 해인사</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q16</span><span class="q-text">팔만대장경을 제작한 목적은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q16',this,true)">불교의 힘으로 몽골을 물리치고 민심을 모으기 위해</button>
+    <button class="two-btn" onclick="checkTwo('q16',this,false)">몽골에게 고려의 문화 수준을 보여 주기 위해</button>
+  </div>
+  <div class="feedback" id="q16-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q17</span><span class="q-text">(OX) 팔만대장경은 유네스코 세계 기록 유산으로 등재되어 있다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q17',this,'O','O')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q17',this,'X','O')">❌</button>
+  </div>
+  <div class="feedback" id="q17-fb"></div>
+</div></div></div>
+    <div class="submit-wrap"><button class="retry-btn" onclick="showResult()">채점 결과 보기</button></div>
+  </div>
+  
+<div class="result-bar" id="resultSection" style="display:none;">
+  <div class="result-card">
+    <div class="result-title">채점 완료</div>
+    <div class="result-score" id="resultScore">—</div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <button class="retry-btn" onclick="resetAll()">다시 풀기</button>
+  </div>
+</div>
+</div>
+<script>
+const TOTAL = 17;
+let answered = new Set();
+let score = 0;
+
+function togglePara(h) {
+  const c = h.nextElementSibling;
+  const a = h.querySelector('.para-arrow');
+  const l = h.querySelector('.para-toggle-btn');
+  const o = c.classList.contains('open');
+  c.classList.toggle('open', !o);
+  a.classList.toggle('open', !o);
+  l.innerHTML = o ? '<span class="para-arrow">▼</span> 펼치기' : '<span class="para-arrow open">▼</span> 접기';
+}
+
+function updateProgress() {
+  const n = answered.size;
+  const p = Math.round(n / TOTAL * 100);
+  document.getElementById('progressTxt').textContent = n + ' / ' + TOTAL + ' 완료';
+  document.getElementById('progressPct').textContent = p + '%';
+  document.getElementById('progressFill').style.width = p + '%';
+  document.getElementById('scoreBadge').textContent = score + ' / ' + TOTAL;
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.tab').forEach((x, i) =>
+    x.classList.toggle('active', (i===0 && t==='content') || (i===1 && t==='quiz')));
+  document.getElementById('page-content').classList.toggle('active', t === 'content');
+  document.getElementById('page-quiz').classList.toggle('active', t === 'quiz');
+}
+
+// 단답형: 토글 버튼 클릭 → 정답 보이기/숨기기
+function toggleAns(id) {
+  const btn = document.getElementById(id + '-tb');
+  const card = document.getElementById(id + '-ac');
+  const isOpen = card.classList.contains('show');
+  if (isOpen) {
+    card.classList.remove('show');
+    btn.classList.remove('open');
+    btn.textContent = '▶ 정답 보기';
+  } else {
+    card.classList.add('show');
+    btn.classList.add('open');
+    btn.textContent = '▼ 정답 숨기기';
+    if (!answered.has(id)) {
+      answered.add(id);
+      score++;
+      updateProgress();
+    }
+  }
+}
+
+// 2지선택
+function checkTwo(id, btn, isOk) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.two-btn').forEach(b => { if (b !== btn) b.classList.add('ok'); });
+  wrap.querySelectorAll('.two-btn').forEach(b => b.disabled = true);
+  fb.textContent = isOk ? '✓ 정답입니다!' : '✗ 정답을 확인하세요.';
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+// OX형
+function checkOX(id, btn, sel, cor) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  const isOk = sel === cor;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.ox-btn').forEach(b => {
+    const v = b.getAttribute('onclick').includes(",'O'") ? 'O' : 'X';
+    if (v === cor) b.classList.add('ok');
+  });
+  wrap.querySelectorAll('.ox-btn').forEach(b => b.disabled = true);
+  const ex = {"q7": "명학소 주민과 노비 등 차별받던 계층도 몽골에 저항하였습니다.", "q13": "삼별초는 진도 함락 후 제주도로 이동하여 1273년 최종 진압되었습니다.", "q17": "팔만대장경은 유네스코 세계 기록 유산으로 등재되어 있습니다."};
+  fb.textContent = (isOk ? '✓ 정답! ' : '✗ 오답. ') + (ex[id] || '');
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+function showResult() {
+  const p = Math.round(score / TOTAL * 100);
+  const m = p>=90 ? '완벽해요! 🏆' : p>=70 ? '잘했어요! 👍' : p>=50 ? '본문을 한 번 더 읽어봐요 📖' : '처음부터 다시 해봐요 💪';
+  document.getElementById('resultScore').textContent = score + ' / ' + TOTAL;
+  document.getElementById('resultSub').textContent = '정답률 ' + p + '%';
+  document.getElementById('resultMsg').textContent = m;
+  document.getElementById('resultSection').style.display = 'block';
+  document.getElementById('resultSection').scrollIntoView({behavior: 'smooth'});
+}
+
+function resetAll() {
+  answered.clear(); score = 0; updateProgress();
+  // 단답형 초기화
+  document.querySelectorAll('.ans-toggle').forEach(e => { e.classList.remove('open'); e.textContent = '▶ 정답 보기'; });
+  document.querySelectorAll('.ans-card').forEach(e => e.classList.remove('show', 'hidden'));
+  // OX / 2지선택 초기화
+  document.querySelectorAll('.two-btn, .ox-btn').forEach(e => { e.disabled = false; e.classList.remove('ok','no'); });
+  document.querySelectorAll('.feedback').forEach(e => { e.className = 'feedback'; e.textContent = ''; e.onclick = null; });
+  // 본문힌트 닫기
+  document.querySelectorAll('.para-content').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-arrow').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-toggle-btn').forEach(e => { e.innerHTML = '<span class="para-arrow">▼</span> 펼치기'; });
+  document.getElementById('resultSection').style.display = 'none';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+updateProgress();
+</script>
+</body>
+</html>

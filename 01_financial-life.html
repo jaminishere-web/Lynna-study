@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01 금융 생활의 중요성</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@600;900&display=swap');
+
+  :root {
+    --bg: #f8f6f1;
+    --white: #ffffff;
+    --ink: #1c1c1e;
+    --muted: #6b6b6b;
+    --border: #e0d9ce;
+    --accent: #2e6b8a;
+    --accent2: #c05c2a;
+    --gold: #c89c2a;
+    --green: #2a6b4a;
+    --soft: #eef3f6;
+    --ans-bg: #e8f4ea;
+    --ans-text: #1a4a2a;
+    --tag-a: #ddeeff; --tag-a-t: #1a3a6b;
+    --tag-b: #ddf0e8; --tag-b-t: #1a4a2a;
+    --tag-c: #fdeedd; --tag-c-t: #7a3a00;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    background: var(--ink);
+    color: #fff;
+    padding: 22px 18px 18px;
+  }
+  .header-meta {
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    color: #aaa;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .header h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.35rem;
+    font-weight: 900;
+    line-height: 1.3;
+  }
+  .header-sub {
+    font-size: 0.76rem;
+    color: #bbb;
+    margin-top: 5px;
+  }
+
+  /* ─── TAB BAR ─── */
+  .tabbar {
+    display: flex;
+    background: #fff;
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .tabbar-btn {
+    flex: 1;
+    padding: 13px 8px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: none;
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tabbar-btn.on {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ─── PANELS ─── */
+  .panel { display: none; }
+  .panel.on { display: block; }
+
+  /* ════════ CONTENT PANEL ════════ */
+  .content-wrap { padding: 0 0 20px; }
+
+  /* Chapter nav */
+  .ch-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    background: var(--soft);
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+    position: sticky;
+    top: 48px;
+    z-index: 99;
+  }
+  .ch-nav::-webkit-scrollbar { display: none; }
+  .ch-btn {
+    flex: none;
+    padding: 9px 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.74rem;
+    font-weight: 700;
+    border: none;
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: all 0.18s;
+  }
+  .ch-btn.on { color: var(--accent2); border-bottom-color: var(--accent2); }
+
+  /* Chapter sections */
+  .ch-section { display: none; padding: 16px 16px 0; }
+  .ch-section.on { display: block; }
+
+  /* Chapter heading */
+  .ch-heading {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--accent2);
+    border-left: 4px solid var(--accent2);
+    padding: 6px 0 6px 12px;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+
+  /* Paragraph blocks */
+  .para-block {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    font-size: 0.87rem;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+  .para-block .para-label {
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .para-block strong { color: var(--ink); font-weight: 900; }
+  .para-block .hl { color: var(--accent2); font-weight: 900; }
+  .para-block .hl2 { color: var(--accent); font-weight: 900; }
+  .para-block .hl3 { color: var(--green); font-weight: 900; }
+
+  /* Table */
+  .tb { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 4px 0 6px; }
+  .tb th {
+    background: var(--ink);
+    color: #fff;
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  .tb td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+  .tb tr:nth-child(even) td { background: #f9f7f3; }
+
+  /* Keyword box */
+  .kw-box {
+    background: #fffbf0;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 8px;
+    font-size: 0.82rem;
+    line-height: 1.65;
+  }
+  .kw-box .kw-title {
+    font-size: 0.7rem;
+    font-weight: 900;
+    color: #8a6200;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  /* Footnote */
+  .footnote {
+    font-size: 0.76rem;
+    color: var(--muted);
+    border-top: 1px dashed var(--border);
+    margin-top: 10px;
+    padding-top: 8px;
+    line-height: 1.65;
+  }
+  .footnote span { color: var(--accent); font-weight: 700; margin-right: 4px; }
+
+  /* Grid for assets */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0; }
+  .asset-item {
+    background: var(--soft);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    line-height: 1.55;
+  }
+  .asset-item .a-name { font-weight: 900; color: var(--ink); margin-bottom: 3px; }
+  .asset-item .a-desc { color: var(--muted); font-size: 0.77rem; }
+
+  /* ════════ QUIZ PANEL ════════ */
+  .quiz-wrap { padding: 14px 16px 0; }
+
+  .quiz-header {
+    background: var(--ink);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: #fff;
+    margin-bottom: 14px;
+    font-size: 0.83rem;
+    line-height: 1.6;
+  }
+  .quiz-header strong { color: #f0c060; }
+
+  /* Filter + controls */
+  .qbar {
+    display: flex;
+    gap: 7px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .qbtn {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: none;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.74rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .qbtn-outline { background: var(--white); border: 1.5px solid var(--ink); color: var(--ink); }
+  .qbtn-outline:hover { background: var(--ink); color: #fff; }
+  .qbtn-fill { background: var(--accent2); color: #fff; }
+  .qbtn-fill:hover { opacity: 0.88; }
+  .qbtn-active { background: var(--accent); color: #fff; }
+
+  /* progress */
+  .prog-wrap { margin-bottom: 12px; }
+  .prog-bar { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .prog-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 99px;
+    transition: width 0.35s;
+    width: 0%;
+  }
+  .prog-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 3px; text-align: right; }
+
+  /* Q cards */
+  .q-list { display: flex; flex-direction: column; gap: 9px; }
+
+  .qcard {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 11px;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: box-shadow 0.18s, border-color 0.18s;
+  }
+  .qcard:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.07); border-color: var(--accent); }
+  .qcard.open { border-color: var(--accent); }
+
+  .qcard-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 13px;
+  }
+  .qnum {
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qcard.open .qnum { background: var(--accent); }
+
+  .qbody { flex: 1; }
+  .qtag {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 900;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-bottom: 4px;
+  }
+  .tA { background: var(--tag-a); color: var(--tag-a-t); }
+  .tB { background: var(--tag-b); color: var(--tag-b-t); }
+  .tC { background: var(--tag-c); color: var(--tag-c-t); }
+
+  .qtext { font-size: 0.87rem; font-weight: 500; line-height: 1.55; }
+
+  .qans {
+    display: none;
+    padding: 0 13px 12px 47px;
+  }
+  .qcard.open .qans { display: block; }
+  .qans-inner {
+    background: var(--ans-bg);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--ans-text);
+    line-height: 1.6;
+  }
+  .qans-inner .albl {
+    font-size: 0.62rem;
+    font-weight: 900;
+    color: var(--green);
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+    display: block;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-meta">Ⅲ. 경제생활과 선택 · 3단원 · No.01</div>
+  <h1>금융 생활의 중요성</h1>
+  <div class="header-sub">생애 주기 · 자산 관리 · 신용 관리</div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tabbar">
+  <button class="tabbar-btn on" onclick="switchTab('content')">📖 본문 정리</button>
+  <button class="tabbar-btn" onclick="switchTab('quiz')">✏️ 문제</button>
+</div>
+
+<!-- ══════════════════════════════════
+     CONTENT PANEL
+══════════════════════════════════ -->
+<div class="panel on" id="panel-content">
+  <div class="content-wrap">
+
+    <!-- Chapter nav -->
+    <div class="ch-nav">
+      <button class="ch-btn on" onclick="switchCh('ch1')">① 생애 주기</button>
+      <button class="ch-btn" onclick="switchCh('ch2')">② 자산 관리</button>
+      <button class="ch-btn" onclick="switchCh('ch3')">③ 신용 관리</button>
+    </div>
+
+    <!-- ── CH1 ── -->
+    <div class="ch-section on" id="ch1">
+      <div class="ch-heading">① 경제생활은 일생 동안 이루어진다</div>
+
+      <div class="para-block">
+        <span class="para-label">생애 주기에 따른 경제생활</span>
+        대부분의 사람들은 유소년기, 청년기, 중장년기, 노년기와 같은 비슷한 삶의 과정을 거친다. <strong>유소년기</strong>는 경제적으로 자립하는 것이 어려워 부모의 소득에 의존하여 소비 생활을 하는 시기이다.<br><br>
+        <strong>청년기</strong>는 취업과 함께 소득이 발생하는 시기로, 소득과 소비가 모두 적은 편이다. <strong>중장년기</strong>에는 소득이 크게 늘지만 자녀 교육, 주택 마련, 은퇴 계획 수립 등에 따른 소비도 늘어난다. 직장에서 <span class="hl2">은퇴</span>한 노년기에는 소득이 크게 줄어들거나 없어져 전에 마련해 둔 노후 대비 자금이나 연금으로 생활하게 된다.<br><br>
+        이처럼 시간의 흐름에 따라 개인이나 가족의 삶이 어떻게 변화하는지를 몇 단계로 나타낸 것을 <span class="hl">생애 주기</span>라고 하며, 생애 주기에 따라 경제생활의 모습도 다르게 나타난다.
+        <div class="footnote">
+          <span>* 은퇴</span>직위에서 물러나거나 사회 활동에서 손을 떼고 한가히 지내는 것을 말한다.
+        </div>
+      </div>
+
+      <table class="tb">
+        <thead>
+          <tr><th>단계</th><th>경제생활 특징</th><th>주요 과제(연령대)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>유소년기</strong></td>
+            <td>부모 소득에 의존하여 소비</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><strong>청년기</strong></td>
+            <td>소득 발생 시작, 소득·소비 모두 적음</td>
+            <td>직업 훈련, 결혼 자금·주택 마련 (20~30대)</td>
+          </tr>
+          <tr>
+            <td><strong>중장년기</strong></td>
+            <td>소득 크게 증가, 지출도 많아짐</td>
+            <td>자녀 교육, 주택 확장, 은퇴 계획, 노부모 부양 (40~50대)</td>
+          </tr>
+          <tr>
+            <td><strong>노년기</strong></td>
+            <td>은퇴 후 소득 급감, 연금·저축으로 생활</td>
+            <td>은퇴 (60대 이후)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="para-block" style="margin-top:10px;">
+        <span class="para-label">생애 주기에 따른 재무 계획 수립</span>
+        생애 주기를 살펴보면 소득이 소비보다 많은 시기가 있는 반면, 소비가 소득보다 많은 시기가 있다. 따라서 미래에 예상되는 지출뿐만 아니라 <strong>예상하지 못한 사고나 질병 등에도 대비</strong>해야 한다.<br><br>
+        이를 위해 생애 주기에 따른 수입과 지출을 살펴보고 <span class="hl">장기적인 관점에서 자신의 재무 계획을 세워야 한다.</span>
+        <div class="kw-box">
+          <span class="kw-title">★ 재무 계획</span>
+          돈의 흐름을 파악하여 필요할 때 돈을 쓸 수 있도록 <strong>미리 준비하는 과정</strong>을 말한다.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CH2 ── -->
+    <div class="ch-section" id="ch2">
+      <div class="ch-heading">② 지속 가능한 경제생활을 위한 자산 관리</div>
+
+      <div class="para-block">
+        <span class="para-label">자산 관리의 필요성</span>
+        개인의 소비 생활은 평생 지속되지만 생산 활동을 통해 소득을 얻을 수 있는 기간은 한정되어 있다. 따라서 지속 가능한 경제생활을 하기 위해서는 일생 동안의 소득과 소비를 고려하여 <span class="hl2">자산</span>을 확보하고 운영하는 <span class="hl">자산 관리</span>가 필요하다.<br><br>
+        <strong>자산 관리</strong>란 자신이 벌어들인 소득으로 언제, 얼마만큼 소비할지, 어떻게 자산을 모으고 불릴지 미리 계획을 세우고, 이를 실천하는 것을 말한다.
+        <div class="footnote">
+          <span>* 자산</span>개인이나 단체가 소유하고 있는 경제적 가치가 있는 것으로, 현금·예금·주식·채권 등의 <strong>금융 자산</strong>과 자동차·부동산 등의 <strong>실물 자산</strong>으로 구분된다.
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">합리적인 자산 관리 방법</span>
+        개인은 벌어들인 소득 중 소비하고 남은 저축을 현금으로 보유하거나, 여러 형태로 <span class="hl2">투자</span>할 수 있다.<br><br>
+        합리적인 자산 관리를 위해서는 저축이나 투자의 목적과 기간을 살펴보고, <span class="hl">수익성, 안전성, 유동성</span> 등을 고려해야 한다.
+        <table class="tb" style="margin-top:10px;">
+          <thead><tr><th>요소</th><th>의미</th></tr></thead>
+          <tbody>
+            <tr><td><strong>수익성</strong></td><td>투자를 통해 수익을 얻을 수 있는 정도</td></tr>
+            <tr><td><strong>안전성</strong></td><td>투자한 원금이 손실되지 않고 보장되는 정도</td></tr>
+            <tr><td><strong>유동성</strong></td><td>필요할 때 쉽고 빠르게 현금으로 전환할 수 있는 정도</td></tr>
+          </tbody>
+        </table>
+        일반적으로 <strong>예금이나 적금은 안전성은 높은 데 비해 수익성이 낮고</strong>, <strong>주식은 수익성이 높지만 안전성이 낮다.</strong> 이와 같은 자산의 특성을 잘 고려하여 적절한 자산 관리 방법을 선택해야 한다.<br><br>
+        또한 자산 관리를 할 때에는 자산을 늘리는 것뿐만 아니라 지출을 체계적으로 관리하여 <span class="hl">불필요한 낭비를 줄이는 것</span>도 중요하다.
+        <div class="footnote">
+          <span>* 투자</span>저축한 자금의 미래 가치를 높이기 위해 금융 자산이나 실물 자산을 구입하여 운영하는 것이다.
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">다양한 자산 관리 방법</span>
+        <div class="grid2">
+          <div class="asset-item">
+            <div class="a-name">예금·적금</div>
+            <div class="a-desc">은행 등의 금융 기관에 돈을 맡기는 것. 이자율이 정해져 있다.<br>• 정기 예금: 일정 금액을 한꺼번에 맡기고 약속한 이자와 원금을 돌려받는 것<br>• 정기 적금: 매달 일정 금액을 입금하고 만기 시 이자와 원금을 받는 것</div>
+          </div>
+          <div class="asset-item">
+            <div class="a-name">채권</div>
+            <div class="a-desc">정부·기업 등이 자금을 빌리면서 원금과 이자를 언제까지 갚겠다는 것을 표시하여 발행하는 증서이다.</div>
+          </div>
+          <div class="asset-item">
+            <div class="a-name">주식</div>
+            <div class="a-desc">주식회사가 자금을 마련하기 위해 투자자에게 돈을 받고 발행하는 것이다.</div>
+          </div>
+          <div class="asset-item">
+            <div class="a-name">보험</div>
+            <div class="a-desc">미래에 발생할 수 있는 질병이나 사고 등의 위험에 대비하기 위해 현재 미리 돈을 내고, 사고를 당하면 일정 금액을 받는 상품이다.</div>
+          </div>
+          <div class="asset-item">
+            <div class="a-name">부동산</div>
+            <div class="a-desc">아파트나 빌딩 등과 같이 움직여 옮길 수 없는 재산이다.</div>
+          </div>
+          <div class="asset-item">
+            <div class="a-name">연금</div>
+            <div class="a-desc">청년기·중장년기에 벌어들인 소득의 일부를 저축하여 노후에 매달 일정액을 받는 금융 상품으로, 노후 보장의 효과가 크다.<br>• <strong>국민연금</strong>: 국가가 시행하는 사회 보장 제도<br>• <strong>개인연금</strong>: 개인이 직접 가입<br>• <strong>퇴직 연금</strong>: 사용자가 근로자의 노후를 보장</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">분산 투자의 필요성</span>
+        합리적인 투자자라면 가진 돈을 한 금융 상품에 모두 투자하기보다는 <span class="hl">수익성과 안전성, 유동성을 고려하여 다양한 금융 상품에 적절하게 분산하여 투자</span>하는 것이 좋다. 분산 투자를 할 경우 어느 한 곳에서 손해를 보더라도 다른 곳에서 그 손해를 보충할 수 있어 좀 더 안정적으로 자산을 운용할 수 있기 때문이다.
+      </div>
+    </div>
+
+    <!-- ── CH3 ── -->
+    <div class="ch-section" id="ch3">
+      <div class="ch-heading">③ 지속 가능한 경제생활을 위한 신용 관리</div>
+
+      <div class="para-block">
+        <span class="para-label">신용의 의미와 가치</span>
+        <span class="hl">신용</span>이란 개인의 지불 능력에 대한 사회적 평가로, 나중에 대가를 지불할 것을 약속하고 현재 상품을 이용하거나 돈을 빌릴 수 있는 능력을 말한다.<br><br>
+        현대 사회는 <strong>신용 사회</strong>라고 불릴 만큼 신용을 바탕으로 한 경제 활동이 활발하게 이루어지고 있다. 신용 사회에서 사람들은 당장 현금이 없더라도 신용을 활용하여 물건을 구매하거나 생활에 필요한 각종 서비스를 제공받을 수 있다.
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">신용 관리의 중요성</span>
+        신용을 이용할 경우 미래의 소득을 앞당겨서 활용할 수 있기 때문에 현재의 소득보다 더 많은 소비를 할 수 있게 된다. 하지만 소비자에게 이는 <span class="hl2">언젠가 갚아야 할 빚이 늘어나는 것</span>이므로 미래의 경제생활에 큰 부담이 될 수 있다.<br><br>
+        신용도가 떨어지면 앞으로 신용을 이용하지 못하거나 이용하더라도 다른 사람들보다 더 높은 이자를 지불해야 한다. 이뿐만 아니라 <strong>신용 카드 발급 제한, 대출 거절, 취업 제한</strong> 등과 같은 불이익을 받을 수 있다. 이는 개인적으로 큰 손실일 뿐만 아니라 <span class="hl3">국가의 경제 성장에 장애 요인</span>으로 작용할 우려도 있다.
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">올바른 신용 관리 방법</span>
+        따라서 합리적인 경제생활을 위해 신용을 관리해야 한다.
+        <ul style="padding-left:16px; margin-top:8px; line-height:2; font-size:0.86rem;">
+          <li><span class="hl">소득을 초과하는 소비를 자제</span>해야 한다.</li>
+          <li>현재와 미래의 소득과 지불 능력을 고려하여 <span class="hl">충분히 갚을 수 있는 범위에서 신용을 이용</span>해야 한다.</li>
+          <li>돈을 갚기로 하거나 상품 대금을 지불하기로 한 <span class="hl">약속은 반드시 지킴</span>으로써 높은 신용도를 유지하도록 노력해야 한다.</li>
+        </ul>
+        <div class="kw-box" style="margin-top:12px;">
+          <span class="kw-title">📌 개인의 신용 관리 방법 (교과서 자료)</span>
+          • 상환 능력을 고려하여 대출을 최대한 신중히 한다.<br>
+          • 휴대 전화 요금, 공과금, 카드 결제 대금 등을 연체하지 않는다.<br>
+          • 자신의 신용 정보를 확인하고 관리한다.<br>
+          • 주거래 은행을 만들어 꾸준히 거래한다.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content-wrap -->
+</div><!-- /panel-content -->
+
+<!-- ══════════════════════════════════
+     QUIZ PANEL
+══════════════════════════════════ -->
+<div class="panel" id="panel-quiz">
+  <div class="quiz-wrap">
+
+    <div class="quiz-header">
+      📝 카드를 <strong>클릭</strong>하면 답이 보이고, 다시 클릭하면 숨겨집니다.<br>
+      자주 봐서 <strong>장기 기억</strong>으로 만들어 보세요!
+    </div>
+
+    <div class="qbar">
+      <button class="qbtn qbtn-outline" onclick="revealAll()">전체 보기</button>
+      <button class="qbtn qbtn-outline" onclick="hideAll()">전체 숨기기</button>
+      <button class="qbtn qbtn-fill" onclick="shuffleQ()">🔀 섞기</button>
+    </div>
+    <div class="qbar" style="padding-top:0;">
+      <button class="qbtn qbtn-active" id="fbtn-all" onclick="filterQ('all')">전체</button>
+      <button class="qbtn qbtn-outline" id="fbtn-A" onclick="filterQ('A')">①생애 주기</button>
+      <button class="qbtn qbtn-outline" id="fbtn-B" onclick="filterQ('B')">②자산 관리</button>
+      <button class="qbtn qbtn-outline" id="fbtn-C" onclick="filterQ('C')">③신용 관리</button>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-bar"><div class="prog-fill" id="pFill"></div></div>
+      <div class="prog-lbl" id="pLbl">0 / 45 확인</div>
+    </div>
+
+    <div class="q-list" id="qList"></div>
+  </div>
+</div>
+
+<footer>No.01 — 금융 생활의 중요성 · Ⅲ. 경제생활과 선택</footer>
+
+<script>
+/* ─── DATA ─── */
+const ALL_Q = [
+  // ── A: 생애 주기 ──
+  {id:1,  cat:'A', tag:'생애 주기', q:'개인이나 가족의 삶이 시간의 흐름에 따라 어떻게 변화하는지를 몇 단계로 나타낸 것을?', a:'생애 주기'},
+  {id:2,  cat:'A', tag:'생애 주기', q:'생애 주기 4단계를 순서대로 쓰시오.', a:'유소년기 → 청년기 → 중장년기 → 노년기'},
+  {id:3,  cat:'A', tag:'유소년기', q:'유소년기의 경제생활 특징은?', a:'경제적으로 자립하기 어려워 부모의 소득에 의존하여 소비 생활을 하는 시기이다.'},
+  {id:4,  cat:'A', tag:'청년기', q:'청년기의 경제생활 특징은?', a:'취업과 함께 소득이 발생하는 시기로, 소득과 소비가 모두 적은 편이다.'},
+  {id:5,  cat:'A', tag:'청년기', q:'청년기(20~30대)의 주요 재무 과제 두 가지는?', a:'결혼 자금 마련, 주택 마련 (직업 훈련 포함)'},
+  {id:6,  cat:'A', tag:'중장년기', q:'중장년기의 경제생활 특징은?', a:'소득이 크게 늘어나지만 자녀 교육·주택 마련·은퇴 계획 수립 등에 따른 소비도 늘어난다.'},
+  {id:7,  cat:'A', tag:'중장년기', q:'중장년기(40~50대)의 주요 재무 과제 네 가지는?', a:'자녀(대학) 교육, 주택 확장, 은퇴 계획 수립, 노부모 부양'},
+  {id:8,  cat:'A', tag:'노년기', q:'노년기의 경제생활 특징은?', a:'은퇴 후 소득이 크게 줄거나 없어져 전에 마련해 둔 노후 대비 자금이나 연금으로 생활하게 된다.'},
+  {id:9,  cat:'A', tag:'재무 계획', q:'재무 계획이란 무엇인가?', a:'돈의 흐름을 파악하여 필요할 때 돈을 쓸 수 있도록 미리 준비하는 과정'},
+  {id:10, cat:'A', tag:'재무 계획', q:'생애 주기에 따른 재무 계획을 세워야 하는 이유는?', a:'소득이 소비보다 많은 시기와 소비가 소득보다 많은 시기가 있으며, 예상치 못한 사고나 질병에도 대비해야 하기 때문이다.'},
+  {id:11, cat:'A', tag:'재무 계획', q:'생애 주기에 따른 재무 계획은 어떤 관점에서 세워야 하는가?', a:'장기적인 관점'},
+  {id:12, cat:'A', tag:'스스로 확인', q:'부모의 소득에 의존하여 소비 활동을 하는 생애 주기 단계는?', a:'유소년기'},
+  {id:13, cat:'A', tag:'스스로 확인', q:'은퇴를 하고 이전에 모아 둔 자금이나 연금 등을 통해 생활하는 단계는?', a:'노년기'},
+
+  // ── B: 자산 관리 ──
+  {id:14, cat:'B', tag:'자산 관리', q:'자산 관리란 무엇인가?', a:'자신이 벌어들인 소득으로 언제, 얼마만큼 소비할지, 어떻게 자산을 모으고 불릴지 미리 계획을 세우고 이를 실천하는 것'},
+  {id:15, cat:'B', tag:'자산 관리', q:'자산 관리가 필요한 이유는?', a:'소비 생활은 평생 지속되지만, 소득을 얻을 수 있는 기간은 한정되어 있기 때문이다.'},
+  {id:16, cat:'B', tag:'자산', q:'자산이란 무엇이며, 어떻게 구분되는가?', a:'개인이나 단체가 소유한 경제적 가치가 있는 것. 금융 자산(현금·예금·주식·채권 등)과 실물 자산(자동차·부동산 등)으로 구분된다.'},
+  {id:17, cat:'B', tag:'3요소', q:'합리적 자산 관리를 위해 고려해야 할 3요소는?', a:'수익성, 안전성, 유동성'},
+  {id:18, cat:'B', tag:'3요소', q:'수익성이란?', a:'투자를 통해 수익을 얻을 수 있는 정도'},
+  {id:19, cat:'B', tag:'3요소', q:'안전성이란?', a:'투자한 원금이 손실되지 않고 보장되는 정도'},
+  {id:20, cat:'B', tag:'3요소', q:'유동성이란?', a:'필요할 때 쉽고 빠르게 현금으로 전환할 수 있는 정도'},
+  {id:21, cat:'B', tag:'3요소', q:'예금·적금의 특성은? (수익성/안전성 중심)', a:'안전성은 높은 데 비해 수익성이 낮다.'},
+  {id:22, cat:'B', tag:'3요소', q:'주식의 특성은? (수익성/안전성 중심)', a:'수익성은 높지만 안전성이 낮다.'},
+  {id:23, cat:'B', tag:'자산 방법', q:'채권이란 무엇인가?', a:'정부·기업 등이 자금을 빌리면서 원금과 이자를 언제까지 갚겠다는 것을 표시하여 발행하는 증서'},
+  {id:24, cat:'B', tag:'자산 방법', q:'보험이란 무엇인가?', a:'미래의 질병·사고 등의 위험에 대비하기 위해 현재 미리 돈을 내고, 사고를 당하면 일정 금액을 받는 상품'},
+  {id:25, cat:'B', tag:'자산 방법', q:'정기 예금과 정기 적금의 차이는?', a:'정기 예금: 일정 금액을 한꺼번에 맡기는 것 / 정기 적금: 매달 일정 금액을 입금하는 것'},
+  {id:26, cat:'B', tag:'연금', q:'연금이란 무엇인가?', a:'청년기·중장년기에 소득의 일부를 저축하여 노후에 매달 일정액을 받는 금융 상품. 노후 보장 효과가 크다.'},
+  {id:27, cat:'B', tag:'연금', q:'국민연금·개인연금·퇴직 연금의 차이를 각각 쓰시오.', a:'국민연금: 국가가 시행하는 사회 보장 제도 / 개인연금: 개인이 직접 가입 / 퇴직 연금: 사용자가 근로자의 노후를 보장'},
+  {id:28, cat:'B', tag:'분산 투자', q:'분산 투자란 무엇이며, 왜 필요한가?', a:'다양한 금융 상품에 적절하게 나누어 투자하는 것. 어느 한 곳에서 손해를 보더라도 다른 곳에서 보충할 수 있어 더 안정적이다.'},
+  {id:29, cat:'B', tag:'스스로 확인', q:'자산을 관리할 때 자산을 늘리는 것 외에 중요한 것은?', a:'지출을 체계적으로 관리하여 불필요한 낭비를 줄이는 것'},
+  {id:30, cat:'B', tag:'스스로 확인', q:'지속 가능한 경제생활을 하려면 현재의 소득만을 고려해서 자산을 관리해야 한다. (O/X)', a:'X — 일생 동안의 소득과 소비를 고려하여 자산을 관리해야 한다.'},
+
+  // ── C: 신용 관리 ──
+  {id:31, cat:'C', tag:'신용', q:'신용이란 무엇인가?', a:'개인의 지불 능력에 대한 사회적 평가로, 나중에 대가를 지불할 것을 약속하고 현재 상품을 이용하거나 돈을 빌릴 수 있는 능력'},
+  {id:32, cat:'C', tag:'신용', q:'현대 사회를 무엇이라고 부를 만큼 신용을 바탕으로 한 경제 활동이 활발한가?', a:'신용 사회'},
+  {id:33, cat:'C', tag:'신용 관리', q:'신용을 이용할 때의 장점은?', a:'미래의 소득을 앞당겨서 활용할 수 있기 때문에 현재의 소득보다 더 많은 소비를 할 수 있다.'},
+  {id:34, cat:'C', tag:'신용 관리', q:'신용을 이용할 때의 단점·위험성은?', a:'언젠가 갚아야 할 빚이 늘어나는 것이므로 미래의 경제생활에 큰 부담이 될 수 있다.'},
+  {id:35, cat:'C', tag:'신용 관리', q:'신용도가 떨어졌을 때 받을 수 있는 불이익 세 가지는?', a:'① 신용 카드 발급 제한 ② 대출 거절 ③ 취업 제한'},
+  {id:36, cat:'C', tag:'신용 관리', q:'개인의 신용도 하락이 국가 경제에 미치는 영향은?', a:'국가의 경제 성장에 장애 요인으로 작용할 우려가 있다.'},
+  {id:37, cat:'C', tag:'신용 관리 방법', q:'올바른 신용 관리를 위한 기본 원칙 세 가지는?', a:'① 소득을 초과하는 소비를 자제 ② 충분히 갚을 수 있는 범위에서 신용을 이용 ③ 약속은 반드시 지킨다'},
+  {id:38, cat:'C', tag:'신용 관리 방법', q:'높은 신용도를 유지하려면 어떻게 해야 하는가?', a:'돈을 갚기로 하거나 상품 대금을 지불하기로 한 약속을 반드시 지킨다.'},
+  {id:39, cat:'C', tag:'신용 관리 방법', q:'신용 관리를 위한 개인 실천 방법 네 가지를 쓰시오.', a:'① 상환 능력을 고려하여 대출을 신중히 한다 ② 휴대 전화 요금·공과금·카드 결제 대금 등을 연체하지 않는다 ③ 자신의 신용 정보를 확인하고 관리한다 ④ 주거래 은행을 만들어 꾸준히 거래한다'},
+  {id:40, cat:'C', tag:'스스로 확인', q:'신용은 나중에 대가를 지불할 것을 약속하고 현재 상품을 이용하거나 돈을 빌릴 수 있는 능력을 말한다. (O/X)', a:'O'},
+  {id:41, cat:'C', tag:'스스로 확인', q:'수익성은 쉽고 빠르게 현금으로 전환할 수 있는 정도를 말한다. (O/X)', a:'X — 그것은 유동성에 대한 설명이다. 수익성은 투자를 통해 수익을 얻을 수 있는 정도이다.'},
+  {id:42, cat:'C', tag:'스스로 확인', q:'예금이나 적금은 안전성은 높은 데 비해 수익성이 낮은 편이다. (O/X)', a:'O'},
+  {id:43, cat:'C', tag:'스스로 확인', q:'신용도가 떨어지면 신용 카드 발급 제한, 대출 거절 등의 불이익이 생긴다. (O/X)', a:'O'},
+  {id:44, cat:'A', tag:'스스로 확인', q:'소득이 크게 늘어나지만 자녀 교육, 주택 마련 및 확장 등과 관련한 소비도 늘어나는 단계는?', a:'중장년기'},
+  {id:45, cat:'B', tag:'3요소', q:'투자에서 수익성과 안전성은 일반적으로 어떤 관계인가?', a:'수익성이 높을수록 안전성이 낮고(위험이 크고), 안전성이 높을수록 수익성이 낮은 경향이 있다.'},
+];
+
+const TOTAL = ALL_Q.length;
+let curFilter = 'all';
+let revSet = new Set();
+let ordQ = [...ALL_Q];
+
+function tc(cat) { return cat==='A'?'tA':cat==='B'?'tB':'tC'; }
+
+function getFiltered() {
+  return curFilter==='all' ? ordQ : ordQ.filter(q=>q.cat===curFilter);
+}
+
+function renderQ() {
+  const list = getFiltered();
+  document.getElementById('qList').innerHTML = list.map((q,i)=>{
+    const open = revSet.has(q.id);
+    return `<div class="qcard${open?' open':''}" onclick="toggleQ(${q.id})">
+      <div class="qcard-top">
+        <div class="qnum">${i+1}</div>
+        <div class="qbody">
+          <span class="qtag ${tc(q.cat)}">${q.tag}</span>
+          <div class="qtext">${q.q}</div>
+        </div>
+      </div>
+      <div class="qans"><div class="qans-inner"><span class="albl">▶ 정답</span>${q.a}</div></div>
+    </div>`;
+  }).join('');
+  updateProg();
+}
+
+function toggleQ(id) {
+  revSet.has(id)?revSet.delete(id):revSet.add(id);
+  renderQ();
+}
+
+function updateProg() {
+  const n = revSet.size;
+  document.getElementById('pFill').style.width = Math.round(n/TOTAL*100)+'%';
+  document.getElementById('pLbl').textContent = `${n} / ${TOTAL} 확인`;
+}
+
+function revealAll() { getFiltered().forEach(q=>revSet.add(q.id)); renderQ(); }
+function hideAll()   { getFiltered().forEach(q=>revSet.delete(q.id)); renderQ(); }
+function shuffleQ() {
+  for(let i=ordQ.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ordQ[i],ordQ[j]]=[ordQ[j],ordQ[i]];}
+  renderQ();
+}
+
+function filterQ(f) {
+  curFilter = f;
+  ['all','A','B','C'].forEach(k=>{
+    const b = document.getElementById('fbtn-'+k);
+    if(b){ b.className = k===f?'qbtn qbtn-active':'qbtn qbtn-outline'; }
+  });
+  renderQ();
+}
+
+/* ─── PANEL / CHAPTER SWITCH ─── */
+function switchTab(t) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tabbar-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('panel-'+t).classList.add('on');
+  event.currentTarget.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function switchCh(id) {
+  document.querySelectorAll('.ch-section').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.ch-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  event.currentTarget.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+renderQ();
+</script>
+</body>
+</html>

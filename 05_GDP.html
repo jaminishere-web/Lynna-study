@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>05 국내 총생산과 경제 성장</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@600;900&display=swap');
+
+  :root {
+    --bg: #f8f6f1; --white: #ffffff; --ink: #1c1c1e; --muted: #6b6b6b;
+    --border: #e0d9ce; --accent: #2e6b8a; --accent2: #b84a1e;
+    --gold: #c89c2a; --green: #2a6b4a; --red: #c0392b; --blue: #1e4d8c;
+    --purple: #6b3a9a; --soft: #eef3f6;
+    --ans-bg: #e8f4ea; --ans-text: #1a4a2a;
+    --tag-a: #ddeeff; --tag-a-t: #1a3a6b;
+    --tag-b: #ddf0e8; --tag-b-t: #1a4a2a;
+    --tag-c: #f0e8fc; --tag-c-t: #4a1a7a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; padding-bottom: 80px; }
+
+  .header { background: var(--ink); color: #fff; padding: 22px 18px 18px; }
+  .header-meta { font-size: 0.68rem; letter-spacing: 2px; color: #aaa; text-transform: uppercase; margin-bottom: 6px; }
+  .header h1 { font-family: 'Noto Serif KR', serif; font-size: 1.35rem; font-weight: 900; line-height: 1.3; }
+  .header-sub { font-size: 0.76rem; color: #bbb; margin-top: 5px; }
+
+  .tabbar { display: flex; background: #fff; border-bottom: 2px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .tabbar-btn { flex: 1; padding: 13px 8px; font-family: 'Noto Sans KR', sans-serif; font-size: 0.8rem; font-weight: 700; border: none; background: none; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
+  .tabbar-btn.on { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .panel { display: none; }
+  .panel.on { display: block; }
+  .content-wrap { padding: 0 0 20px; }
+
+  .ch-nav { display: flex; overflow-x: auto; background: var(--soft); border-bottom: 1px solid var(--border); scrollbar-width: none; position: sticky; top: 48px; z-index: 99; }
+  .ch-nav::-webkit-scrollbar { display: none; }
+  .ch-btn { flex: none; padding: 9px 14px; font-family: 'Noto Sans KR', sans-serif; font-size: 0.74rem; font-weight: 700; border: none; background: none; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.18s; }
+  .ch-btn.on { color: var(--accent2); border-bottom-color: var(--accent2); }
+
+  .ch-section { display: none; padding: 16px 16px 0; }
+  .ch-section.on { display: block; }
+  .ch-heading { font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 900; color: var(--accent2); border-left: 4px solid var(--accent2); padding: 6px 0 6px 12px; margin-bottom: 14px; line-height: 1.4; }
+
+  .para-block { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; font-size: 0.87rem; line-height: 1.85; }
+  .para-block .para-label { font-size: 0.65rem; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; display: block; }
+  .hl  { color: var(--accent2); font-weight: 900; }
+  .hl2 { color: var(--accent);  font-weight: 900; }
+  .hl3 { color: var(--green);   font-weight: 900; }
+  .hlr { color: var(--red);     font-weight: 900; }
+  .hlp { color: var(--purple);  font-weight: 900; }
+
+  .tb { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 6px 0; }
+  .tb th { background: var(--ink); color: #fff; padding: 8px 10px; text-align: left; font-weight: 700; }
+  .tb th.g { background: var(--green); }
+  .tb th.r { background: var(--red); }
+  .tb td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+  .tb tr:nth-child(even) td { background: #f9f7f3; }
+
+  .kw-box { background: #fffbf0; border: 1px solid var(--gold); border-radius: 8px; padding: 10px 14px; margin-top: 8px; font-size: 0.82rem; line-height: 1.65; }
+  .kw-box .kw-title { font-size: 0.7rem; font-weight: 900; color: #8a6200; letter-spacing: 1px; margin-bottom: 4px; display: block; }
+
+  .footnote { font-size: 0.76rem; color: var(--muted); border-top: 1px dashed var(--border); margin-top: 10px; padding-top: 8px; line-height: 1.65; }
+  .footnote span { color: var(--accent); font-weight: 700; margin-right: 4px; }
+
+  /* GDP 의미 태그 */
+  .gdp-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .gdp-tag { background: var(--soft); border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 11px; font-size: 0.8rem; line-height: 1.55; flex: 1; min-width: 130px; }
+  .gdp-tag .gt-title { font-weight: 900; color: var(--accent2); font-size: 0.82rem; margin-bottom: 3px; }
+
+  /* impact rows */
+  .impact-list { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+  .impact-row { display: flex; align-items: flex-start; gap: 10px; border-radius: 8px; padding: 9px 12px; font-size: 0.83rem; line-height: 1.6; }
+  .impact-row.pos { background: #eefaf3; border: 1px solid #a8e4c0; }
+  .impact-row.neg { background: #fef0ee; border: 1px solid #f4bfb4; }
+  .impact-icon { flex-shrink: 0; font-size: 1rem; }
+
+  /* quiz */
+  .quiz-wrap { padding: 14px 16px 0; }
+  .quiz-header { background: var(--ink); border-radius: 12px; padding: 14px 16px; color: #fff; margin-bottom: 14px; font-size: 0.83rem; line-height: 1.6; }
+  .quiz-header strong { color: #f0c060; }
+
+  .qbar { display: flex; gap: 7px; margin-bottom: 10px; flex-wrap: wrap; }
+  .qbtn { padding: 6px 12px; border-radius: 20px; border: none; font-family: 'Noto Sans KR', sans-serif; font-size: 0.74rem; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+  .qbtn-outline { background: var(--white); border: 1.5px solid var(--ink); color: var(--ink); }
+  .qbtn-outline:hover { background: var(--ink); color: #fff; }
+  .qbtn-fill { background: var(--accent2); color: #fff; }
+  .qbtn-active { background: var(--accent); color: #fff; }
+
+  .prog-wrap { margin-bottom: 12px; }
+  .prog-bar { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 99px; transition: width 0.35s; width: 0%; }
+  .prog-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 3px; text-align: right; }
+
+  .q-list { display: flex; flex-direction: column; gap: 9px; }
+  .qcard { background: var(--white); border: 1.5px solid var(--border); border-radius: 11px; overflow: hidden; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: box-shadow 0.18s, border-color 0.18s; }
+  .qcard:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.07); border-color: var(--accent); }
+  .qcard.open { border-color: var(--accent); }
+  .qcard-top { display: flex; align-items: flex-start; gap: 10px; padding: 12px 13px; }
+  .qnum { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 0.68rem; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+  .qcard.open .qnum { background: var(--accent); }
+  .qbody { flex: 1; }
+  .qtag { display: inline-block; font-size: 0.62rem; font-weight: 900; padding: 2px 7px; border-radius: 20px; margin-bottom: 4px; }
+  .tA { background: var(--tag-a); color: var(--tag-a-t); }
+  .tB { background: var(--tag-b); color: var(--tag-b-t); }
+  .tC { background: var(--tag-c); color: var(--tag-c-t); }
+  .qtext { font-size: 0.87rem; font-weight: 500; line-height: 1.55; }
+  .qans { display: none; padding: 0 13px 12px 47px; }
+  .qcard.open .qans { display: block; }
+  .qans-inner { background: var(--ans-bg); border-radius: 8px; padding: 9px 12px; font-size: 0.85rem; font-weight: 700; color: var(--ans-text); line-height: 1.6; }
+  .qans-inner .albl { font-size: 0.62rem; font-weight: 900; color: var(--green); letter-spacing: 0.5px; margin-bottom: 3px; display: block; }
+
+  footer { text-align: center; padding: 20px; font-size: 0.7rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-meta">Ⅴ. 국민 경제와 국제 거래 · 1단원 · No.05</div>
+  <h1>국내 총생산과 경제 성장</h1>
+  <div class="header-sub">국내 총생산(GDP) · 경제 성장 · 경제 성장의 영향</div>
+</div>
+
+<div class="tabbar">
+  <button class="tabbar-btn on" onclick="switchTab('content',this)">📖 본문 정리</button>
+  <button class="tabbar-btn" onclick="switchTab('quiz',this)">✏️ 문제</button>
+</div>
+
+<!-- ══════ CONTENT ══════ -->
+<div class="panel on" id="panel-content">
+  <div class="content-wrap">
+    <div class="ch-nav">
+      <button class="ch-btn on" onclick="switchCh('ch1',this)">① 국내 총생산</button>
+      <button class="ch-btn" onclick="switchCh('ch2',this)">② 경제 성장의 영향</button>
+    </div>
+
+    <!-- CH1 -->
+    <div class="ch-section on" id="ch1">
+      <div class="ch-heading">① 국내 총생산이란 무엇일까?</div>
+
+      <div class="para-block">
+        <span class="para-label">국민 경제 지표로서의 국내 총생산</span>
+        한 나라 안에서 경제 주체들이 다양한 경제 활동을 반복하는 과정에서 경제는 성장하기도 하고 후퇴하기도 한다.<br><br>
+        이와 같이 변동하는 한 나라의 경제 상황은 <span class="hl2">국민 경제 지표</span>를 통해 파악할 수 있는데, 한 나라의 경제 활동 규모를 판단할 수 있는 대표적인 국민 경제 지표가 <span class="hl">국내 총생산</span>이다.<br><br>
+        <span class="hl">국내 총생산(GDP)</span>은 <strong>일정 기간 동안 한 나라 안에서 새롭게 생산된 최종 생산물의 가치를 시장 가격으로 환산한 것</strong>을 말한다.
+        <div class="footnote">
+          <span>* 국민 경제 지표</span>국민 소득, 경제 성장률, 물가 상승률, 실업률 등과 같이 한 나라의 경제 현상을 통계 수치로 표현한 것이다.
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">국내 총생산의 의미 — 5가지 핵심 조건</span>
+        <div class="gdp-tags">
+          <div class="gdp-tag">
+            <div class="gt-title">① 일정 기간 동안</div>
+            보통 1년 동안 생산된 것만 포함
+          </div>
+          <div class="gdp-tag">
+            <div class="gt-title">② 한 나라 안에서</div>
+            생산자의 국적과 관계없이 그 나라 국경 안에서 생산된 것만 포함
+          </div>
+          <div class="gdp-tag">
+            <div class="gt-title">③ 새롭게 생산된</div>
+            그해에 새롭게 생산된 것만 포함. 과거에 생산된 중고품은 제외
+          </div>
+          <div class="gdp-tag">
+            <div class="gt-title">④ 최종 생산물의 가치</div>
+            생산 과정에서 사용된 중간재는 제외
+          </div>
+          <div class="gdp-tag">
+            <div class="gt-title">⑤ 시장 가격으로 환산</div>
+            시장에서 거래되지 않는 것(가사 노동·봉사 활동 등)은 포함하지 않음
+          </div>
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">국내 총생산의 의의와 한계</span>
+        국내 총생산은 한 나라의 생산 규모나 국민 전체의 소득을 파악하기에 유용하다. 그러나 나라마다 인구수가 다르므로 한 나라 국민의 평균적인 소득 수준은 <span class="hl2">1인당 국내 총생산</span>을 통해 파악할 수 있다.
+        <div class="footnote">
+          <span>* 1인당 국내 총생산</span>국내 총생산을 그 나라의 인구수로 나눈 것
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">국내 총생산 개념의 한계</span>
+        국내 총생산은 시장에서 거래되지 않는 것(가사 노동, 봉사 활동 등)은 포함하지 않는다. 또한 자원 고갈이나 환경 오염 등으로 인한 피해를 반영하지 않아 <strong>국민의 삶의 질 수준을 완벽히 파악하기 어려우며</strong>, 소득 분배 수준이나 빈부 격차의 정도를 알기 어렵다는 한계를 지닌다.
+        <div class="footnote">
+          <span>* 삶의 질</span>사람들이 정신적, 신체적, 경제적, 사회적 상태에서 느끼는 행복한 정도
+        </div>
+        <div class="kw-box">
+          <span class="kw-title">★ GDP의 한계 — 포함하지 않는 것</span>
+          ① 시장에서 거래되지 않는 것 (가사 노동, 봉사 활동)<br>
+          ② 자원 고갈·환경 오염 등의 피해<br>
+          ③ 소득 분배 수준·빈부 격차 반영 불가
+        </div>
+      </div>
+    </div>
+
+    <!-- CH2 -->
+    <div class="ch-section" id="ch2">
+      <div class="ch-heading">② 국내 총생산의 증가가 우리 생활에 미치는 영향</div>
+
+      <div class="para-block">
+        <span class="para-label">국내 총생산의 증가와 경제 성장</span>
+        <span class="hl">경제 성장</span>은 한 나라 경제의 생산 능력이 커져 재화와 서비스의 총 생산량이 늘어나는 것이다. 즉, 경제가 성장한다는 것은 <strong>국내 총생산이 증가한다는 것을 의미한다.</strong><br><br>
+        그런데 국내 총생산은 실제로 재화와 서비스를 많이 생산할 때에도 증가하지만, <strong>재화와 서비스의 생산량이 늘어나지 않고 물가만 오를 때에도 증가할 수 있다.</strong> 따라서 경제 성장 정도를 나타내는 <span class="hl2">경제 성장률</span>은 물가의 변동을 제거한 <span class="hl2">실질 국내 총생산의 증가율</span>로 측정한다.
+        <div class="footnote">
+          <span>* 실질 국내 총생산</span>기준이 되는 연도의 가격을 적용하여 계산한 국내 총생산이다.
+        </div>
+        <div class="kw-box">
+          <span class="kw-title">★ 경제 성장률 측정 방법</span>
+          물가 상승분을 제거한 <strong>실질 국내 총생산의 증가율</strong>로 측정<br>
+          (단순히 국내 총생산이 늘어난 것 ≠ 경제 성장)
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">경제 성장이 우리 생활에 미치는 긍정적 영향</span>
+        <div class="impact-list">
+          <div class="impact-row pos"><div class="impact-icon">✅</div><div>일자리가 많이 생겨나고 <strong>국민의 소득이 증가</strong>한다.</div></div>
+          <div class="impact-row pos"><div class="impact-icon">✅</div><div>더 많은 재화와 서비스를 소비할 수 있게 되어 <strong>물질적으로 풍요로운 생활</strong>을 누릴 수 있다.</div></div>
+          <div class="impact-row pos"><div class="impact-icon">✅</div><div>질 높은 <strong>교육과 의료 혜택</strong>을 제공받을 수 있다.</div></div>
+          <div class="impact-row pos"><div class="impact-icon">✅</div><div>다양한 <strong>문화생활</strong>을 할 수 있게 되어 삶의 질이 향상될 수 있다.</div></div>
+        </div>
+        이와 같은 이유로 대부분의 나라는 경제 성장을 정책의 주요 목표로 삼고 있다.
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">경제 성장의 부정적 영향</span>
+        하지만 삶의 질이 경제 성장 정도에 비례하여 향상되는 것은 아니다.
+        <div class="impact-list">
+          <div class="impact-row neg"><div class="impact-icon">⚠️</div><div>경제 성장 과정에서 <strong>자원이 고갈</strong>되거나 <strong>환경 오염이 심해져</strong> 쾌적한 생활을 방해하거나 인류의 생존을 위협할 수 있다.</div></div>
+          <div class="impact-row neg"><div class="impact-icon">⚠️</div><div>경제 성장의 혜택이 일부 계층에 편중될 경우 <strong>빈부 격차가 커져 갈등이 발생</strong>할 수 있다.</div></div>
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">경제 성장과 삶의 질 — 국내 총생산의 한계</span>
+        경제 협력 개발 기구(OECD)는 국내 총생산만으로 삶의 질을 제대로 평가할 수 없다는 이유로 <strong>더 나은 삶 지수(Better Life Index)</strong>를 발표하고 있다. 이 지수는 주거, 소득, 고용, 교육, 환경, 공동체, 건강, 삶의 만족도 등 11개 부문을 평가하여 나라별 삶의 질을 종합적으로 산출한다.<br><br>
+        이는 <span class="hlr">삶의 질이 반드시 경제 성장 정도에 비례하여 높아지는 것이 아님</span>을 보여 준다.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ QUIZ ══════ -->
+<div class="panel" id="panel-quiz">
+  <div class="quiz-wrap">
+    <div class="quiz-header">📝 카드를 <strong>클릭</strong>하면 답이 보이고, 다시 클릭하면 숨겨집니다.<br>자주 봐서 <strong>장기 기억</strong>으로 만들어 보세요!</div>
+    <div class="qbar">
+      <button class="qbtn qbtn-outline" onclick="revealAll()">전체 보기</button>
+      <button class="qbtn qbtn-outline" onclick="hideAll()">전체 숨기기</button>
+      <button class="qbtn qbtn-fill" onclick="shuffleQ()">🔀 섞기</button>
+    </div>
+    <div class="qbar" style="padding-top:0;">
+      <button class="qbtn qbtn-active" id="fbtn-all" onclick="filterQ('all')">전체</button>
+      <button class="qbtn qbtn-outline" id="fbtn-A" onclick="filterQ('A')">①국내 총생산</button>
+      <button class="qbtn qbtn-outline" id="fbtn-B" onclick="filterQ('B')">②경제 성장</button>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-bar"><div class="prog-fill" id="pFill"></div></div>
+      <div class="prog-lbl" id="pLbl">0 / 48 확인</div>
+    </div>
+    <div class="q-list" id="qList"></div>
+  </div>
+</div>
+
+<footer>No.05 — 국내 총생산과 경제 성장 · Ⅴ. 국민 경제와 국제 거래</footer>
+
+<script>
+const ALL_Q = [
+  // ── A: 국내 총생산 ──
+  // 용어→설명
+  {id:1,  cat:'A', tag:'용어 설명', q:'국민 경제 지표란 무엇인가?', a:'국민 소득, 경제 성장률, 물가 상승률, 실업률 등과 같이 한 나라의 경제 현상을 통계 수치로 표현한 것'},
+  {id:2,  cat:'A', tag:'용어 설명', q:'국내 총생산(GDP)이란 무엇인가?', a:'일정 기간 동안 한 나라 안에서 새롭게 생산된 최종 생산물의 가치를 시장 가격으로 환산한 것'},
+  {id:3,  cat:'A', tag:'용어 설명', q:'1인당 국내 총생산이란 무엇인가?', a:'국내 총생산을 그 나라의 인구수로 나눈 것. 한 나라 국민의 평균적인 소득 수준을 파악하는 데 사용한다.'},
+  // 설명→용어
+  {id:4,  cat:'A', tag:'설명→용어', q:'"일정 기간 동안 한 나라 안에서 새롭게 생산된 최종 생산물의 가치를 시장 가격으로 환산한 것"을 무엇이라 하는가?', a:'국내 총생산(GDP)'},
+  {id:5,  cat:'A', tag:'설명→용어', q:'"국내 총생산을 그 나라의 인구수로 나눈 것"을 무엇이라 하는가?', a:'1인당 국내 총생산'},
+  {id:6,  cat:'A', tag:'설명→용어', q:'"국민 소득·경제 성장률·물가 상승률·실업률 등 한 나라의 경제 현상을 통계 수치로 표현한 것"을 무엇이라 하는가?', a:'국민 경제 지표'},
+  {id:7,  cat:'A', tag:'설명→용어', q:'한 나라의 경제 활동 규모를 판단할 수 있는 대표적인 국민 경제 지표는?', a:'국내 총생산(GDP)'},
+  // GDP 5가지 조건
+  {id:8,  cat:'A', tag:'GDP 조건', q:'국내 총생산에서 "일정 기간"은 보통 얼마인가?', a:'1년'},
+  {id:9,  cat:'A', tag:'GDP 조건', q:'국내 총생산에서 "한 나라 안에서"의 기준은 무엇인가?', a:'생산자의 국적과 관계없이 그 나라 국경 안에서 생산된 것만 포함'},
+  {id:10, cat:'A', tag:'GDP 조건', q:'국내 총생산에서 "새롭게 생산된"이 의미하는 것은?', a:'그해에 새롭게 생산된 것만 포함. 과거에 생산된 중고품은 제외'},
+  {id:11, cat:'A', tag:'GDP 조건', q:'국내 총생산에서 "최종 생산물의 가치"에서 제외되는 것은?', a:'생산 과정에서 사용된 중간재'},
+  {id:12, cat:'A', tag:'GDP 조건', q:'국내 총생산에서 "시장 가격으로 환산"할 때 포함되지 않는 것은?', a:'시장에서 거래되지 않는 것 (가사 노동, 봉사 활동 등)'},
+  // GDP 포함 여부 판단
+  {id:13, cat:'A', tag:'GDP 포함 여부', q:'우리나라 축구팀에 소속된 외국인 선수가 받은 연봉은 우리나라 GDP에 포함되는가?', a:'포함된다. (우리나라 국경 안에서 활동하여 생산에 기여하였으므로)'},
+  {id:14, cat:'A', tag:'GDP 포함 여부', q:'아버지가 가족을 위해 텃밭에서 직접 재배한 상추의 가치는 GDP에 포함되는가?', a:'포함되지 않는다. (시장에서 거래되지 않기 때문)'},
+  {id:15, cat:'A', tag:'GDP 포함 여부', q:'외국 기업이 우리나라에 세운 공장에서 생산된 자동차의 매출액은 우리나라 GDP에 포함되는가?', a:'포함된다. (우리나라 국경 안에서 생산되었으므로)'},
+  {id:16, cat:'A', tag:'GDP 포함 여부', q:'우리나라 제과점이 빵을 만들기 위해 사용한 밀가루의 가치는 GDP에 포함되는가?', a:'포함되지 않는다. (중간재이기 때문. 최종 생산물인 빵의 가치만 포함)'},
+  // GDP 한계
+  {id:17, cat:'A', tag:'GDP 한계', q:'국내 총생산 개념의 한계 세 가지를 쓰시오.', a:'① 가사 노동·봉사 활동 등 시장에서 거래되지 않는 것은 포함하지 않는다 ② 자원 고갈·환경 오염 등의 피해를 반영하지 않는다 ③ 소득 분배 수준이나 빈부 격차를 알기 어렵다'},
+  {id:18, cat:'A', tag:'GDP 한계', q:'GDP만으로 국민의 삶의 질 수준을 완벽히 파악하기 어려운 이유는?', a:'자원 고갈·환경 오염 피해를 반영하지 않고, 소득 분배·빈부 격차도 알 수 없기 때문이다.'},
+  {id:19, cat:'A', tag:'GDP 한계', q:'OECD가 국내 총생산 외에 발표하는 지수는?', a:'더 나은 삶 지수(Better Life Index) — 주거·소득·고용·교육·환경·건강 등 11개 부문을 종합 평가'},
+  // O/X
+  {id:20, cat:'A', tag:'O/X', q:'1인당 국내 총생산을 통해 한 나라의 생산 규모를 파악할 수 있다. (O/X)', a:'X — 1인당 국내 총생산은 한 나라 국민의 평균적인 소득 수준을 파악하는 데 사용한다. 생산 규모는 국내 총생산(GDP)으로 파악한다.'},
+  {id:21, cat:'A', tag:'O/X', q:'가사 노동은 국내 총생산에 포함된다. (O/X)', a:'X — 시장에서 거래되지 않으므로 포함되지 않는다.'},
+  {id:22, cat:'A', tag:'O/X', q:'국내 총생산은 생산자의 국적과 관계없이 그 나라 국경 안에서 생산된 것을 포함한다. (O/X)', a:'O'},
+  {id:23, cat:'A', tag:'O/X', q:'중고품의 가치는 국내 총생산에 포함된다. (O/X)', a:'X — 그해에 새롭게 생산된 것만 포함하므로, 과거에 생산된 중고품은 제외된다.'},
+
+  // ── B: 경제 성장 ──
+  // 용어→설명
+  {id:24, cat:'B', tag:'용어 설명', q:'경제 성장이란 무엇인가?', a:'한 나라 경제의 생산 능력이 커져 재화와 서비스의 총 생산량이 늘어나는 것. 즉, 국내 총생산이 증가하는 것을 의미한다.'},
+  {id:25, cat:'B', tag:'용어 설명', q:'경제 성장률이란 무엇인가?', a:'경제 성장 정도를 나타내는 지표로, 물가의 변동을 제거한 실질 국내 총생산의 증가율로 측정한다.'},
+  {id:26, cat:'B', tag:'용어 설명', q:'실질 국내 총생산이란 무엇인가?', a:'기준이 되는 연도의 가격을 적용하여 계산한 국내 총생산 (물가 변동 효과를 제거한 것)'},
+  {id:27, cat:'B', tag:'용어 설명', q:'삶의 질이란 무엇인가?', a:'사람들이 정신적, 신체적, 경제적, 사회적 상태에서 느끼는 행복한 정도'},
+  // 설명→용어
+  {id:28, cat:'B', tag:'설명→용어', q:'"한 나라 경제의 생산 능력이 커져 재화와 서비스의 총 생산량이 늘어나는 것"을 무엇이라 하는가?', a:'경제 성장'},
+  {id:29, cat:'B', tag:'설명→용어', q:'"물가의 변동을 제거한 실질 국내 총생산의 증가율"을 무엇이라 하는가?', a:'경제 성장률'},
+  {id:30, cat:'B', tag:'설명→용어', q:'"기준 연도의 가격을 적용하여 계산한 국내 총생산"을 무엇이라 하는가?', a:'실질 국내 총생산'},
+  // 내용 이해
+  {id:31, cat:'B', tag:'경제 성장', q:'경제 성장률을 단순히 국내 총생산의 증가율이 아닌 실질 국내 총생산의 증가율로 측정하는 이유는?', a:'국내 총생산은 물가만 올라도 증가할 수 있기 때문에, 물가 변동을 제거한 실질 국내 총생산의 증가율로 측정해야 실제 경제 성장 정도를 알 수 있다.'},
+  {id:32, cat:'B', tag:'경제 성장', q:'일반적으로 경제 성장은 국내 총생산이 증가하는 것을 의미한다. (O/X)', a:'O'},
+  // 긍정적 영향
+  {id:33, cat:'B', tag:'긍정적 영향', q:'경제 성장이 우리 생활에 미치는 긍정적 영향 네 가지를 쓰시오.', a:'① 일자리 증가, 국민 소득 증가 ② 물질적으로 풍요로운 생활 ③ 질 높은 교육과 의료 혜택 ④ 다양한 문화생활로 삶의 질 향상'},
+  {id:34, cat:'B', tag:'긍정적 영향', q:'경제가 성장하면 일자리와 국민 소득은 어떻게 되는가?', a:'일자리가 많이 생겨나고 국민의 소득이 증가한다.'},
+  {id:35, cat:'B', tag:'긍정적 영향', q:'대부분의 나라가 경제 성장을 정책의 주요 목표로 삼는 이유는?', a:'경제가 성장하면 일자리 증가, 소득 증가, 교육·의료 혜택, 문화생활 등 삶의 질이 향상될 수 있기 때문이다.'},
+  // 부정적 영향
+  {id:36, cat:'B', tag:'부정적 영향', q:'경제 성장이 우리 생활에 미치는 부정적 영향 두 가지를 쓰시오.', a:'① 자원 고갈·환경 오염이 심해져 쾌적한 생활을 방해하거나 인류의 생존을 위협할 수 있다 ② 혜택이 일부 계층에 편중될 경우 빈부 격차가 커져 갈등이 발생할 수 있다'},
+  {id:37, cat:'B', tag:'부정적 영향', q:'경제 성장의 혜택이 일부 계층에 편중될 때 생기는 문제는?', a:'빈부 격차가 커져 갈등이 발생할 수 있다.'},
+  // O/X
+  {id:38, cat:'B', tag:'O/X', q:'삶의 질은 경제 성장 정도에 비례하여 항상 향상된다. (O/X)', a:'X — 삶의 질이 경제 성장 정도에 비례하여 향상되는 것은 아니다. (환경 오염, 빈부 격차 등의 부작용이 있기 때문)'},
+  {id:39, cat:'B', tag:'O/X', q:'경제 성장률은 물가의 변동을 제거한 실질 국내 총생산의 증가율로 측정한다. (O/X)', a:'O'},
+  {id:40, cat:'B', tag:'O/X', q:'경제 성장 과정에서 자원이 고갈되거나 환경 오염이 심해질 수 있다. (O/X)', a:'O'},
+  {id:41, cat:'B', tag:'O/X', q:'국내 총생산이 높은 나라의 국민은 반드시 삶의 질도 높다. (O/X)', a:'X — 국내 총생산 순위와 삶의 질(더 나은 삶 지수) 순위는 반드시 일치하지 않는다.'},
+  // 종합 적용
+  {id:42, cat:'A', tag:'종합', q:'(스스로 확인) 1인당 국내 총생산을 통해 한 나라의 ( )을 파악할 수 있다.', a:'국민의 평균적인 소득 수준'},
+  {id:43, cat:'B', tag:'종합', q:'(스스로 확인) 경제 성장의 긍정적 영향 세 가지를 골라 쓰시오. (일자리 증가 / 질 높은 교육 / 빈부 격차 확대 / 환경 오염 심화 / 더 나은 의료 혜택)', a:'일자리 증가, 질 높은 교육, 더 나은 의료 혜택'},
+  {id:44, cat:'A', tag:'GDP 조건', q:'국내 총생산은 그 나라 국경 안에서 생산된 것이면 생산자의 국적과 관계없이 포함한다. 이를 근거로, 한국에 진출한 외국 기업의 생산 활동은 한국 GDP에 포함되는가?', a:'포함된다. (국경 안에서 생산되었으므로)'},
+  {id:45, cat:'A', tag:'GDP 한계', q:'국내 총생산이 높다고 해서 삶의 질이 반드시 높다고 할 수 없는 이유를 두 가지 쓰시오.', a:'① 환경 오염·자원 고갈 등의 피해가 반영되지 않기 때문 ② 소득 분배 수준이나 빈부 격차가 반영되지 않기 때문'},
+  {id:46, cat:'B', tag:'경제 성장', q:'경제 성장률을 측정하는 공식을 간단히 설명하시오.', a:'물가 변동을 제거한 실질 국내 총생산의 증가율로 측정한다.'},
+  {id:47, cat:'A', tag:'GDP 포함 여부', q:'봉사 활동으로 노인을 도운 것의 가치는 GDP에 포함되는가?', a:'포함되지 않는다. (시장에서 거래되지 않기 때문)'},
+  {id:48, cat:'B', tag:'부정적 영향', q:'"삶의 질이 반드시 경제 성장 정도에 비례하여 높아지는 것이 아님"을 보여 주는 OECD의 지수는?', a:'더 나은 삶 지수(Better Life Index)'},
+];
+
+const TOTAL = ALL_Q.length;
+let curFilter = 'all';
+let revSet = new Set();
+let ordQ = [...ALL_Q];
+
+function tc(c) { return c==='A'?'tA':c==='B'?'tB':'tC'; }
+function getFiltered() { return curFilter==='all'?ordQ:ordQ.filter(q=>q.cat===curFilter); }
+
+function renderQ() {
+  document.getElementById('qList').innerHTML = getFiltered().map((q,i)=>{
+    const o = revSet.has(q.id);
+    return `<div class="qcard${o?' open':''}" onclick="toggleQ(${q.id})">
+      <div class="qcard-top"><div class="qnum">${i+1}</div>
+      <div class="qbody"><span class="qtag ${tc(q.cat)}">${q.tag}</span>
+      <div class="qtext">${q.q}</div></div></div>
+      <div class="qans"><div class="qans-inner"><span class="albl">▶ 정답</span>${q.a}</div></div>
+    </div>`;
+  }).join('');
+  updateProg();
+}
+
+function toggleQ(id) { revSet.has(id)?revSet.delete(id):revSet.add(id); renderQ(); }
+function updateProg() {
+  const n=revSet.size;
+  document.getElementById('pFill').style.width=Math.round(n/TOTAL*100)+'%';
+  document.getElementById('pLbl').textContent=`${n} / ${TOTAL} 확인`;
+}
+function revealAll() { getFiltered().forEach(q=>revSet.add(q.id)); renderQ(); }
+function hideAll()   { getFiltered().forEach(q=>revSet.delete(q.id)); renderQ(); }
+function shuffleQ() {
+  for(let i=ordQ.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ordQ[i],ordQ[j]]=[ordQ[j],ordQ[i]];}
+  renderQ();
+}
+function filterQ(f) {
+  curFilter=f;
+  ['all','A','B'].forEach(k=>{
+    const b=document.getElementById('fbtn-'+k);
+    if(b) b.className=k===f?'qbtn qbtn-active':'qbtn qbtn-outline';
+  });
+  renderQ();
+}
+function switchTab(t,btn) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tabbar-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('panel-'+t).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function switchCh(id,btn) {
+  document.querySelectorAll('.ch-section').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.ch-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+renderQ();
+</script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>통치 체제를 정비하다 — 기말 대비</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F2EDE6;--card:#FFF;--red:#8B1A1A;--red-mid:#B83030;--red-light:#E8C4C4;--gold:#C8960C;--gold-light:#F5E4A0;--dark:#1A1008;--muted:#6B5040;--border:#D8CCBC;--correct:#2A6B2A;--correct-bg:#E8F5E8;--wrong:#8B1A1A;--wrong-bg:#F5E8E8;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Noto Sans KR",sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;padding:0 0 80px;}
+  .top-bar{background:var(--red);color:#F5EDE0;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(139,26,26,.3);}
+  .top-bar h1{font-family:"Noto Serif KR",serif;font-size:15px;font-weight:700;}
+  .top-bar .meta{font-size:11px;color:rgba(245,237,224,.7);letter-spacing:1px;margin-bottom:2px;}
+  .score-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 12px;font-size:12px;font-weight:600;color:#F5E4A0;border-radius:20px;white-space:nowrap;}
+  .tabs{display:flex;background:#2A1008;border-bottom:2px solid var(--red);}
+  .tab{flex:1;padding:11px 0;text-align:center;font-size:13px;font-weight:600;color:rgba(245,237,224,.5);cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+  .tab.active{color:#F5E4A0;border-bottom:3px solid var(--gold);margin-bottom:-2px;}
+  .progress-wrap{padding:10px 20px 0;background:var(--bg);}
+  .progress-info{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px;}
+  .progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .4s ease;border-radius:2px;}
+  .page{display:none;} .page.active{display:block;}
+  .content-wrap{max-width:720px;margin:0 auto;padding:20px 16px;}
+  .section-card{background:var(--card);border:1px solid var(--border);margin-bottom:12px;overflow:hidden;}
+  .section-head{background:var(--red);color:#F5EDE0;padding:10px 16px;display:flex;align-items:center;gap:10px;}
+  .section-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold-light);letter-spacing:2px;}
+  .section-title{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;}
+  .section-body{padding:16px;font-size:14px;line-height:1.95;color:#1A1008;}
+  .section-body strong{color:var(--red);font-weight:700;}
+  .section-body .kw{background:var(--gold-light);color:#5A3808;padding:1px 5px;font-weight:600;border-radius:2px;}
+  .quiz-wrap{max-width:720px;margin:0 auto;padding:16px;}
+  .block{margin-bottom:20px;}
+  .para-box{background:var(--card);border:1px solid var(--border);border-bottom:none;border-left:4px solid var(--red);overflow:hidden;}
+  .para-box strong{color:var(--red);font-weight:700;}
+  .para-box .kw{background:var(--gold-light);color:#5A3808;padding:1px 4px;font-weight:600;}
+  .para-header{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;cursor:pointer;user-select:none;background:#FBF6EE;border-bottom:1px solid var(--border);transition:background .15s;}
+  .para-header:hover{background:#F5EDD8;}
+  .para-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:600;}
+  .para-toggle-btn{font-size:11px;color:var(--red);font-weight:600;display:flex;align-items:center;gap:5px;}
+  .para-arrow{display:inline-block;transition:transform .25s ease;font-size:9px;color:var(--muted);}
+  .para-arrow.open{transform:rotate(180deg);}
+  .para-content{font-size:13.5px;line-height:1.85;color:#1A1008;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s ease;padding:0 16px;}
+  .para-content.open{max-height:600px;padding:12px 16px 14px;}
+  .q-list{border:1px solid var(--border);border-top:2px solid var(--gold);background:#FDFAF4;}
+  .q-item{padding:13px 16px;border-bottom:1px solid var(--border);}
+  .q-item:last-child{border-bottom:none;}
+  .q-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:9px;}
+  .q-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold);font-weight:700;min-width:24px;padding-top:2px;}
+  .q-text{font-size:13.5px;line-height:1.65;color:#1A1008;flex:1;font-weight:500;}
+  /* 단답형 - 정답 보기/숨기기 토글 */
+  .ans-toggle{display:block;margin-left:34px;padding:9px 16px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--muted);cursor:pointer;text-align:left;transition:all .15s;width:calc(100% - 34px);border-radius:0;}
+  .ans-toggle:hover{border-color:var(--red);color:var(--red);}
+  .ans-toggle.open{border-color:var(--correct);color:var(--correct);background:var(--correct-bg);}
+  /* 정답 카드 */
+  .ans-card{display:none;margin-left:34px;padding:10px 16px;border-left:3px solid var(--correct);background:var(--correct-bg);width:calc(100% - 34px);}
+  .ans-card.show{display:block;}
+  .ans-label{font-size:10px;letter-spacing:1.5px;color:var(--correct);font-weight:600;margin-bottom:4px;}
+  .ans-text{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;color:#1A1008;}
+  /* OX / 2지선택 */
+  .ox-wrap{display:flex;gap:10px;margin-left:34px;}
+  .ox-btn{width:56px;height:40px;border:1.5px solid var(--border);background:#fff;font-size:20px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;border-radius:4px;}
+  .ox-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .ox-btn.ok{background:var(--correct-bg);border-color:var(--correct);}
+  .ox-btn.no{background:var(--wrong-bg);border-color:var(--wrong);}
+  .ox-btn:disabled{cursor:default;}
+  .two-wrap{display:flex;gap:10px;margin-left:34px;flex-wrap:wrap;}
+  .two-btn{flex:1;min-width:120px;padding:9px 10px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--dark);cursor:pointer;transition:all .15s;text-align:center;font-weight:500;}
+  .two-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .two-btn.ok{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);font-weight:700;}
+  .two-btn.no{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong);}
+  .two-btn:disabled{cursor:default;}
+  .feedback{margin-left:34px;margin-top:7px;font-size:12.5px;padding:7px 11px;border-radius:2px;display:none;line-height:1.55;cursor:pointer;transition:opacity .2s,filter .2s;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--correct-bg);color:var(--correct);border-left:3px solid var(--correct);}
+  .feedback.no{background:var(--wrong-bg);color:var(--wrong);border-left:3px solid var(--wrong);}
+  .feedback.hidden{opacity:0.07;filter:blur(4px);user-select:none;}
+  .sdiv{display:flex;align-items:center;gap:12px;margin:24px 0 14px;}
+  .sdiv span{font-family:"Noto Serif KR",serif;font-size:12px;color:var(--red);letter-spacing:1.5px;font-weight:700;white-space:nowrap;}
+  .sdiv::before,.sdiv::after{content:"";flex:1;height:1px;background:var(--red-light);}
+  .result-bar{max-width:720px;margin:0 auto;padding:0 16px;}
+  .result-card{background:var(--card);border:2px solid var(--red);padding:36px 24px;text-align:center;margin-top:24px;}
+  .result-title{font-family:"Noto Serif KR",serif;font-size:20px;font-weight:900;color:var(--red);margin-bottom:6px;}
+  .result-score{font-family:"Noto Serif KR",serif;font-size:56px;font-weight:900;color:var(--dark);line-height:1;margin:20px 0 6px;}
+  .result-sub{font-size:13px;color:var(--muted);margin-bottom:16px;}
+  .result-msg{font-size:15px;font-weight:600;color:var(--red);margin-bottom:28px;}
+  .retry-btn{background:var(--red);color:#fff;border:none;padding:13px 36px;font-size:14px;font-weight:600;font-family:"Noto Sans KR",sans-serif;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background .2s;}
+  .retry-btn:hover{background:var(--red-mid);}
+  .submit-wrap{text-align:center;margin-top:20px;padding-bottom:10px;}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <div><div class="meta">고려의 성립과 변천</div><h1>통치 체제를 정비하다</h1></div>
+  <div class="score-badge" id="scoreBadge">0 / 0</div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('content')">📖 본문</div>
+  <div class="tab" onclick="switchTab('quiz')">✏️ 문제</div>
+</div>
+<div class="page active" id="page-content">
+  <div class="content-wrap"><div class="section-card"><div class="section-head"><span class="section-num">§01</span><span class="section-title">중앙 정치 제도</span></div><div class="section-body">고려는 당의 3성 6부제를 받아들여 고려의 실정에 맞게 운영하였다. 최고 관청인 <span class='kw'>중서문하성</span>은 국가의 정책을 논의하여 결정하였고, 장관인 <span class='kw'>문하시중</span>이 국정을 총괄하였다. <span class='kw'>상서성</span>은 아래에 6부를 두고 정책을 집행하였다. 국왕의 비서 기관인 <span class='kw'>중추원</span>은 군사 기밀을 다루고 왕의 명령을 전달하였다. 이 밖에도 관리의 비리를 살피고 정치의 잘잘못을 논하는 <span class='kw'>어사대</span>, 국가 재정의 출납과 회계를 담당하는 <span class='kw'>삼사</span>가 있었다.<br><br>한편, 중서문하성과 중추원의 고위 관료들은 <span class='kw'>도병마사</span>와 <span class='kw'>식목도감</span>에서 국가의 중요한 일을 논의하였다. 도병마사에서는 주로 국방과 군사 문제를 논의하였고, 식목도감에서는 제도와 시행 규칙을 제정하였다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§02</span><span class="section-title">지방 행정 제도</span></div><div class="section-body">고려 초기에는 호족이 각 지역을 다스렸다. 성종 때에 이르러 주요 지역에 <span class='kw'>12목</span>을 설치하고 지방관을 파견하면서 고려의 지방 제도가 틀을 갖추기 시작하였다.<br><br>고려는 전국을 <span class='kw'>5도</span>와 <span class='kw'>양계</span>, <span class='kw'>경기</span>로 나누어 다스렸다. 일반 행정 구역인 5도에는 <span class='kw'>안찰사</span>를 파견하였고, 국경 지역에는 양계를 두고 <span class='kw'>병마사</span>를 파견하였다. 5도와 양계의 아래에는 주·군·현을 두었다. 수도 개경과 주변 지역은 <span class='kw'>경기</span>라 하였고, 개경은 서경·동경(뒤에 남경)과 함께 <strong>3경</strong>으로 정비되었다.<br><br>군·현은 지방관이 파견된 <span class='kw'>주현</span>과 지방관이 파견되지 않은 <span class='kw'>속현</span>으로 구분되었다. 주현의 지방관은 주변의 속현까지 관할하였고, 행정 실무는 각 고을의 <span class='kw'>향리</span>가 담당하였다. 이 밖에 <span class='kw'>향·부곡·소</span>라는 특수 행정 구역도 있었다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§03</span><span class="section-title">군사 제도</span></div><div class="section-body">고려의 군사 제도는 <strong>중앙군</strong>과 <strong>지방군</strong>으로 구성되었다. 중앙군은 궁궐과 왕실을 지키는 <span class='kw'>2군</span>과 개경과 국경 지방을 방어하는 <span class='kw'>6위</span>로 편성되었다. 지방군은 5도의 군사 방어와 치안을 담당하는 <span class='kw'>주현군</span>과 양계에 주둔하며 국경 경비를 담당한 <span class='kw'>주진군</span>으로 이루어졌다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§04</span><span class="section-title">교육 제도와 관리 등용 제도</span></div><div class="section-body">고려는 교육을 중시하여 태조 때부터 개경과 서경에 학교를 세웠다. 성종 때에는 개경에 <span class='kw'>국자감</span>을 설치하였으며, 중요한 지방에는 <span class='kw'>향교</span>를 설치하였다.<br><br>고려의 관리 등용 제도는 <span class='kw'>과거제</span>와 <span class='kw'>음서</span>가 대표적이었다. 시험으로 인재를 선발하는 과거제에는 문관을 뽑는 <span class='kw'>제술과</span>와 <span class='kw'>명경과</span>, 기술관을 뽑는 <span class='kw'>잡과</span>, 승려를 대상으로 하는 <span class='kw'>승과</span>가 있었다. 무과는 거의 시행하지 않았고, 무예가 뛰어난 사람을 무관으로 임명하였다. 과거는 원칙적으로 <span class='kw'>양인 이상</span>이면 응시할 수 있었다.<br><br>왕족과 공신의 후손, <strong>5품 이상</strong> 고위 관리의 자손은 과거를 거치지 않고 <span class='kw'>음서</span>로 관리가 될 수 있었다. 고위 관리는 음서를 이용하여 지위를 세습하기도 하였다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§05</span><span class="section-title">전시과 제도</span></div><div class="section-body">고려는 모든 관리에게 <span class='kw'>수조권</span>이 설정된 토지를 주었고, 관직 수행에 대한 대가로 쌀·베 등의 현물을 녹봉으로 주었다. <span class='kw'>전시과</span> 제도에 따라 관리가 사망하면 그가 받은 토지는 국가에 반납해야 했다. 그러나 5품 이상의 관리에게는 세습이 가능한 <span class='kw'>공음전</span>을 주었다.</div></div></div>
+</div>
+<div class="page" id="page-quiz">
+  <div class="progress-wrap">
+    <div class="progress-info"><span id="progressTxt">0 / 18 완료</span><span id="progressPct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div class="quiz-wrap">
+    <div class="sdiv"><span>§01 · 중앙 정치 제도</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">최고 관청 <span class='kw'>중서문하성</span>(장관: 문하시중). <span class='kw'>상서성</span>(6부 통솔, 정책 집행). <span class='kw'>중추원</span>(군사 기밀·왕명 전달). <span class='kw'>어사대</span>(관리 비리 감찰). <span class='kw'>삼사</span>(재정 출납·회계).</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q1</span><span class="q-text">고려의 최고 관청으로 국가 정책을 논의·결정한 기관은?</span></div>
+  <button class="ans-toggle" id="q1-tb" onclick="toggleAns('q1')">▶ 정답 보기</button>
+  <div class="ans-card" id="q1-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">중서문하성</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q2</span><span class="q-text">중서문하성의 장관으로 국정을 총괄한 관직은?</span></div>
+  <button class="ans-toggle" id="q2-tb" onclick="toggleAns('q2')">▶ 정답 보기</button>
+  <div class="ans-card" id="q2-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">문하시중</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q3</span><span class="q-text">고려에서 군사 기밀을 다루고 왕의 명령을 전달한 기관은?</span></div>
+  <button class="ans-toggle" id="q3-tb" onclick="toggleAns('q3')">▶ 정답 보기</button>
+  <div class="ans-card" id="q3-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">중추원</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q4</span><span class="q-text">도병마사와 식목도감의 차이는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q4',this,true)">도병마사는 국방·군사, 식목도감은 제도·시행 규칙 제정</button>
+    <button class="two-btn" onclick="checkTwo('q4',this,false)">도병마사는 재정, 식목도감은 외교 담당</button>
+  </div>
+  <div class="feedback" id="q4-fb"></div>
+</div></div></div><div class="sdiv"><span>§02 · 지방 행정 제도</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">전국을 <span class='kw'>5도</span>(안찰사)·<span class='kw'>양계</span>(병마사)·<span class='kw'>경기</span>로 구분. 3경: <span class='kw'>개경·서경·동경(남경)</span>. 지방관 없는 곳은 <span class='kw'>속현</span>, 행정 실무는 <span class='kw'>향리</span>가 담당. 특수 행정 구역: <span class='kw'>향·부곡·소</span>.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q5</span><span class="q-text">성종이 주요 지역에 설치하여 고려 지방 제도의 틀을 갖추기 시작한 것은?</span></div>
+  <button class="ans-toggle" id="q5-tb" onclick="toggleAns('q5')">▶ 정답 보기</button>
+  <div class="ans-card" id="q5-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">12목</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q6</span><span class="q-text">고려에서 일반 행정 구역인 5도에 파견된 관리는?</span></div>
+  <button class="ans-toggle" id="q6-tb" onclick="toggleAns('q6')">▶ 정답 보기</button>
+  <div class="ans-card" id="q6-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">안찰사</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q7</span><span class="q-text">고려에서 국경 지역인 양계에 파견된 관리는?</span></div>
+  <button class="ans-toggle" id="q7-tb" onclick="toggleAns('q7')">▶ 정답 보기</button>
+  <div class="ans-card" id="q7-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">병마사</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q8</span><span class="q-text">주현과 속현의 차이는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q8',this,true)">주현은 지방관이 파견된 곳, 속현은 파견되지 않은 곳</button>
+    <button class="two-btn" onclick="checkTwo('q8',this,false)">주현은 도시, 속현은 농촌 지역</button>
+  </div>
+  <div class="feedback" id="q8-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q9</span><span class="q-text">고려의 특수 행정 구역 세 가지는?</span></div>
+  <button class="ans-toggle" id="q9-tb" onclick="toggleAns('q9')">▶ 정답 보기</button>
+  <div class="ans-card" id="q9-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">향, 부곡, 소</div>
+  </div>
+</div></div></div><div class="sdiv"><span>§03 · 군사 제도</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">중앙군: <span class='kw'>2군</span>(왕실 호위) + <span class='kw'>6위</span>(개경·국경 방어). 지방군: <span class='kw'>주현군</span>(5도) + <span class='kw'>주진군</span>(양계).</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q10</span><span class="q-text">고려 중앙군의 두 가지 구성은?</span></div>
+  <button class="ans-toggle" id="q10-tb" onclick="toggleAns('q10')">▶ 정답 보기</button>
+  <div class="ans-card" id="q10-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">2군과 6위</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q11</span><span class="q-text">고려 지방군 중 양계에 주둔하며 국경 경비를 담당한 것은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q11',this,true)">주진군</button>
+    <button class="two-btn" onclick="checkTwo('q11',this,false)">주현군</button>
+  </div>
+  <div class="feedback" id="q11-fb"></div>
+</div></div></div><div class="sdiv"><span>§04 · 교육과 관리 등용</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">성종 때 개경에 <span class='kw'>국자감</span>, 지방에 <span class='kw'>향교</span> 설치. 과거제: <span class='kw'>제술과·명경과</span>(문관)·<span class='kw'>잡과</span>(기술관). 원칙적으로 <span class='kw'>양인 이상</span> 응시 가능. <strong>5품 이상</strong> 고위 관리 자손은 <span class='kw'>음서</span>로 관리 가능.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q12</span><span class="q-text">성종 때 개경에 설치한 최고 교육 기관은?</span></div>
+  <button class="ans-toggle" id="q12-tb" onclick="toggleAns('q12')">▶ 정답 보기</button>
+  <div class="ans-card" id="q12-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">국자감</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q13</span><span class="q-text">고려 과거제에서 문관을 선발하는 두 가지 시험은?</span></div>
+  <button class="ans-toggle" id="q13-tb" onclick="toggleAns('q13')">▶ 정답 보기</button>
+  <div class="ans-card" id="q13-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">제술과, 명경과</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q14</span><span class="q-text">고려 과거제에서 원칙적으로 응시할 수 있는 신분은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q14',this,true)">양인 이상</button>
+    <button class="two-btn" onclick="checkTwo('q14',this,false)">6두품 이상</button>
+  </div>
+  <div class="feedback" id="q14-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q15</span><span class="q-text">5품 이상 고위 관리의 자손이 과거 없이 관리가 되는 제도는?</span></div>
+  <button class="ans-toggle" id="q15-tb" onclick="toggleAns('q15')">▶ 정답 보기</button>
+  <div class="ans-card" id="q15-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">음서</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q16</span><span class="q-text">(OX) 고려에서는 무과를 거의 시행하지 않았다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q16',this,'O','O')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q16',this,'X','O')">❌</button>
+  </div>
+  <div class="feedback" id="q16-fb"></div>
+</div></div></div><div class="sdiv"><span>§05 · 전시과 제도</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content"><span class='kw'>전시과</span>: 관리에게 수조권 있는 토지 지급 → 사망 시 국가에 반납. 5품 이상에게는 세습 가능한 <span class='kw'>공음전</span> 지급.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q17</span><span class="q-text">고려에서 관리에게 지급한 토지로, 사망 시 국가에 반납해야 하는 제도는?</span></div>
+  <button class="ans-toggle" id="q17-tb" onclick="toggleAns('q17')">▶ 정답 보기</button>
+  <div class="ans-card" id="q17-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">전시과</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q18</span><span class="q-text">공음전이 일반 전시과 토지와 다른 점은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q18',this,true)">5품 이상 고위 관리에게 주어지며 세습이 가능</button>
+    <button class="two-btn" onclick="checkTwo('q18',this,false)">관리 사망 후 국가에 반납해야 함</button>
+  </div>
+  <div class="feedback" id="q18-fb"></div>
+</div></div></div>
+    <div class="submit-wrap"><button class="retry-btn" onclick="showResult()">채점 결과 보기</button></div>
+  </div>
+  
+<div class="result-bar" id="resultSection" style="display:none;">
+  <div class="result-card">
+    <div class="result-title">채점 완료</div>
+    <div class="result-score" id="resultScore">—</div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <button class="retry-btn" onclick="resetAll()">다시 풀기</button>
+  </div>
+</div>
+</div>
+<script>
+const TOTAL = 18;
+let answered = new Set();
+let score = 0;
+
+function togglePara(h) {
+  const c = h.nextElementSibling;
+  const a = h.querySelector('.para-arrow');
+  const l = h.querySelector('.para-toggle-btn');
+  const o = c.classList.contains('open');
+  c.classList.toggle('open', !o);
+  a.classList.toggle('open', !o);
+  l.innerHTML = o ? '<span class="para-arrow">▼</span> 펼치기' : '<span class="para-arrow open">▼</span> 접기';
+}
+
+function updateProgress() {
+  const n = answered.size;
+  const p = Math.round(n / TOTAL * 100);
+  document.getElementById('progressTxt').textContent = n + ' / ' + TOTAL + ' 완료';
+  document.getElementById('progressPct').textContent = p + '%';
+  document.getElementById('progressFill').style.width = p + '%';
+  document.getElementById('scoreBadge').textContent = score + ' / ' + TOTAL;
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.tab').forEach((x, i) =>
+    x.classList.toggle('active', (i===0 && t==='content') || (i===1 && t==='quiz')));
+  document.getElementById('page-content').classList.toggle('active', t === 'content');
+  document.getElementById('page-quiz').classList.toggle('active', t === 'quiz');
+}
+
+// 단답형: 토글 버튼 클릭 → 정답 보이기/숨기기
+function toggleAns(id) {
+  const btn = document.getElementById(id + '-tb');
+  const card = document.getElementById(id + '-ac');
+  const isOpen = card.classList.contains('show');
+  if (isOpen) {
+    card.classList.remove('show');
+    btn.classList.remove('open');
+    btn.textContent = '▶ 정답 보기';
+  } else {
+    card.classList.add('show');
+    btn.classList.add('open');
+    btn.textContent = '▼ 정답 숨기기';
+    if (!answered.has(id)) {
+      answered.add(id);
+      score++;
+      updateProgress();
+    }
+  }
+}
+
+// 2지선택
+function checkTwo(id, btn, isOk) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.two-btn').forEach(b => { if (b !== btn) b.classList.add('ok'); });
+  wrap.querySelectorAll('.two-btn').forEach(b => b.disabled = true);
+  fb.textContent = isOk ? '✓ 정답입니다!' : '✗ 정답을 확인하세요.';
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+// OX형
+function checkOX(id, btn, sel, cor) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  const isOk = sel === cor;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.ox-btn').forEach(b => {
+    const v = b.getAttribute('onclick').includes(",'O'") ? 'O' : 'X';
+    if (v === cor) b.classList.add('ok');
+  });
+  wrap.querySelectorAll('.ox-btn').forEach(b => b.disabled = true);
+  const ex = {"q16": "고려는 무예가 뛰어난 자를 무관으로 임명하는 방식을 주로 사용하였습니다."};
+  fb.textContent = (isOk ? '✓ 정답! ' : '✗ 오답. ') + (ex[id] || '');
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+function showResult() {
+  const p = Math.round(score / TOTAL * 100);
+  const m = p>=90 ? '완벽해요! 🏆' : p>=70 ? '잘했어요! 👍' : p>=50 ? '본문을 한 번 더 읽어봐요 📖' : '처음부터 다시 해봐요 💪';
+  document.getElementById('resultScore').textContent = score + ' / ' + TOTAL;
+  document.getElementById('resultSub').textContent = '정답률 ' + p + '%';
+  document.getElementById('resultMsg').textContent = m;
+  document.getElementById('resultSection').style.display = 'block';
+  document.getElementById('resultSection').scrollIntoView({behavior: 'smooth'});
+}
+
+function resetAll() {
+  answered.clear(); score = 0; updateProgress();
+  // 단답형 초기화
+  document.querySelectorAll('.ans-toggle').forEach(e => { e.classList.remove('open'); e.textContent = '▶ 정답 보기'; });
+  document.querySelectorAll('.ans-card').forEach(e => e.classList.remove('show', 'hidden'));
+  // OX / 2지선택 초기화
+  document.querySelectorAll('.two-btn, .ox-btn').forEach(e => { e.disabled = false; e.classList.remove('ok','no'); });
+  document.querySelectorAll('.feedback').forEach(e => { e.className = 'feedback'; e.textContent = ''; e.onclick = null; });
+  // 본문힌트 닫기
+  document.querySelectorAll('.para-content').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-arrow').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-toggle-btn').forEach(e => { e.innerHTML = '<span class="para-arrow">▼</span> 펼치기'; });
+  document.getElementById('resultSection').style.display = 'none';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+updateProgress();
+</script>
+</body>
+</html>

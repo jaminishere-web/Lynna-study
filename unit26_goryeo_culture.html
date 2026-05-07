@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>고려의 종교와 학문이 발달하다 — 기말 대비</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F2EDE6;--card:#FFF;--red:#8B1A1A;--red-mid:#B83030;--red-light:#E8C4C4;--gold:#C8960C;--gold-light:#F5E4A0;--dark:#1A1008;--muted:#6B5040;--border:#D8CCBC;--correct:#2A6B2A;--correct-bg:#E8F5E8;--wrong:#8B1A1A;--wrong-bg:#F5E8E8;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Noto Sans KR",sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;padding:0 0 80px;}
+  .top-bar{background:var(--red);color:#F5EDE0;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(139,26,26,.3);}
+  .top-bar h1{font-family:"Noto Serif KR",serif;font-size:15px;font-weight:700;}
+  .top-bar .meta{font-size:11px;color:rgba(245,237,224,.7);letter-spacing:1px;margin-bottom:2px;}
+  .score-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 12px;font-size:12px;font-weight:600;color:#F5E4A0;border-radius:20px;white-space:nowrap;}
+  .tabs{display:flex;background:#2A1008;border-bottom:2px solid var(--red);}
+  .tab{flex:1;padding:11px 0;text-align:center;font-size:13px;font-weight:600;color:rgba(245,237,224,.5);cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+  .tab.active{color:#F5E4A0;border-bottom:3px solid var(--gold);margin-bottom:-2px;}
+  .progress-wrap{padding:10px 20px 0;background:var(--bg);}
+  .progress-info{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px;}
+  .progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .4s ease;border-radius:2px;}
+  .page{display:none;} .page.active{display:block;}
+  .content-wrap{max-width:720px;margin:0 auto;padding:20px 16px;}
+  .section-card{background:var(--card);border:1px solid var(--border);margin-bottom:12px;overflow:hidden;}
+  .section-head{background:var(--red);color:#F5EDE0;padding:10px 16px;display:flex;align-items:center;gap:10px;}
+  .section-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold-light);letter-spacing:2px;}
+  .section-title{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;}
+  .section-body{padding:16px;font-size:14px;line-height:1.95;color:#1A1008;}
+  .section-body strong{color:var(--red);font-weight:700;}
+  .section-body .kw{background:var(--gold-light);color:#5A3808;padding:1px 5px;font-weight:600;border-radius:2px;}
+  .quiz-wrap{max-width:720px;margin:0 auto;padding:16px;}
+  .block{margin-bottom:20px;}
+  .para-box{background:var(--card);border:1px solid var(--border);border-bottom:none;border-left:4px solid var(--red);overflow:hidden;}
+  .para-box strong{color:var(--red);font-weight:700;}
+  .para-box .kw{background:var(--gold-light);color:#5A3808;padding:1px 4px;font-weight:600;}
+  .para-header{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;cursor:pointer;user-select:none;background:#FBF6EE;border-bottom:1px solid var(--border);transition:background .15s;}
+  .para-header:hover{background:#F5EDD8;}
+  .para-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:600;}
+  .para-toggle-btn{font-size:11px;color:var(--red);font-weight:600;display:flex;align-items:center;gap:5px;}
+  .para-arrow{display:inline-block;transition:transform .25s ease;font-size:9px;color:var(--muted);}
+  .para-arrow.open{transform:rotate(180deg);}
+  .para-content{font-size:13.5px;line-height:1.85;color:#1A1008;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s ease;padding:0 16px;}
+  .para-content.open{max-height:600px;padding:12px 16px 14px;}
+  .q-list{border:1px solid var(--border);border-top:2px solid var(--gold);background:#FDFAF4;}
+  .q-item{padding:13px 16px;border-bottom:1px solid var(--border);}
+  .q-item:last-child{border-bottom:none;}
+  .q-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:9px;}
+  .q-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold);font-weight:700;min-width:24px;padding-top:2px;}
+  .q-text{font-size:13.5px;line-height:1.65;color:#1A1008;flex:1;font-weight:500;}
+  /* 단답형 - 정답 보기/숨기기 토글 */
+  .ans-toggle{display:block;margin-left:34px;padding:9px 16px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--muted);cursor:pointer;text-align:left;transition:all .15s;width:calc(100% - 34px);border-radius:0;}
+  .ans-toggle:hover{border-color:var(--red);color:var(--red);}
+  .ans-toggle.open{border-color:var(--correct);color:var(--correct);background:var(--correct-bg);}
+  /* 정답 카드 */
+  .ans-card{display:none;margin-left:34px;padding:10px 16px;border-left:3px solid var(--correct);background:var(--correct-bg);width:calc(100% - 34px);}
+  .ans-card.show{display:block;}
+  .ans-label{font-size:10px;letter-spacing:1.5px;color:var(--correct);font-weight:600;margin-bottom:4px;}
+  .ans-text{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;color:#1A1008;}
+  /* OX / 2지선택 */
+  .ox-wrap{display:flex;gap:10px;margin-left:34px;}
+  .ox-btn{width:56px;height:40px;border:1.5px solid var(--border);background:#fff;font-size:20px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;border-radius:4px;}
+  .ox-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .ox-btn.ok{background:var(--correct-bg);border-color:var(--correct);}
+  .ox-btn.no{background:var(--wrong-bg);border-color:var(--wrong);}
+  .ox-btn:disabled{cursor:default;}
+  .two-wrap{display:flex;gap:10px;margin-left:34px;flex-wrap:wrap;}
+  .two-btn{flex:1;min-width:120px;padding:9px 10px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--dark);cursor:pointer;transition:all .15s;text-align:center;font-weight:500;}
+  .two-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .two-btn.ok{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);font-weight:700;}
+  .two-btn.no{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong);}
+  .two-btn:disabled{cursor:default;}
+  .feedback{margin-left:34px;margin-top:7px;font-size:12.5px;padding:7px 11px;border-radius:2px;display:none;line-height:1.55;cursor:pointer;transition:opacity .2s,filter .2s;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--correct-bg);color:var(--correct);border-left:3px solid var(--correct);}
+  .feedback.no{background:var(--wrong-bg);color:var(--wrong);border-left:3px solid var(--wrong);}
+  .feedback.hidden{opacity:0.07;filter:blur(4px);user-select:none;}
+  .sdiv{display:flex;align-items:center;gap:12px;margin:24px 0 14px;}
+  .sdiv span{font-family:"Noto Serif KR",serif;font-size:12px;color:var(--red);letter-spacing:1.5px;font-weight:700;white-space:nowrap;}
+  .sdiv::before,.sdiv::after{content:"";flex:1;height:1px;background:var(--red-light);}
+  .result-bar{max-width:720px;margin:0 auto;padding:0 16px;}
+  .result-card{background:var(--card);border:2px solid var(--red);padding:36px 24px;text-align:center;margin-top:24px;}
+  .result-title{font-family:"Noto Serif KR",serif;font-size:20px;font-weight:900;color:var(--red);margin-bottom:6px;}
+  .result-score{font-family:"Noto Serif KR",serif;font-size:56px;font-weight:900;color:var(--dark);line-height:1;margin:20px 0 6px;}
+  .result-sub{font-size:13px;color:var(--muted);margin-bottom:16px;}
+  .result-msg{font-size:15px;font-weight:600;color:var(--red);margin-bottom:28px;}
+  .retry-btn{background:var(--red);color:#fff;border:none;padding:13px 36px;font-size:14px;font-weight:600;font-family:"Noto Sans KR",sans-serif;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background .2s;}
+  .retry-btn:hover{background:var(--red-mid);}
+  .submit-wrap{text-align:center;margin-top:20px;padding-bottom:10px;}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <div><div class="meta">고려의 성립과 변천</div><h1>고려의 종교와 학문이 발달하다</h1></div>
+  <div class="score-badge" id="scoreBadge">0 / 0</div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('content')">📖 본문</div>
+  <div class="tab" onclick="switchTab('quiz')">✏️ 문제</div>
+</div>
+<div class="page active" id="page-content">
+  <div class="content-wrap"><div class="section-card"><div class="section-head"><span class="section-num">§01</span><span class="section-title">불교 사상의 발전과 변화</span></div><div class="section-body">고려 시대에 불교는 국가의 지원을 받아 크게 발전하였다. 태조는 <span class='kw'>연등회</span>를 비롯한 불교 행사를 성대하게 열 것을 당부하였으며, 광종은 과거제에 <span class='kw'>승과</span>를 설치하고 <span class='kw'>국사·왕사</span> 제도를 정비하였다.<br><br>고려 초기 불교는 신라 말부터 유행한 선종 중심이었으나, 체제가 안정되면서 교종 세력도 강해졌다. 고려 중기에 <strong>의천</strong>은 <span class='kw'>교단 통합 운동</span>을 벌여 화엄종을 중심으로 교종을 통합하려 하였고, <span class='kw'>천태종</span>을 창시하여 교종의 입장에서 선종을 통합하려 하였다. 그러나 의천이 죽은 뒤 교단은 다시 분열하였다.<br><br>무신 집권기에 이르러 <strong>지눌</strong>은 불교의 세속화를 비판하고, <span class='kw'>수선사(송광사)</span>를 중심으로 불교 개혁 운동을 펼쳤다. <span class='kw'>선교 일치</span>를 주장하여 선종과 교종의 공존과 조화를 이루고자 하였다. 원 간섭기에는 불교계의 개혁 의지가 약해지고 권문세족과 연결되어 막대한 토지를 소유하는 등 폐단을 드러냈다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§02</span><span class="section-title">도교와 풍수지리설의 유행</span></div><div class="section-body"><strong>도교</strong>는 불로장생과 현세의 복을 구하는 종교이다. 삼국 시대에 전래된 도교는 고려 시대에 왕실을 비롯한 지배층에서 유행하였다. 고려 왕실에서는 하늘에 제사 지내는 도교 행사를 자주 열었다.<br><br>신라 말에 널리 퍼진 <strong>풍수지리설</strong>은 미래의 운명을 예언하는 도참 사상과 결합하여 더욱 성행하였다. 개경과 서경이 가장 좋은 명당으로 여겨졌으며, 개경의 기운이 약해졌으므로 도읍을 서경으로 옮겨야 한다는 주장이 나오기도 하였다. 절을 지을 때에도 풍수지리설에 따라 터를 잡았다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§03</span><span class="section-title">유학 교육의 강화와 성리학의 수용</span></div><div class="section-body">고려는 정치와 교육에서 대부분 유학 사상을 따랐다. 과거제를 실시하여 유교적 소양을 갖춘 인재를 관리로 등용하였으며, 개경에는 <span class='kw'>국자감</span>, 지방의 주요 지역에는 <span class='kw'>향교</span>를 두어 유교 경전과 역사서를 가르쳤다. 고려 후기에는 명성 높은 유학자들이 세운 <span class='kw'>사립 학교(사학 12도)</span>가 번성하였다.<br><br>무신 정권 시기에 쇠퇴했던 유학 교육과 연구는 원으로부터 <span class='kw'>성리학</span>을 수용하면서 다시 활발해졌다. 고려의 유학자는 성리학을 고려 사회의 문제점을 해결하기 위한 개혁 사상으로 받아들였다. 성리학을 수용한 신진 사대부는 불교의 사회적·경제적 폐단을 비판하였으며, 일부는 불교 교리를 부정하였다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§04</span><span class="section-title">역사서의 편찬</span></div><div class="section-body">고려는 역사 서술을 중시하여 초기부터 『삼국사』·『7대 실록』 등을 편찬하였으나 전하지 않는다. 지금까지 전하는 가장 오래된 역사서는 <strong>김부식</strong>이 편찬한 『<span class='kw'>삼국사기</span>』이다. 김부식은 『삼국사기』를 유교의 합리주의 사관에 따라 서술하였으며, 고려가 통일 신라를 계승하였다고 보았다.<br><br>무신 집권기에는 이규보가 『<span class='kw'>동명왕편</span>』을 지어 고대의 신비로운 기록을 존중하고 고려가 고구려를 계승하였다는 의식을 드러냈다.<br><br>몽골의 침입과 원 간섭기를 겪으면서 자주 의식을 담은 역사서가 편찬되었다. <strong>일연</strong>은 『<span class='kw'>삼국유사</span>』에 고대의 설화와 전설을 수록하고 토착 신앙을 중시하였으며, 처음으로 단군의 건국 이야기를 기록하였다. <strong>이승휴</strong>도 고려 후기에 『<span class='kw'>제왕운기</span>』에서 단군 조선을 우리 역사상 최초의 국가로 기록하였다. 고려 후기에는 성리학을 수용하면서 정통 의식과 대의명분을 강조하는 사관이 강화되었다. 이제현의 『<span class='kw'>사략</span>』은 이러한 사관이 적용된 역사서이다.</div></div></div>
+</div>
+<div class="page" id="page-quiz">
+  <div class="progress-wrap">
+    <div class="progress-info"><span id="progressTxt">0 / 15 완료</span><span id="progressPct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div class="quiz-wrap">
+    <div class="sdiv"><span>§01 · 불교 — 의천과 지눌</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content"><strong>의천</strong>: <span class='kw'>천태종</span> 창시, 교종 중심으로 선종 통합 시도. <strong>지눌</strong>: <span class='kw'>수선사(송광사)</span> 중심 불교 개혁 + <span class='kw'>선교 일치</span> 주장.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q1</span><span class="q-text">고려 중기 화엄종을 중심으로 교단 통합 운동을 벌이고 천태종을 창시한 승려는?</span></div>
+  <button class="ans-toggle" id="q1-tb" onclick="toggleAns('q1')">▶ 정답 보기</button>
+  <div class="ans-card" id="q1-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">의천</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q2</span><span class="q-text">무신 집권기에 수선사를 중심으로 불교 개혁 운동을 펼친 승려는?</span></div>
+  <button class="ans-toggle" id="q2-tb" onclick="toggleAns('q2')">▶ 정답 보기</button>
+  <div class="ans-card" id="q2-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">지눌</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q3</span><span class="q-text">의천과 지눌의 통합 방식의 차이는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q3',this,true)">의천은 교종 중심, 지눌은 선종 중심으로 통합 시도</button>
+    <button class="two-btn" onclick="checkTwo('q3',this,false)">의천은 선종 중심, 지눌은 교종 중심으로 통합 시도</button>
+  </div>
+  <div class="feedback" id="q3-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q4</span><span class="q-text">지눌이 주장한 선종과 교종의 통합 사상은?</span></div>
+  <button class="ans-toggle" id="q4-tb" onclick="toggleAns('q4')">▶ 정답 보기</button>
+  <div class="ans-card" id="q4-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">선교 일치</div>
+  </div>
+</div></div></div><div class="sdiv"><span>§02 · 도교와 풍수지리설</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">도교: 왕실 중심 유행, 하늘에 제사 지내는 행사 개최. 풍수지리설: 도참 사상과 결합, 서경 천도 주장의 근거.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q5</span><span class="q-text">고려 왕실에서 도교 행사를 자주 연 목적은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q5',this,true)">국가의 안녕과 왕실의 번영을 기원하기 위해</button>
+    <button class="two-btn" onclick="checkTwo('q5',this,false)">불교 세력을 견제하기 위해</button>
+  </div>
+  <div class="feedback" id="q5-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q6</span><span class="q-text">고려에서 풍수지리설이 서경 천도 주장과 연결된 이유는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q6',this,true)">개경의 기운이 약해졌으므로 서경으로 옮겨야 한다는 논리</button>
+    <button class="two-btn" onclick="checkTwo('q6',this,false)">서경이 군사적으로 더 방어하기 유리하다는 논리</button>
+  </div>
+  <div class="feedback" id="q6-fb"></div>
+</div></div></div><div class="sdiv"><span>§03 · 유학과 성리학</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">고려의 최고 교육기관: <span class='kw'>국자감</span>. 지방: <span class='kw'>향교</span>. 고려 후기: <span class='kw'>사학 12도</span>(사립 학교) 번성. 원에서 <span class='kw'>성리학</span> 수용 → 신진 사대부가 불교 폐단 비판.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q7</span><span class="q-text">고려 개경에 설치된 최고 교육 기관은?</span></div>
+  <button class="ans-toggle" id="q7-tb" onclick="toggleAns('q7')">▶ 정답 보기</button>
+  <div class="ans-card" id="q7-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">국자감</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q8</span><span class="q-text">고려 후기 신진 사대부가 성리학을 수용한 목적은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q8',this,true)">고려 사회의 문제점을 해결하기 위한 개혁 사상으로 활용</button>
+    <button class="two-btn" onclick="checkTwo('q8',this,false)">불교를 완전히 대체하는 국교로 삼기 위해</button>
+  </div>
+  <div class="feedback" id="q8-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q9</span><span class="q-text">(OX) 성리학을 수용한 신진 사대부는 불교의 사회적·경제적 폐단을 비판하였다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q9',this,'O','O')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q9',this,'X','O')">❌</button>
+  </div>
+  <div class="feedback" id="q9-fb"></div>
+</div></div></div><div class="sdiv"><span>§04 · 역사서 편찬</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">현존 최고(最古) 역사서: <span class='kw'>삼국사기</span>(김부식, 유교 합리주의). 『동명왕편』(이규보): 고구려 계승 의식. 『삼국유사』(일연): 단군 건국 이야기 최초 기록, 자주 의식. 『제왕운기』(이승휴): 단군 조선 = 우리 역사 최초 국가.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q10</span><span class="q-text">현재 전하는 가장 오래된 고려 역사서는?</span></div>
+  <button class="ans-toggle" id="q10-tb" onclick="toggleAns('q10')">▶ 정답 보기</button>
+  <div class="ans-card" id="q10-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">삼국사기</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q11</span><span class="q-text">삼국사기를 편찬한 인물은?</span></div>
+  <button class="ans-toggle" id="q11-tb" onclick="toggleAns('q11')">▶ 정답 보기</button>
+  <div class="ans-card" id="q11-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">김부식</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q12</span><span class="q-text">고대의 설화·전설과 단군 건국 이야기를 처음 기록한 역사서는?</span></div>
+  <button class="ans-toggle" id="q12-tb" onclick="toggleAns('q12')">▶ 정답 보기</button>
+  <div class="ans-card" id="q12-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">삼국유사</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q13</span><span class="q-text">삼국유사를 편찬한 승려는?</span></div>
+  <button class="ans-toggle" id="q13-tb" onclick="toggleAns('q13')">▶ 정답 보기</button>
+  <div class="ans-card" id="q13-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">일연</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q14</span><span class="q-text">삼국사기와 삼국유사의 관점 차이는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q14',this,true)">삼국사기는 유교 합리주의, 삼국유사는 자주 의식과 토착 신앙 중시</button>
+    <button class="two-btn" onclick="checkTwo('q14',this,false)">삼국사기는 불교 중심, 삼국유사는 유교 중심</button>
+  </div>
+  <div class="feedback" id="q14-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q15</span><span class="q-text">단군 조선을 우리 역사상 최초의 국가로 기록한 고려 후기 역사서는?</span></div>
+  <button class="ans-toggle" id="q15-tb" onclick="toggleAns('q15')">▶ 정답 보기</button>
+  <div class="ans-card" id="q15-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">제왕운기</div>
+  </div>
+</div></div></div>
+    <div class="submit-wrap"><button class="retry-btn" onclick="showResult()">채점 결과 보기</button></div>
+  </div>
+  
+<div class="result-bar" id="resultSection" style="display:none;">
+  <div class="result-card">
+    <div class="result-title">채점 완료</div>
+    <div class="result-score" id="resultScore">—</div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <button class="retry-btn" onclick="resetAll()">다시 풀기</button>
+  </div>
+</div>
+</div>
+<script>
+const TOTAL = 15;
+let answered = new Set();
+let score = 0;
+
+function togglePara(h) {
+  const c = h.nextElementSibling;
+  const a = h.querySelector('.para-arrow');
+  const l = h.querySelector('.para-toggle-btn');
+  const o = c.classList.contains('open');
+  c.classList.toggle('open', !o);
+  a.classList.toggle('open', !o);
+  l.innerHTML = o ? '<span class="para-arrow">▼</span> 펼치기' : '<span class="para-arrow open">▼</span> 접기';
+}
+
+function updateProgress() {
+  const n = answered.size;
+  const p = Math.round(n / TOTAL * 100);
+  document.getElementById('progressTxt').textContent = n + ' / ' + TOTAL + ' 완료';
+  document.getElementById('progressPct').textContent = p + '%';
+  document.getElementById('progressFill').style.width = p + '%';
+  document.getElementById('scoreBadge').textContent = score + ' / ' + TOTAL;
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.tab').forEach((x, i) =>
+    x.classList.toggle('active', (i===0 && t==='content') || (i===1 && t==='quiz')));
+  document.getElementById('page-content').classList.toggle('active', t === 'content');
+  document.getElementById('page-quiz').classList.toggle('active', t === 'quiz');
+}
+
+// 단답형: 토글 버튼 클릭 → 정답 보이기/숨기기
+function toggleAns(id) {
+  const btn = document.getElementById(id + '-tb');
+  const card = document.getElementById(id + '-ac');
+  const isOpen = card.classList.contains('show');
+  if (isOpen) {
+    card.classList.remove('show');
+    btn.classList.remove('open');
+    btn.textContent = '▶ 정답 보기';
+  } else {
+    card.classList.add('show');
+    btn.classList.add('open');
+    btn.textContent = '▼ 정답 숨기기';
+    if (!answered.has(id)) {
+      answered.add(id);
+      score++;
+      updateProgress();
+    }
+  }
+}
+
+// 2지선택
+function checkTwo(id, btn, isOk) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.two-btn').forEach(b => { if (b !== btn) b.classList.add('ok'); });
+  wrap.querySelectorAll('.two-btn').forEach(b => b.disabled = true);
+  fb.textContent = isOk ? '✓ 정답입니다!' : '✗ 정답을 확인하세요.';
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+// OX형
+function checkOX(id, btn, sel, cor) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  const isOk = sel === cor;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.ox-btn').forEach(b => {
+    const v = b.getAttribute('onclick').includes(",'O'") ? 'O' : 'X';
+    if (v === cor) b.classList.add('ok');
+  });
+  wrap.querySelectorAll('.ox-btn').forEach(b => b.disabled = true);
+  const ex = {"q3": "의천은 교종 중심으로 선종을 통합하려 했고, 지눌은 선종 중심으로 교종을 포용하려 했습니다.", "q9": "신진 사대부는 성리학을 바탕으로 불교의 사회·경제적 폐단을 비판하였습니다."};
+  fb.textContent = (isOk ? '✓ 정답! ' : '✗ 오답. ') + (ex[id] || '');
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+function showResult() {
+  const p = Math.round(score / TOTAL * 100);
+  const m = p>=90 ? '완벽해요! 🏆' : p>=70 ? '잘했어요! 👍' : p>=50 ? '본문을 한 번 더 읽어봐요 📖' : '처음부터 다시 해봐요 💪';
+  document.getElementById('resultScore').textContent = score + ' / ' + TOTAL;
+  document.getElementById('resultSub').textContent = '정답률 ' + p + '%';
+  document.getElementById('resultMsg').textContent = m;
+  document.getElementById('resultSection').style.display = 'block';
+  document.getElementById('resultSection').scrollIntoView({behavior: 'smooth'});
+}
+
+function resetAll() {
+  answered.clear(); score = 0; updateProgress();
+  // 단답형 초기화
+  document.querySelectorAll('.ans-toggle').forEach(e => { e.classList.remove('open'); e.textContent = '▶ 정답 보기'; });
+  document.querySelectorAll('.ans-card').forEach(e => e.classList.remove('show', 'hidden'));
+  // OX / 2지선택 초기화
+  document.querySelectorAll('.two-btn, .ox-btn').forEach(e => { e.disabled = false; e.classList.remove('ok','no'); });
+  document.querySelectorAll('.feedback').forEach(e => { e.className = 'feedback'; e.textContent = ''; e.onclick = null; });
+  // 본문힌트 닫기
+  document.querySelectorAll('.para-content').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-arrow').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-toggle-btn').forEach(e => { e.innerHTML = '<span class="para-arrow">▼</span> 펼치기'; });
+  document.getElementById('resultSection').style.display = 'none';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+updateProgress();
+</script>
+</body>
+</html>

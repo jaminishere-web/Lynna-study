@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>원의 내정 간섭에 맞서 개혁 정치를 펴다 — 기말 대비</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F2EDE6;--card:#FFF;--red:#8B1A1A;--red-mid:#B83030;--red-light:#E8C4C4;--gold:#C8960C;--gold-light:#F5E4A0;--dark:#1A1008;--muted:#6B5040;--border:#D8CCBC;--correct:#2A6B2A;--correct-bg:#E8F5E8;--wrong:#8B1A1A;--wrong-bg:#F5E8E8;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Noto Sans KR",sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;padding:0 0 80px;}
+  .top-bar{background:var(--red);color:#F5EDE0;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(139,26,26,.3);}
+  .top-bar h1{font-family:"Noto Serif KR",serif;font-size:15px;font-weight:700;}
+  .top-bar .meta{font-size:11px;color:rgba(245,237,224,.7);letter-spacing:1px;margin-bottom:2px;}
+  .score-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 12px;font-size:12px;font-weight:600;color:#F5E4A0;border-radius:20px;white-space:nowrap;}
+  .tabs{display:flex;background:#2A1008;border-bottom:2px solid var(--red);}
+  .tab{flex:1;padding:11px 0;text-align:center;font-size:13px;font-weight:600;color:rgba(245,237,224,.5);cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+  .tab.active{color:#F5E4A0;border-bottom:3px solid var(--gold);margin-bottom:-2px;}
+  .progress-wrap{padding:10px 20px 0;background:var(--bg);}
+  .progress-info{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px;}
+  .progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .4s ease;border-radius:2px;}
+  .page{display:none;} .page.active{display:block;}
+  .content-wrap{max-width:720px;margin:0 auto;padding:20px 16px;}
+  .section-card{background:var(--card);border:1px solid var(--border);margin-bottom:12px;overflow:hidden;}
+  .section-head{background:var(--red);color:#F5EDE0;padding:10px 16px;display:flex;align-items:center;gap:10px;}
+  .section-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold-light);letter-spacing:2px;}
+  .section-title{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;}
+  .section-body{padding:16px;font-size:14px;line-height:1.95;color:#1A1008;}
+  .section-body strong{color:var(--red);font-weight:700;}
+  .section-body .kw{background:var(--gold-light);color:#5A3808;padding:1px 5px;font-weight:600;border-radius:2px;}
+  .quiz-wrap{max-width:720px;margin:0 auto;padding:16px;}
+  .block{margin-bottom:20px;}
+  .para-box{background:var(--card);border:1px solid var(--border);border-bottom:none;border-left:4px solid var(--red);overflow:hidden;}
+  .para-box strong{color:var(--red);font-weight:700;}
+  .para-box .kw{background:var(--gold-light);color:#5A3808;padding:1px 4px;font-weight:600;}
+  .para-header{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;cursor:pointer;user-select:none;background:#FBF6EE;border-bottom:1px solid var(--border);transition:background .15s;}
+  .para-header:hover{background:#F5EDD8;}
+  .para-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:600;}
+  .para-toggle-btn{font-size:11px;color:var(--red);font-weight:600;display:flex;align-items:center;gap:5px;}
+  .para-arrow{display:inline-block;transition:transform .25s ease;font-size:9px;color:var(--muted);}
+  .para-arrow.open{transform:rotate(180deg);}
+  .para-content{font-size:13.5px;line-height:1.85;color:#1A1008;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s ease;padding:0 16px;}
+  .para-content.open{max-height:600px;padding:12px 16px 14px;}
+  .q-list{border:1px solid var(--border);border-top:2px solid var(--gold);background:#FDFAF4;}
+  .q-item{padding:13px 16px;border-bottom:1px solid var(--border);}
+  .q-item:last-child{border-bottom:none;}
+  .q-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:9px;}
+  .q-num{font-family:"Noto Serif KR",serif;font-size:11px;color:var(--gold);font-weight:700;min-width:24px;padding-top:2px;}
+  .q-text{font-size:13.5px;line-height:1.65;color:#1A1008;flex:1;font-weight:500;}
+  /* 단답형 - 정답 보기/숨기기 토글 */
+  .ans-toggle{display:block;margin-left:34px;padding:9px 16px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--muted);cursor:pointer;text-align:left;transition:all .15s;width:calc(100% - 34px);border-radius:0;}
+  .ans-toggle:hover{border-color:var(--red);color:var(--red);}
+  .ans-toggle.open{border-color:var(--correct);color:var(--correct);background:var(--correct-bg);}
+  /* 정답 카드 */
+  .ans-card{display:none;margin-left:34px;padding:10px 16px;border-left:3px solid var(--correct);background:var(--correct-bg);width:calc(100% - 34px);}
+  .ans-card.show{display:block;}
+  .ans-label{font-size:10px;letter-spacing:1.5px;color:var(--correct);font-weight:600;margin-bottom:4px;}
+  .ans-text{font-family:"Noto Serif KR",serif;font-size:14px;font-weight:700;color:#1A1008;}
+  /* OX / 2지선택 */
+  .ox-wrap{display:flex;gap:10px;margin-left:34px;}
+  .ox-btn{width:56px;height:40px;border:1.5px solid var(--border);background:#fff;font-size:20px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;border-radius:4px;}
+  .ox-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .ox-btn.ok{background:var(--correct-bg);border-color:var(--correct);}
+  .ox-btn.no{background:var(--wrong-bg);border-color:var(--wrong);}
+  .ox-btn:disabled{cursor:default;}
+  .two-wrap{display:flex;gap:10px;margin-left:34px;flex-wrap:wrap;}
+  .two-btn{flex:1;min-width:120px;padding:9px 10px;background:#fff;border:1.5px solid var(--border);font-size:13px;font-family:"Noto Sans KR",sans-serif;color:var(--dark);cursor:pointer;transition:all .15s;text-align:center;font-weight:500;}
+  .two-btn:hover:not(:disabled){border-color:var(--red);background:#FDF5F0;}
+  .two-btn.ok{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);font-weight:700;}
+  .two-btn.no{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong);}
+  .two-btn:disabled{cursor:default;}
+  .feedback{margin-left:34px;margin-top:7px;font-size:12.5px;padding:7px 11px;border-radius:2px;display:none;line-height:1.55;cursor:pointer;transition:opacity .2s,filter .2s;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:var(--correct-bg);color:var(--correct);border-left:3px solid var(--correct);}
+  .feedback.no{background:var(--wrong-bg);color:var(--wrong);border-left:3px solid var(--wrong);}
+  .feedback.hidden{opacity:0.07;filter:blur(4px);user-select:none;}
+  .sdiv{display:flex;align-items:center;gap:12px;margin:24px 0 14px;}
+  .sdiv span{font-family:"Noto Serif KR",serif;font-size:12px;color:var(--red);letter-spacing:1.5px;font-weight:700;white-space:nowrap;}
+  .sdiv::before,.sdiv::after{content:"";flex:1;height:1px;background:var(--red-light);}
+  .result-bar{max-width:720px;margin:0 auto;padding:0 16px;}
+  .result-card{background:var(--card);border:2px solid var(--red);padding:36px 24px;text-align:center;margin-top:24px;}
+  .result-title{font-family:"Noto Serif KR",serif;font-size:20px;font-weight:900;color:var(--red);margin-bottom:6px;}
+  .result-score{font-family:"Noto Serif KR",serif;font-size:56px;font-weight:900;color:var(--dark);line-height:1;margin:20px 0 6px;}
+  .result-sub{font-size:13px;color:var(--muted);margin-bottom:16px;}
+  .result-msg{font-size:15px;font-weight:600;color:var(--red);margin-bottom:28px;}
+  .retry-btn{background:var(--red);color:#fff;border:none;padding:13px 36px;font-size:14px;font-weight:600;font-family:"Noto Sans KR",sans-serif;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background .2s;}
+  .retry-btn:hover{background:var(--red-mid);}
+  .submit-wrap{text-align:center;margin-top:20px;padding-bottom:10px;}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <div><div class="meta">고려의 성립과 변천</div><h1>원의 내정 간섭에 맞서 개혁 정치를 펴다</h1></div>
+  <div class="score-badge" id="scoreBadge">0 / 0</div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('content')">📖 본문</div>
+  <div class="tab" onclick="switchTab('quiz')">✏️ 문제</div>
+</div>
+<div class="page active" id="page-content">
+  <div class="content-wrap"><div class="section-card"><div class="section-head"><span class="section-num">§01</span><span class="section-title">원의 내정 간섭</span></div><div class="section-body">몽골과의 전쟁이 끝난 뒤 고려는 정치적 독립을 유지하였으나, 몽골(원)의 내정 간섭을 받았다. 원은 철령 이북에 <span class='kw'>쌍성총관부</span>, 서경에 <span class='kw'>동녕부</span>, 제주도에 <span class='kw'>탐라총관부</span>를 두어 고려의 영토 일부를 직접 지배하였다. 일본 원정을 위해 고려에서 함선·물자·병사를 제공받았으며, 일본 원정이 끝난 뒤에도 <span class='kw'>정동행성</span>을 폐지하지 않고 내정을 간섭하였다.<br><br>고려의 국왕은 원의 공주와 혼인하여 원 황실의 사위가 되었고, 왕자들은 원에서 성장하며 교육을 받았다. 고려의 왕실 호칭과 관직 이름도 제후국 수준으로 격이 낮아졌다. 원은 고려에 <span class='kw'>조공</span>이라는 이름으로 각종 공물을 요구하였고, 금·인삼·사냥용 매 등 특산물을 거두어 갔으며, 환관과 공녀 등 많은 사람들도 끌고 갔다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§02</span><span class="section-title">원 간섭기의 문화 교류</span></div><div class="section-body">원 간섭기에는 고려와 원의 문화 교류가 활발하게 이루어졌다. 고려에서는 몽골식 복장과 음식, 용어 등 <span class='kw'>몽골풍</span>이 유행하였고, 원에는 고려의 복식과 음식 등 고려의 풍습(<span class='kw'>고려양</span>)이 전해졌다. 몽골의 만두(상화)·소주 등이 고려에 소개되었다. 몽골의 궁중 용어인 '수라'·'무수리' 등이 고려에 전래되었다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§03</span><span class="section-title">권문세족의 성장</span></div><div class="section-body">고려에 대한 원의 간섭이 심해지자 원에 기대어 권력을 누리는 세력이 성장하였다. 이들을 <strong>권문세족</strong>이라 한다. 권문세족 중에는 전부터 세력을 유지한 가문도 있었지만, 몽골어를 잘해서 통역에 종사하거나 원에서 국왕·왕자를 수행하여 성장한 사람들도 있었다.<br><br>권문세족은 높은 관직을 독점하고, <span class='kw'>음서</span>를 이용하여 권력을 세습하였다. 또한 다른 사람의 노비와 토지를 빼앗고, <span class='kw'>농장</span>을 설치하여 국가에 낼 세금을 가로챘다. 그 결과 국가에 세금을 내는 백성이 줄어들어 국가 재정이 궁핍해졌다. 충선왕·충목왕 등이 개혁을 시도하였으나 권문세족이 원과 연계하여 개혁을 저지하였다.</div></div><div class="section-card"><div class="section-head"><span class="section-num">§04</span><span class="section-title">공민왕의 개혁 정치</span></div><div class="section-body">14세기 중엽에 즉위한 <strong>공민왕</strong>은 원이 급격히 쇠퇴하자 원의 간섭에서 벗어나 자주성을 회복하려 하였다. 공민왕은 먼저 <span class='kw'>기철</span>을 비롯한 친원 세력을 제거하고, 고려의 내정을 간섭하는 핵심 기구인 <span class='kw'>정동행성이문소</span>를 폐지하였다. 그리고 쌍성총관부를 공격하여 동북쪽의 영토를 되찾았다. 아울러 고려 왕실의 호칭과 관청의 옛 제도를 복구하고 원의 풍습을 금지하였다.<br><br>원의 간섭을 물리친 뒤 공민왕은 승려 <span class='kw'>신돈</span>을 등용하여 내정 개혁을 추진하였다. <span class='kw'>전민변정도감</span>을 설치하여 권문세족이 빼앗은 토지와 노비를 원래 주인에게 돌려주고 강제로 노비가 된 사람들을 해방하였다. 또한 성균관을 정비하고 유학 교육을 강화하여 개혁을 뒷받침할 세력을 양성하였다.<br><br>공민왕의 개혁으로 고려는 자주성을 되찾았고, 새로운 정치 세력이 성장하는 기반을 마련하였다. 그러나 개혁은 권문세족의 강한 반발에 부딪혔으며, 공민왕이 신돈을 제거하고 공민왕도 시해당하여 지속되지 못하였다.</div></div></div>
+</div>
+<div class="page" id="page-quiz">
+  <div class="progress-wrap">
+    <div class="progress-info"><span id="progressTxt">0 / 16 완료</span><span id="progressPct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div class="quiz-wrap">
+    <div class="sdiv"><span>§01 · 원의 내정 간섭</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">원은 <span class='kw'>쌍성총관부</span>·<span class='kw'>동녕부</span>·<span class='kw'>탐라총관부</span>로 고려 영토 일부를 직접 지배. 일본 원정 후에도 <span class='kw'>정동행성</span>으로 내정 간섭 지속.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q1</span><span class="q-text">원이 철령 이북에 설치하여 고려 영토를 직접 지배한 기구는?</span></div>
+  <button class="ans-toggle" id="q1-tb" onclick="toggleAns('q1')">▶ 정답 보기</button>
+  <div class="ans-card" id="q1-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">쌍성총관부</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q2</span><span class="q-text">원이 일본 원정 후에도 폐지하지 않고 고려 내정 간섭에 이용한 기구는?</span></div>
+  <button class="ans-toggle" id="q2-tb" onclick="toggleAns('q2')">▶ 정답 보기</button>
+  <div class="ans-card" id="q2-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">정동행성</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q3</span><span class="q-text">원 간섭기 고려 왕실 호칭이 낮아진 이유는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q3',this,true)">고려가 원의 제후국 지위로 격하되었기 때문</button>
+    <button class="two-btn" onclick="checkTwo('q3',this,false)">고려 국왕이 스스로 낮춘 것이기 때문</button>
+  </div>
+  <div class="feedback" id="q3-fb"></div>
+</div></div></div><div class="sdiv"><span>§02 · 원 간섭기 문화 교류</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">고려 → <span class='kw'>몽골풍</span> 유행. 원 → <span class='kw'>고려양</span> 전파. 몽골 음식 <strong>만두·소주</strong>가 고려에 소개됨. 몽골 궁중 용어 <strong>수라·무수리</strong>가 전래됨.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q4</span><span class="q-text">원 간섭기 고려에서 유행한 몽골 풍습을 무엇이라 하는가?</span></div>
+  <button class="ans-toggle" id="q4-tb" onclick="toggleAns('q4')">▶ 정답 보기</button>
+  <div class="ans-card" id="q4-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">몽골풍</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q5</span><span class="q-text">원 간섭기 원에 전해진 고려의 풍습을 무엇이라 하는가?</span></div>
+  <button class="ans-toggle" id="q5-tb" onclick="toggleAns('q5')">▶ 정답 보기</button>
+  <div class="ans-card" id="q5-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">고려양</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q6</span><span class="q-text">몽골에서 고려로 전래된 음식 두 가지는?</span></div>
+  <button class="ans-toggle" id="q6-tb" onclick="toggleAns('q6')">▶ 정답 보기</button>
+  <div class="ans-card" id="q6-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">만두(상화), 소주</div>
+  </div>
+</div></div></div><div class="sdiv"><span>§03 · 권문세족</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content"><strong>권문세족</strong>은 음서로 권력을 세습하고, 농장을 확대하여 국가 세금을 가로챘다. 충선왕·충목왕의 개혁을 <strong>원과 연계하여 저지</strong>하였다.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q7</span><span class="q-text">원 간섭기에 원과 연계하여 권력을 누린 새로운 지배 세력은?</span></div>
+  <button class="ans-toggle" id="q7-tb" onclick="toggleAns('q7')">▶ 정답 보기</button>
+  <div class="ans-card" id="q7-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">권문세족</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q8</span><span class="q-text">권문세족이 국가 재정을 궁핍하게 만든 방법은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q8',this,true)">농장을 설치하여 국가에 낼 세금을 가로챔</button>
+    <button class="two-btn" onclick="checkTwo('q8',this,false)">무역을 독점하여 국가 수입을 빼앗음</button>
+  </div>
+  <div class="feedback" id="q8-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q9</span><span class="q-text">(OX) 권문세족은 음서를 이용하여 관직과 권력을 자손에게 세습하였다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q9',this,'O','O')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q9',this,'X','O')">❌</button>
+  </div>
+  <div class="feedback" id="q9-fb"></div>
+</div></div></div><div class="sdiv"><span>§04 · 공민왕의 반원 개혁</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">공민왕: <span class='kw'>기철</span> 등 친원 세력 제거 + <span class='kw'>정동행성이문소</span> 폐지 + <strong>쌍성총관부 공격</strong>으로 동북 영토 회복.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q10</span><span class="q-text">공민왕이 제거한 대표적인 친원 세력 인물은?</span></div>
+  <button class="ans-toggle" id="q10-tb" onclick="toggleAns('q10')">▶ 정답 보기</button>
+  <div class="ans-card" id="q10-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">기철</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q11</span><span class="q-text">공민왕이 폐지한 원의 내정 간섭 핵심 기구는?</span></div>
+  <button class="ans-toggle" id="q11-tb" onclick="toggleAns('q11')">▶ 정답 보기</button>
+  <div class="ans-card" id="q11-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">정동행성이문소</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q12</span><span class="q-text">공민왕이 쌍성총관부를 공격한 목적은?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q12',this,true)">원에 빼앗긴 동북쪽 영토를 되찾기 위해</button>
+    <button class="two-btn" onclick="checkTwo('q12',this,false)">친원 세력의 군사적 기반을 제거하기 위해</button>
+  </div>
+  <div class="feedback" id="q12-fb"></div>
+</div></div></div><div class="sdiv"><span>§04 · 공민왕의 내정 개혁</span></div><div class="block"><div class="para-box"><div class="para-header" onclick="togglePara(this)"><span class="para-label">📄 본문 힌트</span><span class="para-toggle-btn"><span class="para-arrow">▼</span> 펼치기</span></div><div class="para-content">공민왕은 <span class='kw'>신돈</span>을 등용하여 <span class='kw'>전민변정도감</span>을 설치 → 권문세족이 빼앗은 토지·노비 반환. 성균관 정비로 개혁 세력 양성.</div></div><div class="q-list"><div class="q-item">
+  <div class="q-row"><span class="q-num">q13</span><span class="q-text">공민왕이 내정 개혁을 위해 등용한 승려는?</span></div>
+  <button class="ans-toggle" id="q13-tb" onclick="toggleAns('q13')">▶ 정답 보기</button>
+  <div class="ans-card" id="q13-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">신돈</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q14</span><span class="q-text">권문세족이 빼앗은 토지와 노비를 원래 주인에게 돌려주기 위해 설치한 기구는?</span></div>
+  <button class="ans-toggle" id="q14-tb" onclick="toggleAns('q14')">▶ 정답 보기</button>
+  <div class="ans-card" id="q14-ac">
+    <div class="ans-label">정답</div>
+    <div class="ans-text">전민변정도감</div>
+  </div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q15</span><span class="q-text">공민왕의 개혁이 지속되지 못한 이유는?</span></div>
+  <div class="two-wrap">
+    <button class="two-btn" onclick="checkTwo('q15',this,true)">권문세족의 강한 반발과 공민왕 시해</button>
+    <button class="two-btn" onclick="checkTwo('q15',this,false)">원의 직접 개입으로 개혁이 중단</button>
+  </div>
+  <div class="feedback" id="q15-fb"></div>
+</div><div class="q-item">
+  <div class="q-row"><span class="q-num">q16</span><span class="q-text">(OX) 공민왕은 성균관을 정비하여 유학 교육을 강화하고 개혁 세력을 양성하였다.</span></div>
+  <div class="ox-wrap">
+    <button class="ox-btn" onclick="checkOX('q16',this,'O','O')">⭕</button>
+    <button class="ox-btn" onclick="checkOX('q16',this,'X','O')">❌</button>
+  </div>
+  <div class="feedback" id="q16-fb"></div>
+</div></div></div>
+    <div class="submit-wrap"><button class="retry-btn" onclick="showResult()">채점 결과 보기</button></div>
+  </div>
+  
+<div class="result-bar" id="resultSection" style="display:none;">
+  <div class="result-card">
+    <div class="result-title">채점 완료</div>
+    <div class="result-score" id="resultScore">—</div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <button class="retry-btn" onclick="resetAll()">다시 풀기</button>
+  </div>
+</div>
+</div>
+<script>
+const TOTAL = 16;
+let answered = new Set();
+let score = 0;
+
+function togglePara(h) {
+  const c = h.nextElementSibling;
+  const a = h.querySelector('.para-arrow');
+  const l = h.querySelector('.para-toggle-btn');
+  const o = c.classList.contains('open');
+  c.classList.toggle('open', !o);
+  a.classList.toggle('open', !o);
+  l.innerHTML = o ? '<span class="para-arrow">▼</span> 펼치기' : '<span class="para-arrow open">▼</span> 접기';
+}
+
+function updateProgress() {
+  const n = answered.size;
+  const p = Math.round(n / TOTAL * 100);
+  document.getElementById('progressTxt').textContent = n + ' / ' + TOTAL + ' 완료';
+  document.getElementById('progressPct').textContent = p + '%';
+  document.getElementById('progressFill').style.width = p + '%';
+  document.getElementById('scoreBadge').textContent = score + ' / ' + TOTAL;
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.tab').forEach((x, i) =>
+    x.classList.toggle('active', (i===0 && t==='content') || (i===1 && t==='quiz')));
+  document.getElementById('page-content').classList.toggle('active', t === 'content');
+  document.getElementById('page-quiz').classList.toggle('active', t === 'quiz');
+}
+
+// 단답형: 토글 버튼 클릭 → 정답 보이기/숨기기
+function toggleAns(id) {
+  const btn = document.getElementById(id + '-tb');
+  const card = document.getElementById(id + '-ac');
+  const isOpen = card.classList.contains('show');
+  if (isOpen) {
+    card.classList.remove('show');
+    btn.classList.remove('open');
+    btn.textContent = '▶ 정답 보기';
+  } else {
+    card.classList.add('show');
+    btn.classList.add('open');
+    btn.textContent = '▼ 정답 숨기기';
+    if (!answered.has(id)) {
+      answered.add(id);
+      score++;
+      updateProgress();
+    }
+  }
+}
+
+// 2지선택
+function checkTwo(id, btn, isOk) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.two-btn').forEach(b => { if (b !== btn) b.classList.add('ok'); });
+  wrap.querySelectorAll('.two-btn').forEach(b => b.disabled = true);
+  fb.textContent = isOk ? '✓ 정답입니다!' : '✗ 정답을 확인하세요.';
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+// OX형
+function checkOX(id, btn, sel, cor) {
+  if (answered.has(id)) return;
+  const fb = document.getElementById(id + '-fb');
+  const wrap = btn.parentElement;
+  const isOk = sel === cor;
+  btn.classList.add(isOk ? 'ok' : 'no');
+  if (!isOk) wrap.querySelectorAll('.ox-btn').forEach(b => {
+    const v = b.getAttribute('onclick').includes(",'O'") ? 'O' : 'X';
+    if (v === cor) b.classList.add('ok');
+  });
+  wrap.querySelectorAll('.ox-btn').forEach(b => b.disabled = true);
+  const ex = {"q9": "권문세족은 음서로 자손에게 관직을 세습하였습니다.", "q16": "공민왕은 성균관을 정비하여 신진 사대부 양성의 기반을 마련하였습니다."};
+  fb.textContent = (isOk ? '✓ 정답! ' : '✗ 오답. ') + (ex[id] || '');
+  fb.classList.add('show', isOk ? 'ok' : 'no');
+  fb.title = '클릭하여 숨기기/보이기';
+  fb.onclick = function() { this.classList.toggle('hidden'); };
+  answered.add(id);
+  if (isOk) score++;
+  updateProgress();
+}
+
+function showResult() {
+  const p = Math.round(score / TOTAL * 100);
+  const m = p>=90 ? '완벽해요! 🏆' : p>=70 ? '잘했어요! 👍' : p>=50 ? '본문을 한 번 더 읽어봐요 📖' : '처음부터 다시 해봐요 💪';
+  document.getElementById('resultScore').textContent = score + ' / ' + TOTAL;
+  document.getElementById('resultSub').textContent = '정답률 ' + p + '%';
+  document.getElementById('resultMsg').textContent = m;
+  document.getElementById('resultSection').style.display = 'block';
+  document.getElementById('resultSection').scrollIntoView({behavior: 'smooth'});
+}
+
+function resetAll() {
+  answered.clear(); score = 0; updateProgress();
+  // 단답형 초기화
+  document.querySelectorAll('.ans-toggle').forEach(e => { e.classList.remove('open'); e.textContent = '▶ 정답 보기'; });
+  document.querySelectorAll('.ans-card').forEach(e => e.classList.remove('show', 'hidden'));
+  // OX / 2지선택 초기화
+  document.querySelectorAll('.two-btn, .ox-btn').forEach(e => { e.disabled = false; e.classList.remove('ok','no'); });
+  document.querySelectorAll('.feedback').forEach(e => { e.className = 'feedback'; e.textContent = ''; e.onclick = null; });
+  // 본문힌트 닫기
+  document.querySelectorAll('.para-content').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-arrow').forEach(e => e.classList.remove('open'));
+  document.querySelectorAll('.para-toggle-btn').forEach(e => { e.innerHTML = '<span class="para-arrow">▼</span> 펼치기'; });
+  document.getElementById('resultSection').style.display = 'none';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+updateProgress();
+</script>
+</body>
+</html>

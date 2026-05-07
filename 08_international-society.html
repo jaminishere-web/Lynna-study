@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>08 international-society</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@600;900&display=swap');
+
+  :root {
+    --bg: #f8f6f1; --white: #ffffff; --ink: #1c1c1e; --muted: #6b6b6b;
+    --border: #e0d9ce; --accent: #2e6b8a; --accent2: #b84a1e;
+    --gold: #c89c2a; --green: #2a6b4a; --red: #c0392b; --blue: #1e4d8c;
+    --purple: #6b3a9a; --soft: #eef3f6;
+    --ans-bg: #e8f4ea; --ans-text: #1a4a2a;
+    --tag-a: #ddeeff; --tag-a-t: #1a3a6b;
+    --tag-b: #ddf0e8; --tag-b-t: #1a4a2a;
+    --tag-c: #f0e8fc; --tag-c-t: #4a1a7a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; padding-bottom: 80px; }
+
+  .header { background: var(--ink); color: #fff; padding: 22px 18px 18px; }
+  .header-meta { font-size: 0.68rem; letter-spacing: 2px; color: #aaa; text-transform: uppercase; margin-bottom: 6px; }
+  .header h1 { font-family: 'Noto Serif KR', serif; font-size: 1.35rem; font-weight: 900; line-height: 1.3; }
+  .header-sub { font-size: 0.76rem; color: #bbb; margin-top: 5px; }
+
+  .tabbar { display: flex; background: #fff; border-bottom: 2px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .tabbar-btn { flex: 1; padding: 13px 8px; font-family: 'Noto Sans KR', sans-serif; font-size: 0.8rem; font-weight: 700; border: none; background: none; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
+  .tabbar-btn.on { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .panel { display: none; }
+  .panel.on { display: block; }
+  .content-wrap { padding: 0 0 20px; }
+
+  .ch-nav { display: flex; overflow-x: auto; background: var(--soft); border-bottom: 1px solid var(--border); scrollbar-width: none; position: sticky; top: 48px; z-index: 99; }
+  .ch-nav::-webkit-scrollbar { display: none; }
+  .ch-btn { flex: none; padding: 9px 14px; font-family: 'Noto Sans KR', sans-serif; font-size: 0.74rem; font-weight: 700; border: none; background: none; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.18s; }
+  .ch-btn.on { color: var(--accent2); border-bottom-color: var(--accent2); }
+
+  .ch-section { display: none; padding: 16px 16px 0; }
+  .ch-section.on { display: block; }
+  .ch-heading { font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 900; color: var(--accent2); border-left: 4px solid var(--accent2); padding: 6px 0 6px 12px; margin-bottom: 14px; line-height: 1.4; }
+
+  .para-block { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; font-size: 0.87rem; line-height: 1.85; }
+  .para-block .para-label { font-size: 0.65rem; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; display: block; }
+  .hl  { color: var(--accent2); font-weight: 900; }
+  .hl2 { color: var(--accent);  font-weight: 900; }
+  .hl3 { color: var(--green);   font-weight: 900; }
+  .hlp { color: var(--purple);  font-weight: 900; }
+
+  .tb { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 6px 0; }
+  .tb th { background: var(--ink); color: #fff; padding: 8px 10px; text-align: left; font-weight: 700; }
+  .tb td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+  .tb tr:nth-child(even) td { background: #f9f7f3; }
+
+  .kw-box { background: #fffbf0; border: 1px solid var(--gold); border-radius: 8px; padding: 10px 14px; margin-top: 8px; font-size: 0.82rem; line-height: 1.65; }
+  .kw-box .kw-title { font-size: 0.7rem; font-weight: 900; color: #8a6200; letter-spacing: 1px; margin-bottom: 4px; display: block; }
+
+  .footnote { font-size: 0.76rem; color: var(--muted); border-top: 1px dashed var(--border); margin-top: 10px; padding-top: 8px; line-height: 1.65; }
+  .footnote span { color: var(--accent); font-weight: 700; margin-right: 4px; }
+
+  /* actor cards */
+  .actor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
+  .actor-card { border-radius: 10px; padding: 12px 13px; font-size: 0.82rem; line-height: 1.6; }
+  .ac-blue { background: #e4eeff; border: 1.5px solid #a8c4f4; }
+  .ac-green { background: #e4f5ec; border: 1.5px solid #a8e4c0; }
+  .ac-purple { background: #f0e8fc; border: 1.5px solid #d0b8f0; }
+  .actor-card .ac-title { font-weight: 900; font-size: 0.87rem; margin-bottom: 5px; }
+  .ac-blue .ac-title { color: var(--blue); }
+  .ac-green .ac-title { color: var(--green); }
+  .ac-purple .ac-title { color: var(--purple); }
+
+  /* UN org cards */
+  .un-list { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+  .un-row { display: flex; align-items: flex-start; gap: 10px; background: var(--soft); border-radius: 8px; padding: 9px 12px; font-size: 0.83rem; line-height: 1.6; }
+  .un-tag { flex-shrink: 0; padding: 2px 8px; border-radius: 20px; font-size: 0.68rem; font-weight: 900; background: #e4eeff; color: var(--blue); }
+
+  /* quiz */
+  .quiz-wrap { padding: 14px 16px 0; }
+  .quiz-header { background: var(--ink); border-radius: 12px; padding: 14px 16px; color: #fff; margin-bottom: 14px; font-size: 0.83rem; line-height: 1.6; }
+  .quiz-header strong { color: #f0c060; }
+
+  .qbar { display: flex; gap: 7px; margin-bottom: 10px; flex-wrap: wrap; }
+  .qbtn { padding: 6px 12px; border-radius: 20px; border: none; font-family: 'Noto Sans KR', sans-serif; font-size: 0.74rem; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+  .qbtn-outline { background: var(--white); border: 1.5px solid var(--ink); color: var(--ink); }
+  .qbtn-outline:hover { background: var(--ink); color: #fff; }
+  .qbtn-fill { background: var(--accent2); color: #fff; }
+  .qbtn-active { background: var(--accent); color: #fff; }
+
+  .prog-wrap { margin-bottom: 12px; }
+  .prog-bar { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 99px; transition: width 0.35s; width: 0%; }
+  .prog-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 3px; text-align: right; }
+
+  .q-list { display: flex; flex-direction: column; gap: 9px; }
+  .qcard { background: var(--white); border: 1.5px solid var(--border); border-radius: 11px; overflow: hidden; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: box-shadow 0.18s, border-color 0.18s; }
+  .qcard:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.07); border-color: var(--accent); }
+  .qcard.open { border-color: var(--accent); }
+  .qcard-top { display: flex; align-items: flex-start; gap: 10px; padding: 12px 13px; }
+  .qnum { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 0.68rem; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+  .qcard.open .qnum { background: var(--accent); }
+  .qbody { flex: 1; }
+  .qtag { display: inline-block; font-size: 0.62rem; font-weight: 900; padding: 2px 7px; border-radius: 20px; margin-bottom: 4px; }
+  .tA { background: var(--tag-a); color: var(--tag-a-t); }
+  .tB { background: var(--tag-b); color: var(--tag-b-t); }
+  .tC { background: var(--tag-c); color: var(--tag-c-t); }
+  .qtext { font-size: 0.87rem; font-weight: 500; line-height: 1.55; }
+  .qans { display: none; padding: 0 13px 12px 47px; }
+  .qcard.open .qans { display: block; }
+  .qans-inner { background: var(--ans-bg); border-radius: 8px; padding: 9px 12px; font-size: 0.85rem; font-weight: 700; color: var(--ans-text); line-height: 1.6; }
+  .qans-inner .albl { font-size: 0.62rem; font-weight: 900; color: var(--green); letter-spacing: 0.5px; margin-bottom: 3px; display: block; }
+
+  footer { text-align: center; padding: 20px; font-size: 0.7rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-meta">Ⅵ. 국제 사회와 국제 정치 · 1단원 · No.08</div>
+  <h1>국제 사회의 이해</h1>
+  <div class="header-sub">국제 사회의 의미·특성 · 국제 관계 행위 주체 · 국제기구·다국적 기업</div>
+</div>
+
+<div class="tabbar">
+  <button class="tabbar-btn on" onclick="switchTab('content',this)">📖 본문 정리</button>
+  <button class="tabbar-btn" onclick="switchTab('quiz',this)">✏️ 문제</button>
+</div>
+
+<!-- ══════ CONTENT ══════ -->
+<div class="panel on" id="panel-content">
+  <div class="content-wrap">
+    <div class="ch-nav">
+      <button class="ch-btn on" onclick="switchCh('ch1',this)">① 국제 사회의 특성</button>
+      <button class="ch-btn" onclick="switchCh('ch2',this)">② 행위 주체</button>
+    </div>
+
+    <!-- CH1 -->
+    <div class="ch-section on" id="ch1">
+      <div class="ch-heading">① 국제 사회에는 어떤 특성이 있을까?</div>
+
+      <div class="para-block">
+        <span class="para-label">국제 사회의 의미</span>
+        오늘날 세계 각국은 서로 밀접한 관계를 맺고 있으며, 정치, 경제, 사회, 문화를 비롯한 여러 부문에서 폭넓게 교류한다. 이처럼 세계 여러 나라가 서로 교류하고 의존하면서 공존하는 사회를 <span class="hl">국제 사회</span>라고 한다.<br><br>
+        이러한 국제 사회는 <span class="hl2">주권</span>을 지닌 국가들을 기본 단위로 하여 형성된다.
+        <div class="footnote">
+          <span>* 주권</span>다른 나라의 간섭을 받지 않고, 국가의 의사를 최종적으로 결정하는 권력을 말한다.
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">국제 사회의 특성 세 가지</span>
+
+        <div class="un-list">
+          <div class="un-row">
+            <span class="un-tag">특성①</span>
+            <div><strong>자국의 이익 우선</strong> — 국제 사회에 속한 국가들은 자국의 이익을 우선시한다. 각국은 자국의 이익에 따라 우호적이었던 나라와 관계를 끊기도 하고, 오랫동안 적대적이었던 나라와 협력 관계를 맺기도 한다.</div>
+          </div>
+          <div class="un-row">
+            <span class="un-tag">특성②</span>
+            <div><strong>힘의 논리 작용</strong> — 각국은 원칙적으로 평등한 주권을 지니지만, 실제로는 힘의 논리가 적용되기 때문에 국력에 따라 주권을 행사하는 정도에 차이가 있다. 강대국은 큰 영향력을 행사하지만 약소국은 그렇지 못한다.</div>
+          </div>
+          <div class="un-row">
+            <span class="un-tag">특성③</span>
+            <div><strong>중앙 정부 부재</strong> — 국제 사회에는 국가 간 갈등 상황을 조정해 줄 중앙 정부가 없기 때문에 여러 국가 사이에 갈등이나 분쟁이 생길 경우 이를 해결하는 것이 쉽지 않다. 그렇지만 국제법, 국제기구, 세계 여론 등이 국가들의 행위에 일정한 제약을 주므로 국제 사회의 질서가 유지된다.</div>
+          </div>
+        </div>
+
+        <div class="kw-box">
+          <span class="kw-title">★ 최근 추세</span>
+          국가 간 상호 의존성이 깊어지고, 국제 사회의 문제에 공동으로 대처해야 할 필요성이 커지면서 <strong>국제 협력이 점차 강화</strong>되고 있다.
+        </div>
+        <div class="footnote">
+          <span>* 국제법</span>국가 간 합의에 의해 만들어진 국제 규범이다.
+        </div>
+      </div>
+    </div>
+
+    <!-- CH2 -->
+    <div class="ch-section" id="ch2">
+      <div class="ch-heading">② 국제 관계에 영향을 미치는 행위 주체들의 활동은?</div>
+
+      <div class="para-block">
+        <span class="para-label">국제 관계의 행위 주체</span>
+        국제 사회에는 여러 행위 주체가 있으며, 이들은 다양한 활동을 통해 국제 관계에 영향을 준다.
+        <div class="footnote">
+          <span>* 국제 관계</span>국제 사회의 행위 주체들이 서로 경쟁하고 갈등하며 협력하는 상호 작용을 통해 만들어 내는 모든 관계를 말한다.
+        </div>
+      </div>
+
+      <div class="actor-grid">
+        <div class="actor-card ac-blue">
+          <div class="ac-title">🏳️ 국가</div>
+          국제 관계에 영향을 미치는 <strong>대표적인 행위 주체</strong>. 주권을 가진 각 국가는 국제법에 따라 독립적인 지위를 가지고 <strong>외교 활동</strong>을 하며, 여러 국제기구에 가입하여 회원국으로서 활동한다.
+          <div style="font-size:0.76rem; color:var(--muted); margin-top:5px;">* 외교: 국제 사회에서 한 국가가 자국의 정치적 목적이나 이익을 평화적으로 실현하기 위해 수행하는 모든 행위</div>
+        </div>
+        <div class="actor-card ac-green">
+          <div class="ac-title">🌐 국제기구</div>
+          국제적인 목적이나 활동을 위해 조직된 중요한 국제 사회의 행위 주체. 정치, 경제, 환경 등 다양한 영역에 걸쳐 활동하며, <strong>정부 간 국제기구</strong>와 <strong>국제 비정부 기구</strong>로 구분된다.
+        </div>
+        <div class="actor-card ac-purple" style="grid-column: 1 / -1;">
+          <div class="ac-title">🏢 다국적 기업</div>
+          한 나라에 본사를 두고, 여러 나라에 자회사와 공장을 설립하여 국제적 규모로 상품을 생산하고 판매하는 기업. 다국적 기업이 국경을 넘나들며 경영 활동을 하는 과정에서 국가 간 교류가 늘어나고 상호 의존성도 높아진다.
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">정부 간 국제기구</span>
+        <strong>각국 정부를 회원으로 하는 국제기구</strong>를 말한다.
+        <div class="un-list">
+          <div class="un-row">
+            <span class="un-tag">국제 연합(UN)</span>
+            <div>대표적인 정부 간 국제기구. <strong>평화 유지와 국제 협력 증진</strong>을 위해 활동하며, 다양한 활동을 위해 분야별로 기구를 두고 있다.<br>
+            • <strong>UNICEF</strong>(아동 기금): 어린이 식수·위생·보건 환경 개선<br>
+            • <strong>UNHCR</strong>(난민 기구): 난민에게 생활 물품과 쉼터 제공<br>
+            • <strong>UNESCO</strong>(교육 과학 문화 기구): 국제적 이해 증진, 세계 유산 보호</div>
+          </div>
+          <div class="un-row">
+            <span class="un-tag">OECD</span>
+            <div><strong>경제 협력 개발 기구</strong>. 경제 발전과 세계 무역 촉진을 위해 활동한다.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">국제 비정부 기구</span>
+        <strong>국경을 넘어 활동하는 개인과 민간단체를 회원으로 하는 국제기구</strong>를 말한다.
+        <div class="un-list">
+          <div class="un-row"><span class="un-tag">국제 적십자사</span><div>보건 활동을 펼친다.</div></div>
+          <div class="un-row"><span class="un-tag">그린피스</span><div>자연 보호에 앞장선다.</div></div>
+          <div class="un-row"><span class="un-tag">국경 없는 의사회</span><div>긴급 구호 활동을 펼친다.</div></div>
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">국제 사회 행위 주체 비교</span>
+        <table class="tb">
+          <thead><tr><th>행위 주체</th><th>핵심 특징</th><th>예시</th></tr></thead>
+          <tbody>
+            <tr><td><strong>국가</strong></td><td>주권을 가지고 외교 활동</td><td>대한민국, 미국, 중국 등</td></tr>
+            <tr><td><strong>정부 간 국제기구</strong></td><td>각국 정부가 회원, 평화·협력 도모</td><td>UN, OECD 등</td></tr>
+            <tr><td><strong>국제 비정부 기구</strong></td><td>개인·민간단체 회원, 인도주의적 활동</td><td>국제 적십자사, 그린피스, 국경 없는 의사회</td></tr>
+            <tr><td><strong>다국적 기업</strong></td><td>여러 나라에 자회사·공장 운영</td><td>삼성, 애플, 나이키 등</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ QUIZ ══════ -->
+<div class="panel" id="panel-quiz">
+  <div class="quiz-wrap">
+    <div class="quiz-header">📝 카드를 <strong>클릭</strong>하면 답이 보이고, 다시 클릭하면 숨겨집니다.<br>자주 봐서 <strong>장기 기억</strong>으로 만들어 보세요!</div>
+    <div class="qbar">
+      <button class="qbtn qbtn-outline" onclick="revealAll()">전체 보기</button>
+      <button class="qbtn qbtn-outline" onclick="hideAll()">전체 숨기기</button>
+      <button class="qbtn qbtn-fill" onclick="shuffleQ()">🔀 섞기</button>
+    </div>
+    <div class="qbar" style="padding-top:0;">
+      <button class="qbtn qbtn-active" id="fbtn-all" onclick="filterQ('all')">전체</button>
+      <button class="qbtn qbtn-outline" id="fbtn-A" onclick="filterQ('A')">①국제 사회의 특성</button>
+      <button class="qbtn qbtn-outline" id="fbtn-B" onclick="filterQ('B')">②행위 주체</button>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-bar"><div class="prog-fill" id="pFill"></div></div>
+      <div class="prog-lbl" id="pLbl">0 / 46 확인</div>
+    </div>
+    <div class="q-list" id="qList"></div>
+  </div>
+</div>
+
+<footer>No.08 — 국제 사회의 이해 · Ⅵ. 국제 사회와 국제 정치 🎉 완성!</footer>
+
+<script>
+const ALL_Q = [
+  // ── A: 국제 사회의 특성 ──
+  // 용어→설명
+  {id:1,  cat:'A', tag:'용어 설명', q:'국제 사회란 무엇인가?', a:'세계 여러 나라가 서로 교류하고 의존하면서 공존하는 사회'},
+  {id:2,  cat:'A', tag:'용어 설명', q:'주권이란 무엇인가?', a:'다른 나라의 간섭을 받지 않고, 국가의 의사를 최종적으로 결정하는 권력'},
+  {id:3,  cat:'A', tag:'용어 설명', q:'국제법이란 무엇인가?', a:'국가 간 합의에 의해 만들어진 국제 규범'},
+  // 설명→용어
+  {id:4,  cat:'A', tag:'설명→용어', q:'"세계 여러 나라가 서로 교류하고 의존하면서 공존하는 사회"를 무엇이라 하는가?', a:'국제 사회'},
+  {id:5,  cat:'A', tag:'설명→용어', q:'"다른 나라의 간섭을 받지 않고 국가의 의사를 최종적으로 결정하는 권력"을 무엇이라 하는가?', a:'주권'},
+  {id:6,  cat:'A', tag:'설명→용어', q:'"국가 간 합의에 의해 만들어진 국제 규범"을 무엇이라 하는가?', a:'국제법'},
+  // 국제 사회의 특성
+  {id:7,  cat:'A', tag:'특성', q:'국제 사회의 특성 세 가지를 쓰시오.', a:'① 자국의 이익 우선 ② 힘의 논리 작용 ③ 국가 간 갈등을 조정할 중앙 정부 부재'},
+  {id:8,  cat:'A', tag:'특성', q:'국제 사회에서 각국이 자국의 이익을 우선시한다는 것은 어떻게 나타나는가?', a:'자국의 이익에 따라 우호적이었던 나라와 관계를 끊기도 하고, 오랫동안 적대적이었던 나라와 협력 관계를 맺기도 한다.'},
+  {id:9,  cat:'A', tag:'특성', q:'국제 사회에서 "힘의 논리"가 작용한다는 것은 무슨 의미인가?', a:'각국은 원칙적으로 평등한 주권을 지니지만, 실제로는 국력에 따라 주권을 행사하는 정도에 차이가 있어 강대국이 큰 영향력을 행사한다.'},
+  {id:10, cat:'A', tag:'특성', q:'국제 사회에 중앙 정부가 없음에도 질서가 유지되는 이유는?', a:'국제법, 국제기구, 세계 여론 등이 국가들의 행위에 일정한 제약을 주기 때문이다.'},
+  {id:11, cat:'A', tag:'특성', q:'국제 사회는 무엇을 기본 단위로 형성되는가?', a:'주권을 지닌 국가들'},
+  {id:12, cat:'A', tag:'최근 추세', q:'최근 국제 사회의 변화 추세는?', a:'국가 간 상호 의존성이 깊어지고, 국제 사회의 문제에 공동으로 대처해야 할 필요성이 커지면서 국제 협력이 점차 강화되고 있다.'},
+  // O/X
+  {id:13, cat:'A', tag:'O/X', q:'국제 사회에서 각국은 다른 나라의 이익보다 자국의 이익을 우선시한다. (O/X)', a:'O'},
+  {id:14, cat:'A', tag:'O/X', q:'국제 사회에는 국가 간에 갈등이 발생하였을 때 이를 해결해 줄 중앙 정부가 존재한다. (O/X)', a:'X — 국제 사회에는 국가 간 갈등을 조정해 줄 중앙 정부가 없다.'},
+  {id:15, cat:'A', tag:'O/X', q:'국제 사회에서 각국은 원칙적으로 평등한 주권을 갖지만 실제로는 힘의 논리가 작용한다. (O/X)', a:'O'},
+
+  // ── B: 행위 주체 ──
+  // 용어→설명
+  {id:16, cat:'B', tag:'용어 설명', q:'국제 관계란 무엇인가?', a:'국제 사회의 행위 주체들이 서로 경쟁하고 갈등하며 협력하는 상호 작용을 통해 만들어 내는 모든 관계'},
+  {id:17, cat:'B', tag:'용어 설명', q:'외교란 무엇인가?', a:'국제 사회에서 한 국가가 자국의 정치적 목적이나 이익을 평화적으로 실현하기 위해 수행하는 모든 행위'},
+  {id:18, cat:'B', tag:'용어 설명', q:'정부 간 국제기구란 무엇인가?', a:'각국 정부를 회원으로 하는 국제기구. 예) UN, OECD'},
+  {id:19, cat:'B', tag:'용어 설명', q:'국제 비정부 기구란 무엇인가?', a:'국경을 넘어 활동하는 개인과 민간단체를 회원으로 하는 국제기구. 예) 국제 적십자사, 그린피스, 국경 없는 의사회'},
+  {id:20, cat:'B', tag:'용어 설명', q:'다국적 기업이란 무엇인가?', a:'한 나라에 본사를 두고, 여러 나라에 자회사와 공장을 설립하여 국제적 규모로 상품을 생산하고 판매하는 기업'},
+  // 설명→용어
+  {id:21, cat:'B', tag:'설명→용어', q:'"국제 사회의 행위 주체들이 경쟁·갈등·협력하는 상호 작용으로 만들어지는 모든 관계"를 무엇이라 하는가?', a:'국제 관계'},
+  {id:22, cat:'B', tag:'설명→용어', q:'"국가가 자국의 이익을 평화적으로 실현하기 위해 수행하는 모든 행위"를 무엇이라 하는가?', a:'외교'},
+  {id:23, cat:'B', tag:'설명→용어', q:'"각국 정부를 회원으로 하는 국제기구"를 무엇이라 하는가?', a:'정부 간 국제기구'},
+  {id:24, cat:'B', tag:'설명→용어', q:'"국경을 넘어 활동하는 개인과 민간단체를 회원으로 하는 국제기구"를 무엇이라 하는가?', a:'국제 비정부 기구'},
+  {id:25, cat:'B', tag:'설명→용어', q:'"한 나라에 본사를 두고 여러 나라에 자회사와 공장을 설립하여 국제적 규모로 운영하는 기업"을 무엇이라 하는가?', a:'다국적 기업'},
+  // 국가
+  {id:26, cat:'B', tag:'국가', q:'국제 관계에 영향을 미치는 대표적인 행위 주체는?', a:'국가'},
+  {id:27, cat:'B', tag:'국가', q:'국가가 국제 사회에서 갖는 특징은?', a:'주권을 가지고 국제법에 따라 독립적인 지위를 가지며 외교 활동을 하고, 국제기구에 가입하여 회원국으로 활동한다.'},
+  // 국제기구 — UN 산하
+  {id:28, cat:'B', tag:'국제기구', q:'국제 사회의 행위 주체 세 종류는?', a:'국가, 국제기구, 다국적 기업'},
+  {id:29, cat:'B', tag:'국제기구', q:'국제 연합(UN)의 목적은?', a:'평화 유지와 국제 협력 증진'},
+  {id:30, cat:'B', tag:'국제기구', q:'UNICEF(국제 연합 아동 기금)의 활동은?', a:'가난과 배고픔 등으로 어려움을 겪는 어린이를 돕기 위해 식수·위생·보건 환경을 개선하는 활동'},
+  {id:31, cat:'B', tag:'국제기구', q:'UNHCR(국제 연합 난민 기구)의 활동은?', a:'난민에게 생활 물품과 쉼터를 제공하고 난민의 자발적 귀환을 돕는 활동'},
+  {id:32, cat:'B', tag:'국제기구', q:'UNESCO(국제 연합 교육 과학 문화 기구)의 활동은?', a:'교육·과학·문화 분야에서 국제적인 이해를 높이고 세계 유산을 보호하는 활동'},
+  {id:33, cat:'B', tag:'국제기구', q:'OECD(경제 협력 개발 기구)의 활동은?', a:'경제 발전과 세계 무역 촉진을 위해 활동한다.'},
+  // 국제 비정부 기구
+  {id:34, cat:'B', tag:'비정부 기구', q:'국제 비정부 기구의 예 세 가지와 각각의 활동은?', a:'① 국제 적십자사: 보건 활동 ② 그린피스: 자연 보호 ③ 국경 없는 의사회: 긴급 구호 활동'},
+  {id:35, cat:'B', tag:'비정부 기구', q:'"보건 활동을 펼치는 국제 비정부 기구"는?', a:'국제 적십자사'},
+  {id:36, cat:'B', tag:'비정부 기구', q:'"자연 보호에 앞장서는 국제 비정부 기구"는?', a:'그린피스'},
+  {id:37, cat:'B', tag:'비정부 기구', q:'"긴급 구호 활동을 펼치는 국제 비정부 기구"는?', a:'국경 없는 의사회'},
+  // 다국적 기업
+  {id:38, cat:'B', tag:'다국적 기업', q:'다국적 기업이 국제 관계에 미치는 영향은?', a:'국경을 넘나들며 경영 활동을 하는 과정에서 국가 간 교류가 늘어나고 상호 의존성도 높아진다.'},
+  {id:39, cat:'B', tag:'다국적 기업', q:'세계화로 인해 다국적 기업의 규모가 커지면서 나타나는 특징은?', a:'일부 다국적 기업의 규모는 개별 국가의 경제 규모를 넘어서며, 경제력을 바탕으로 국제 관계에 큰 영향을 미치기도 한다.'},
+  // O/X
+  {id:40, cat:'B', tag:'O/X', q:'국제기구는 정부 간 국제기구와 국제 비정부 기구로 구분된다. (O/X)', a:'O'},
+  {id:41, cat:'B', tag:'O/X', q:'국제 적십자사는 정부 간 국제기구이다. (O/X)', a:'X — 국제 적십자사는 국제 비정부 기구이다.'},
+  {id:42, cat:'B', tag:'O/X', q:'국제 연합(UN)은 각국 정부를 회원으로 하는 정부 간 국제기구이다. (O/X)', a:'O'},
+  // 주체 연결
+  {id:43, cat:'B', tag:'주체 연결', q:'"국경을 넘어 경영 활동을 하는 기업"은 국제 사회의 어떤 행위 주체인가?', a:'다국적 기업'},
+  {id:44, cat:'B', tag:'주체 연결', q:'"주권을 가지고 외교 활동을 하는 행위 주체"는?', a:'국가'},
+  {id:45, cat:'B', tag:'주체 연결', q:'"국제 연합, 그린피스 등이 속하는 행위 주체 유형"은?', a:'국제기구 (국제 연합은 정부 간 국제기구, 그린피스는 국제 비정부 기구)'},
+  {id:46, cat:'A', tag:'종합', q:'국제 사회의 행위 주체와 그 설명을 연결하시오. ① 국가 ② 국제기구 ③ 다국적 기업', a:'① 국가: 주권을 가지고 외교 활동을 함 ② 국제기구: 국제 연합·그린피스 등이 속함 ③ 다국적 기업: 국경을 넘어 경영 활동을 함'},
+];
+
+const TOTAL = ALL_Q.length;
+let curFilter = 'all';
+let revSet = new Set();
+let ordQ = [...ALL_Q];
+
+function tc(c) { return c==='A'?'tA':c==='B'?'tB':'tC'; }
+function getFiltered() { return curFilter==='all'?ordQ:ordQ.filter(q=>q.cat===curFilter); }
+
+function renderQ() {
+  document.getElementById('qList').innerHTML = getFiltered().map((q,i)=>{
+    const o = revSet.has(q.id);
+    return `<div class="qcard${o?' open':''}" onclick="toggleQ(${q.id})">
+      <div class="qcard-top"><div class="qnum">${i+1}</div>
+      <div class="qbody"><span class="qtag ${tc(q.cat)}">${q.tag}</span>
+      <div class="qtext">${q.q}</div></div></div>
+      <div class="qans"><div class="qans-inner"><span class="albl">▶ 정답</span>${q.a}</div></div>
+    </div>`;
+  }).join('');
+  updateProg();
+}
+
+function toggleQ(id) { revSet.has(id)?revSet.delete(id):revSet.add(id); renderQ(); }
+function updateProg() {
+  const n=revSet.size;
+  document.getElementById('pFill').style.width=Math.round(n/TOTAL*100)+'%';
+  document.getElementById('pLbl').textContent=`${n} / ${TOTAL} 확인`;
+}
+function revealAll() { getFiltered().forEach(q=>revSet.add(q.id)); renderQ(); }
+function hideAll()   { getFiltered().forEach(q=>revSet.delete(q.id)); renderQ(); }
+function shuffleQ() {
+  for(let i=ordQ.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ordQ[i],ordQ[j]]=[ordQ[j],ordQ[i]];}
+  renderQ();
+}
+function filterQ(f) {
+  curFilter=f;
+  ['all','A','B'].forEach(k=>{
+    const b=document.getElementById('fbtn-'+k);
+    if(b) b.className=k===f?'qbtn qbtn-active':'qbtn qbtn-outline';
+  });
+  renderQ();
+}
+function switchTab(t,btn) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tabbar-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('panel-'+t).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function switchCh(id,btn) {
+  document.querySelectorAll('.ch-section').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.ch-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+renderQ();
+</script>
+</body>
+</html>

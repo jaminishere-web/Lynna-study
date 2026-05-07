@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>02 시장의 의미와 종류</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@600;900&display=swap');
+
+  :root {
+    --bg: #f8f6f1;
+    --white: #ffffff;
+    --ink: #1c1c1e;
+    --muted: #6b6b6b;
+    --border: #e0d9ce;
+    --accent: #2e6b8a;
+    --accent2: #b84a1e;
+    --gold: #c89c2a;
+    --green: #2a6b4a;
+    --soft: #eef3f6;
+    --ans-bg: #e8f4ea;
+    --ans-text: #1a4a2a;
+    --tag-a: #ddeeff; --tag-a-t: #1a3a6b;
+    --tag-b: #ddf0e8; --tag-b-t: #1a4a2a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--ink);
+    color: #fff;
+    padding: 22px 18px 18px;
+  }
+  .header-meta { font-size: 0.68rem; letter-spacing: 2px; color: #aaa; text-transform: uppercase; margin-bottom: 6px; }
+  .header h1 { font-family: 'Noto Serif KR', serif; font-size: 1.35rem; font-weight: 900; line-height: 1.3; }
+  .header-sub { font-size: 0.76rem; color: #bbb; margin-top: 5px; }
+
+  /* TAB BAR */
+  .tabbar { display: flex; background: #fff; border-bottom: 2px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .tabbar-btn {
+    flex: 1; padding: 13px 8px;
+    font-family: 'Noto Sans KR', sans-serif; font-size: 0.8rem; font-weight: 700;
+    border: none; background: none; color: var(--muted);
+    cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s;
+  }
+  .tabbar-btn.on { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* PANELS */
+  .panel { display: none; }
+  .panel.on { display: block; }
+
+  /* ══ CONTENT ══ */
+  .content-wrap { padding: 0 0 20px; }
+
+  .ch-nav {
+    display: flex; overflow-x: auto; gap: 0;
+    background: var(--soft); border-bottom: 1px solid var(--border);
+    scrollbar-width: none; position: sticky; top: 48px; z-index: 99;
+  }
+  .ch-nav::-webkit-scrollbar { display: none; }
+  .ch-btn {
+    flex: none; padding: 9px 14px;
+    font-family: 'Noto Sans KR', sans-serif; font-size: 0.74rem; font-weight: 700;
+    border: none; background: none; color: var(--muted);
+    cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.18s;
+  }
+  .ch-btn.on { color: var(--accent2); border-bottom-color: var(--accent2); }
+
+  .ch-section { display: none; padding: 16px 16px 0; }
+  .ch-section.on { display: block; }
+
+  .ch-heading {
+    font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 900;
+    color: var(--accent2); border-left: 4px solid var(--accent2);
+    padding: 6px 0 6px 12px; margin-bottom: 14px; line-height: 1.4;
+  }
+
+  .para-block {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
+    font-size: 0.87rem; line-height: 1.85; color: var(--ink);
+  }
+  .para-block .para-label {
+    font-size: 0.65rem; font-weight: 900; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 6px; display: block;
+  }
+  .para-block strong { font-weight: 900; }
+  .hl  { color: var(--accent2); font-weight: 900; }
+  .hl2 { color: var(--accent);  font-weight: 900; }
+  .hl3 { color: var(--green);   font-weight: 900; }
+
+  .tb { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 6px 0; }
+  .tb th { background: var(--ink); color: #fff; padding: 8px 10px; text-align: left; font-weight: 700; }
+  .tb td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+  .tb tr:nth-child(even) td { background: #f9f7f3; }
+
+  .kw-box {
+    background: #fffbf0; border: 1px solid var(--gold);
+    border-radius: 8px; padding: 10px 14px; margin-top: 8px;
+    font-size: 0.82rem; line-height: 1.65;
+  }
+  .kw-box .kw-title { font-size: 0.7rem; font-weight: 900; color: #8a6200; letter-spacing: 1px; margin-bottom: 4px; display: block; }
+
+  .footnote {
+    font-size: 0.76rem; color: var(--muted);
+    border-top: 1px dashed var(--border); margin-top: 10px; padding-top: 8px; line-height: 1.65;
+  }
+  .footnote span { color: var(--accent); font-weight: 700; margin-right: 4px; }
+
+  /* market type cards */
+  .mtype-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
+  .mtype-card {
+    background: var(--soft); border-radius: 8px;
+    padding: 11px 13px; font-size: 0.82rem; line-height: 1.55;
+  }
+  .mtype-card .mc-name { font-weight: 900; color: var(--ink); font-size: 0.87rem; margin-bottom: 4px; }
+  .mtype-card .mc-ex { color: var(--muted); font-size: 0.78rem; }
+
+  /* ══ QUIZ ══ */
+  .quiz-wrap { padding: 14px 16px 0; }
+  .quiz-header {
+    background: var(--ink); border-radius: 12px;
+    padding: 14px 16px; color: #fff; margin-bottom: 14px;
+    font-size: 0.83rem; line-height: 1.6;
+  }
+  .quiz-header strong { color: #f0c060; }
+
+  .qbar { display: flex; gap: 7px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
+  .qbtn {
+    padding: 6px 12px; border-radius: 20px; border: none;
+    font-family: 'Noto Sans KR', sans-serif; font-size: 0.74rem; font-weight: 700;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .qbtn-outline { background: var(--white); border: 1.5px solid var(--ink); color: var(--ink); }
+  .qbtn-outline:hover { background: var(--ink); color: #fff; }
+  .qbtn-fill { background: var(--accent2); color: #fff; }
+  .qbtn-fill:hover { opacity: 0.88; }
+  .qbtn-active { background: var(--accent); color: #fff; }
+
+  .prog-wrap { margin-bottom: 12px; }
+  .prog-bar { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .prog-fill {
+    height: 100%; background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 99px; transition: width 0.35s; width: 0%;
+  }
+  .prog-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 3px; text-align: right; }
+
+  .q-list { display: flex; flex-direction: column; gap: 9px; }
+
+  .qcard {
+    background: var(--white); border: 1.5px solid var(--border);
+    border-radius: 11px; overflow: hidden; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: box-shadow 0.18s, border-color 0.18s;
+  }
+  .qcard:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.07); border-color: var(--accent); }
+  .qcard.open { border-color: var(--accent); }
+
+  .qcard-top { display: flex; align-items: flex-start; gap: 10px; padding: 12px 13px; }
+  .qnum {
+    flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--ink); color: #fff;
+    font-size: 0.68rem; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qcard.open .qnum { background: var(--accent); }
+
+  .qbody { flex: 1; }
+  .qtag {
+    display: inline-block; font-size: 0.62rem; font-weight: 900;
+    padding: 2px 7px; border-radius: 20px; margin-bottom: 4px;
+  }
+  .tA { background: var(--tag-a); color: var(--tag-a-t); }
+  .tB { background: var(--tag-b); color: var(--tag-b-t); }
+
+  .qtext { font-size: 0.87rem; font-weight: 500; line-height: 1.55; }
+
+  .qans { display: none; padding: 0 13px 12px 47px; }
+  .qcard.open .qans { display: block; }
+  .qans-inner {
+    background: var(--ans-bg); border-radius: 8px;
+    padding: 9px 12px; font-size: 0.85rem; font-weight: 700;
+    color: var(--ans-text); line-height: 1.6;
+  }
+  .qans-inner .albl { font-size: 0.62rem; font-weight: 900; color: var(--green); letter-spacing: 0.5px; margin-bottom: 3px; display: block; }
+
+  footer { text-align: center; padding: 20px; font-size: 0.7rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-meta">Ⅳ. 시장 경제와 가격 · 1단원 · No.02</div>
+  <h1>시장의 의미와 종류</h1>
+  <div class="header-sub">시장의 의미 · 시장의 역할 · 시장의 종류</div>
+</div>
+
+<div class="tabbar">
+  <button class="tabbar-btn on" onclick="switchTab('content',this)">📖 본문 정리</button>
+  <button class="tabbar-btn" onclick="switchTab('quiz',this)">✏️ 문제</button>
+</div>
+
+<!-- ══════════ CONTENT ══════════ -->
+<div class="panel on" id="panel-content">
+  <div class="content-wrap">
+
+    <div class="ch-nav">
+      <button class="ch-btn on" onclick="switchCh('ch1',this)">① 시장이란?</button>
+      <button class="ch-btn" onclick="switchCh('ch2',this)">② 시장의 종류</button>
+    </div>
+
+    <!-- CH1 -->
+    <div class="ch-section on" id="ch1">
+      <div class="ch-heading">① 시장이란 무엇일까?</div>
+
+      <div class="para-block">
+        <span class="para-label">시장의 의미</span>
+        일상생활에서 개인에게 필요한 재화와 서비스는 매우 많지만, 이 모든 것을 스스로 생산하여 사용하는 것은 불가능하다. 그래서 사람들은 <span class="hl2">분업</span>을 통해 재화나 서비스를 생산하고, 이를 시장에서 교환한다. 이처럼 <span class="hl">시장</span>은 재화나 서비스를 팔려는 사람과 사려는 사람이 만나 거래하는 곳을 의미한다.<br><br>
+        일반적으로 시장이라고 하면 재래시장이나 대형 마트 등과 같이 상품이 거래되는 구체적인 장소를 떠올리기 쉽다. 하지만 시장은 구체적인 장소뿐만 아니라 <strong>상품이나 생산 요소에 대한 정보를 교환하고 거래하기 위해 협상하는 과정 전체를 포함한다.</strong> 따라서 노동 시장, 주식 시장, 외환 시장 등과 같이 거래되는 대상이나 거래가 이루어지는 장소가 구체적으로 드러나지 않는 시장도 존재한다.
+        <div class="footnote">
+          <span>* 분업</span>생산 과정을 여러 부문으로 나누어 여러 사람이 일을 나누어 맡는 것을 말한다.<br>
+          <span>* 외환 시장</span>달러화, 유로화, 엔화 등과 같은 외환이 거래되는 시장이다.
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">시장의 역할</span>
+        시장이 생겨나기 전에는 상품을 팔려는 사람과 사려는 사람이 거래할 상대방을 찾고 교환 조건을 알아내기 위해 <strong>많은 비용과 시간을 들여야 했다.</strong><br><br>
+        하지만 시장이 생겨난 후 <span class="hl">거래에 드는 비용과 시간이 줄어들어 쉽게 거래할 수 있게 되었다.</span> 또한 사람들은 시장에서 <span class="hl3">상품에 관한 정보를 쉽게 얻을 수 있으며, 다양한 상품을 선택할 수 있다.</span>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">시장의 형성과 발달 (역사)</span>
+        과거에는 생활에 필요한 물건을 스스로 만들어 사용해야 했다. 농사를 짓게 되면서 사람들은 자신이 쓰고도 남는 생산물이 생기자, 이를 자신에게 필요한 다른 물건과 교환하기 시작하였다.<br><br>
+        이 과정에서 사람들은 자신이 더 잘 만들 수 있는 물건만을 <span class="hl2">집중적으로 생산</span>하게 되었다. 이러한 교환으로 사람들이 만족하게 되면서 일정한 시간과 장소를 정해 모이는 시장이 생겨났고, <span class="hl">화폐의 출현으로 시장은 더욱 발달</span>하였다.
+      </div>
+    </div>
+
+    <!-- CH2 -->
+    <div class="ch-section" id="ch2">
+      <div class="ch-heading">② 우리 주변에는 어떤 시장들이 있을까?</div>
+
+      <div class="para-block">
+        <span class="para-label">시장의 분류 기준</span>
+        우리 주변에는 다양한 형태의 시장이 있으며, 사람들은 재화나 서비스 또는 생산 요소가 필요할 때 자연스럽게 시장을 찾는다. 시장은 <span class="hl">거래되는 대상의 종류에 따라 생산물 시장과 생산 요소 시장으로 구분</span>할 수 있다.
+      </div>
+
+      <div class="mtype-grid">
+        <div class="mtype-card">
+          <div class="mc-name">🛒 생산물 시장</div>
+          생활에 필요한 <strong>재화나 서비스가 거래</strong>되는 시장이다.<br>
+          <span class="mc-ex">예) 문구점, 농수산물 시장, 꽃 시장, 가구 시장, 영화관, 공연장 등</span>
+        </div>
+        <div class="mtype-card">
+          <div class="mc-name">🏭 생산 요소 시장</div>
+          상품을 생산하는 과정에서 필요한 <strong>토지·노동·자본 등의 생산 요소가 거래</strong>되는 시장이다.<br>
+          <span class="mc-ex">예) 부동산 시장(토지), 노동 시장(노동)</span>
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">전자 상거래 시장</span>
+        오늘날에는 좀 더 효율적인 거래를 위해 새로운 형태의 시장이 계속해서 생겨나고 있다. 특히 정보 통신 기술과 인터넷의 발달로 <span class="hl">전자 상거래</span>가 활발해지면서, 전자 상거래 시장의 규모가 점점 더 커지고 있다.
+        <div class="footnote">
+          <span>* 전자 상거래</span>인터넷 등 정보 통신망을 이용하여 이루어지는 거래를 말한다.
+        </div>
+      </div>
+
+      <div class="para-block">
+        <span class="para-label">다양한 시장 종류 정리</span>
+        <table class="tb">
+          <thead>
+            <tr><th>구분</th><th>종류</th><th>거래 대상 예시</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="4"><strong>생산물<br>시장</strong></td>
+              <td>재래시장·대형 마트</td>
+              <td>생활용품, 식료품 등</td>
+            </tr>
+            <tr>
+              <td>농수산물 시장</td>
+              <td>채소, 과일, 수산물 등</td>
+            </tr>
+            <tr>
+              <td>영화관·공연장</td>
+              <td>문화 서비스</td>
+            </tr>
+            <tr>
+              <td>전자 상거래 시장(인터넷 쇼핑)</td>
+              <td>각종 재화·서비스</td>
+            </tr>
+            <tr>
+              <td rowspan="2"><strong>생산 요소<br>시장</strong></td>
+              <td>노동 시장</td>
+              <td>노동(취업 박람회 등)</td>
+            </tr>
+            <tr>
+              <td>부동산 시장</td>
+              <td>토지·건물</td>
+            </tr>
+            <tr>
+              <td colspan="1"><strong>기타</strong></td>
+              <td>주식 시장·외환 시장</td>
+              <td>주식, 외화(장소 불특정)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="kw-box" style="margin-top:12px;">
+          <span class="kw-title">📌 스스로 확인하기 정답</span>
+          (1) 시장은 구체적인 장소만을 의미하지 <strong>않는다</strong>. → <strong>X</strong><br>
+          (2) 생산에 필요한 토지·노동·자본 등이 거래되는 시장 = <strong>생산 요소 시장</strong> → <strong>O</strong><br>
+          (3) 인터넷 등 정보 통신망을 이용하여 거래하는 시장 = <strong>전자 상거래 시장</strong> → <strong>O</strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ QUIZ ══════════ -->
+<div class="panel" id="panel-quiz">
+  <div class="quiz-wrap">
+
+    <div class="quiz-header">
+      📝 카드를 <strong>클릭</strong>하면 답이 보이고, 다시 클릭하면 숨겨집니다.<br>
+      자주 봐서 <strong>장기 기억</strong>으로 만들어 보세요!
+    </div>
+
+    <div class="qbar">
+      <button class="qbtn qbtn-outline" onclick="revealAll()">전체 보기</button>
+      <button class="qbtn qbtn-outline" onclick="hideAll()">전체 숨기기</button>
+      <button class="qbtn qbtn-fill" onclick="shuffleQ()">🔀 섞기</button>
+    </div>
+    <div class="qbar" style="padding-top:0;">
+      <button class="qbtn qbtn-active" id="fbtn-all" onclick="filterQ('all')">전체</button>
+      <button class="qbtn qbtn-outline" id="fbtn-A" onclick="filterQ('A')">①시장의 의미·역할</button>
+      <button class="qbtn qbtn-outline" id="fbtn-B" onclick="filterQ('B')">②시장의 종류</button>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-bar"><div class="prog-fill" id="pFill"></div></div>
+      <div class="prog-lbl" id="pLbl">0 / 32 확인</div>
+    </div>
+
+    <div class="q-list" id="qList"></div>
+  </div>
+</div>
+
+<footer>No.02 — 시장의 의미와 종류 · Ⅳ. 시장 경제와 가격</footer>
+
+<script>
+const ALL_Q = [
+  // ── A: 시장의 의미·역할·형성 ──
+
+  // 용어→설명
+  {id:1,  cat:'A', tag:'용어 설명', q:'시장이란 무엇인가?', a:'재화나 서비스를 팔려는 사람과 사려는 사람이 만나 거래하는 곳'},
+  {id:2,  cat:'A', tag:'용어 설명', q:'분업이란 무엇인가?', a:'생산 과정을 여러 부문으로 나누어 여러 사람이 일을 나누어 맡는 것'},
+  {id:3,  cat:'A', tag:'용어 설명', q:'외환 시장이란 무엇인가?', a:'달러화, 유로화, 엔화 등과 같은 외환이 거래되는 시장'},
+
+  // 설명→용어
+  {id:4,  cat:'A', tag:'설명→용어', q:'"재화나 서비스를 팔려는 사람과 사려는 사람이 만나 거래하는 곳"을 무엇이라 하는가?', a:'시장'},
+  {id:5,  cat:'A', tag:'설명→용어', q:'"생산 과정을 여러 부문으로 나누어 여러 사람이 일을 나누어 맡는 것"을 무엇이라 하는가?', a:'분업'},
+  {id:6,  cat:'A', tag:'설명→용어', q:'"달러화, 유로화, 엔화 등과 같은 외환이 거래되는 시장"을 무엇이라 하는가?', a:'외환 시장'},
+
+  // 내용 이해
+  {id:7,  cat:'A', tag:'시장의 의미', q:'사람들이 분업을 통해 생산하고 시장에서 교환하는 이유는?', a:'개인에게 필요한 재화와 서비스는 매우 많지만 이 모든 것을 스스로 생산하는 것은 불가능하기 때문이다.'},
+  {id:8,  cat:'A', tag:'시장의 의미', q:'시장은 구체적인 장소만을 의미하는가?', a:'아니다. 상품이나 생산 요소에 대한 정보를 교환하고 거래하기 위해 협상하는 과정 전체를 포함한다.'},
+  {id:9,  cat:'A', tag:'시장의 의미', q:'거래되는 대상이나 거래 장소가 구체적으로 드러나지 않는 시장의 예 세 가지는?', a:'노동 시장, 주식 시장, 외환 시장'},
+  {id:10, cat:'A', tag:'시장의 역할', q:'시장이 생겨나기 전, 거래에서 어떤 어려움이 있었는가?', a:'거래할 상대방을 찾고 교환 조건을 알아내기 위해 많은 비용과 시간을 들여야 했다.'},
+  {id:11, cat:'A', tag:'시장의 역할', q:'시장이 생겨난 후 달라진 점 두 가지는?', a:'① 거래에 드는 비용과 시간이 줄어들어 쉽게 거래할 수 있게 되었다. ② 상품에 관한 정보를 쉽게 얻을 수 있으며 다양한 상품을 선택할 수 있다.'},
+  {id:12, cat:'A', tag:'시장의 형성', q:'역사적으로 시장이 처음 형성된 과정을 쓰시오.', a:'농사로 남은 생산물이 생기자 서로 물건을 교환하기 시작 → 잘 만들 수 있는 물건을 집중 생산 → 일정 시간과 장소에 모이는 시장 형성'},
+  {id:13, cat:'A', tag:'시장의 형성', q:'시장이 더욱 발달하게 된 결정적 계기는?', a:'화폐의 출현'},
+  {id:14, cat:'A', tag:'O/X', q:'시장은 재화나 서비스가 거래되는 구체적인 장소만을 의미한다. (O/X)', a:'X — 구체적인 장소뿐만 아니라 정보를 교환하고 협상하는 과정 전체를 포함한다.'},
+  {id:15, cat:'A', tag:'O/X', q:'시장이 생겨난 후 거래에 드는 비용과 시간이 줄어들었다. (O/X)', a:'O'},
+
+  // ── B: 시장의 종류 ──
+
+  // 용어→설명
+  {id:16, cat:'B', tag:'용어 설명', q:'생산물 시장이란 무엇인가?', a:'생활에 필요한 재화나 서비스가 거래되는 시장'},
+  {id:17, cat:'B', tag:'용어 설명', q:'생산 요소 시장이란 무엇인가?', a:'상품을 생산하는 과정에서 필요한 토지·노동·자본 등의 생산 요소가 거래되는 시장'},
+  {id:18, cat:'B', tag:'용어 설명', q:'전자 상거래란 무엇인가?', a:'인터넷 등 정보 통신망을 이용하여 이루어지는 거래'},
+
+  // 설명→용어
+  {id:19, cat:'B', tag:'설명→용어', q:'"생활에 필요한 재화나 서비스가 거래되는 시장"을 무엇이라 하는가?', a:'생산물 시장'},
+  {id:20, cat:'B', tag:'설명→용어', q:'"토지·노동·자본 등 상품 생산에 필요한 생산 요소가 거래되는 시장"을 무엇이라 하는가?', a:'생산 요소 시장'},
+  {id:21, cat:'B', tag:'설명→용어', q:'"인터넷 등 정보 통신망을 이용하여 이루어지는 거래"를 무엇이라 하는가?', a:'전자 상거래'},
+
+  // 내용 이해
+  {id:22, cat:'B', tag:'시장 분류', q:'시장을 거래되는 대상의 종류에 따라 두 가지로 구분하면?', a:'생산물 시장, 생산 요소 시장'},
+  {id:23, cat:'B', tag:'시장 분류', q:'생산물 시장의 예를 세 가지 이상 쓰시오.', a:'문구점, 농수산물 시장, 꽃 시장, 가구 시장, 영화관, 공연장 등'},
+  {id:24, cat:'B', tag:'시장 분류', q:'생산 요소 시장의 예 두 가지를 쓰시오.', a:'부동산 시장(토지 거래), 노동 시장(노동 거래)'},
+  {id:25, cat:'B', tag:'시장 분류', q:'취업 박람회·채용 공고 게시판은 어떤 시장에 해당하는가?', a:'노동 시장 → 생산 요소 시장'},
+  {id:26, cat:'B', tag:'시장 분류', q:'대형 마트에서 식료품을 구매하는 것은 어떤 시장인가?', a:'생산물 시장'},
+  {id:27, cat:'B', tag:'시장 분류', q:'인터넷 쇼핑몰에서 운동화를 구매하는 것은 어떤 시장인가?', a:'전자 상거래 시장 (생산물 시장에 포함)'},
+  {id:28, cat:'B', tag:'시장 분류', q:'토지를 거래하는 부동산 시장은 어떤 시장인가?', a:'생산 요소 시장'},
+  {id:29, cat:'B', tag:'시장 분류', q:'전자 상거래 시장이 점점 커지는 이유는?', a:'정보 통신 기술과 인터넷이 발달했기 때문이다.'},
+  {id:30, cat:'B', tag:'O/X', q:'영화관이나 공연장은 생산 요소 시장에 해당한다. (O/X)', a:'X — 생산물 시장이다. 문화 서비스(재화·서비스)가 거래된다.'},
+  {id:31, cat:'B', tag:'O/X', q:'생산에 필요한 토지, 노동, 자본 등이 거래되는 시장을 생산 요소 시장이라고 한다. (O/X)', a:'O'},
+  {id:32, cat:'B', tag:'O/X', q:'인터넷 등 정보 통신망을 이용하여 거래하는 시장을 전자 상거래 시장이라고 한다. (O/X)', a:'O'},
+];
+
+const TOTAL = ALL_Q.length;
+let curFilter = 'all';
+let revSet = new Set();
+let ordQ = [...ALL_Q];
+
+function tc(cat) { return cat==='A'?'tA':'tB'; }
+function getFiltered() { return curFilter==='all' ? ordQ : ordQ.filter(q=>q.cat===curFilter); }
+
+function renderQ() {
+  const list = getFiltered();
+  document.getElementById('qList').innerHTML = list.map((q,i)=>{
+    const open = revSet.has(q.id);
+    return `<div class="qcard${open?' open':''}" onclick="toggleQ(${q.id})">
+      <div class="qcard-top">
+        <div class="qnum">${i+1}</div>
+        <div class="qbody">
+          <span class="qtag ${tc(q.cat)}">${q.tag}</span>
+          <div class="qtext">${q.q}</div>
+        </div>
+      </div>
+      <div class="qans"><div class="qans-inner"><span class="albl">▶ 정답</span>${q.a}</div></div>
+    </div>`;
+  }).join('');
+  updateProg();
+}
+
+function toggleQ(id) { revSet.has(id)?revSet.delete(id):revSet.add(id); renderQ(); }
+
+function updateProg() {
+  const n = revSet.size;
+  document.getElementById('pFill').style.width = Math.round(n/TOTAL*100)+'%';
+  document.getElementById('pLbl').textContent = `${n} / ${TOTAL} 확인`;
+}
+
+function revealAll() { getFiltered().forEach(q=>revSet.add(q.id)); renderQ(); }
+function hideAll()   { getFiltered().forEach(q=>revSet.delete(q.id)); renderQ(); }
+function shuffleQ() {
+  for(let i=ordQ.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ordQ[i],ordQ[j]]=[ordQ[j],ordQ[i]];}
+  renderQ();
+}
+function filterQ(f) {
+  curFilter=f;
+  ['all','A','B'].forEach(k=>{
+    const b=document.getElementById('fbtn-'+k);
+    if(b) b.className = k===f?'qbtn qbtn-active':'qbtn qbtn-outline';
+  });
+  renderQ();
+}
+
+function switchTab(t, btn) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tabbar-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('panel-'+t).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function switchCh(id, btn) {
+  document.querySelectorAll('.ch-section').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.ch-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+renderQ();
+</script>
+</body>
+</html>
