@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ⅰ-2. 평화적 갈등 해결</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #2d5a3d;
+    --forest-deep: #1d3f29;
+    --moss: #5a7a5a;
+    --sage: #9bb39b;
+    --parchment: #f5efe0;
+    --paper: #faf7ec;
+    --paper-soft: #f0e9d6;
+    --ink: #1a1814;
+    --ink-soft: #4a443e;
+    --ink-muted: #7a7268;
+    --rust: #b8542d;
+    --gold: #c8941e;
+    --highlight: rgba(45,90,61,0.08);
+    --border: rgba(45,90,61,0.18);
+    --border-soft: rgba(45,90,61,0.10);
+    --shadow: rgba(45,90,61,0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: var(--parchment);
+    background-image:
+      radial-gradient(ellipse at 15% 10%, rgba(45,90,61,0.06) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 90%, rgba(184,84,45,0.05) 0%, transparent 55%);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 32px 16px 80px;
+    line-height: 1.65;
+  }
+
+  .wrap { max-width: 880px; margin: 0 auto; }
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header::before {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--forest), transparent);
+    margin: 0 auto 18px;
+  }
+  .badge {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--moss);
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: block;
+  }
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(26px, 4.5vw, 38px);
+    font-weight: 900;
+    color: var(--forest-deep);
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+  }
+  h1 .num { color: var(--rust); margin-right: 4px; }
+  .subtitle {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-top: 10px;
+    letter-spacing: 0.3px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 28px;
+    background: var(--paper);
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 2px 8px var(--shadow);
+    position: sticky;
+    top: 12px;
+    z-index: 50;
+  }
+  .tab {
+    flex: 1;
+    padding: 14px 16px;
+    border: none;
+    background: transparent;
+    color: var(--ink-muted);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    letter-spacing: -0.3px;
+  }
+  .tab:hover { color: var(--forest); background: var(--highlight); }
+  .tab.active {
+    background: var(--forest);
+    color: var(--paper);
+    box-shadow: 0 2px 8px rgba(45,90,61,0.25);
+  }
+
+  .panel { display: none; animation: fadeIn 0.35s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section { margin-bottom: 32px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--forest);
+  }
+  .section-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--forest);
+    line-height: 1;
+  }
+  .section-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+  }
+  .section-meta {
+    margin-left: auto;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--moss);
+    font-weight: 700;
+  }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px var(--shadow);
+  }
+  .card-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--forest-deep);
+    margin-bottom: 12px;
+    padding-left: 12px;
+    border-left: 4px solid var(--forest);
+    line-height: 1.4;
+  }
+  .card-body {
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .card-body p { margin-bottom: 10px; }
+  .card-body p:last-child { margin-bottom: 0; }
+
+  .term {
+    background: linear-gradient(180deg, transparent 60%, rgba(200,148,30,0.25) 60%);
+    color: var(--ink);
+    font-weight: 700;
+    padding: 0 2px;
+  }
+  .key {
+    color: var(--forest-deep);
+    font-weight: 700;
+  }
+  .em {
+    color: var(--rust);
+    font-weight: 700;
+  }
+
+  .def {
+    background: var(--paper-soft);
+    border-left: 4px solid var(--moss);
+    padding: 12px 16px;
+    margin: 12px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .def-label {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    color: var(--forest);
+    margin-right: 6px;
+  }
+
+  .list { list-style: none; padding: 0; }
+  .list li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .list li::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 18px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--moss);
+  }
+
+  .principles { display: grid; gap: 12px; margin-top: 14px; }
+  .principle {
+    display: flex;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--paper-soft);
+    border-radius: 10px;
+    border: 1px solid var(--border-soft);
+  }
+  .principle-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--forest);
+    line-height: 1;
+    min-width: 28px;
+  }
+  .principle-body { flex: 1; }
+  .principle-name {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--forest-deep);
+    margin-bottom: 4px;
+  }
+  .principle-desc {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+
+  /* 비교표 (협상·조정·중재) */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    background: var(--paper);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px var(--shadow);
+    font-size: 14px;
+  }
+  .compare-table th, .compare-table td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-soft);
+    line-height: 1.55;
+  }
+  .compare-table thead th {
+    background: var(--forest);
+    color: var(--paper);
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+  .compare-table tbody td:first-child {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    color: var(--forest-deep);
+    background: var(--paper-soft);
+    width: 90px;
+    text-align: center;
+  }
+  .compare-table tbody tr:last-child td { border-bottom: none; }
+
+  .summary-box {
+    background: linear-gradient(135deg, var(--forest) 0%, var(--forest-deep) 100%);
+    color: var(--paper);
+    padding: 26px 28px;
+    border-radius: 14px;
+    margin-top: 20px;
+    box-shadow: 0 4px 16px rgba(45,90,61,0.20);
+  }
+  .summary-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .summary-grid { display: grid; gap: 10px; }
+  .summary-row {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 12px;
+    align-items: baseline;
+    font-size: 14px;
+  }
+  .summary-key {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 900;
+    color: #f0d893;
+    text-align: center;
+  }
+  .summary-val { color: var(--paper); }
+  .summary-val strong { color: #f0d893; font-weight: 700; }
+
+  .progress-bar {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+  }
+  .progress-text { color: var(--ink-soft); font-weight: 500; }
+  .progress-text strong {
+    color: var(--forest);
+    font-weight: 900;
+    font-size: 18px;
+    margin: 0 2px;
+    font-family: 'Noto Serif KR', serif;
+  }
+  .progress-actions { display: flex; gap: 8px; }
+  .btn-mini {
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--forest);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.2s;
+  }
+  .btn-mini:hover { background: var(--forest); color: var(--paper); }
+
+  .cat-head {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--moss);
+    margin: 24px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed var(--border);
+    letter-spacing: -0.3px;
+  }
+  .cat-head:first-child { margin-top: 0; }
+
+  .problem {
+    background: var(--paper);
+    border: 1.5px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+  }
+  .problem:hover {
+    border-color: var(--forest);
+    box-shadow: 0 3px 12px var(--shadow);
+    transform: translateY(-1px);
+  }
+  .problem.revealed {
+    background: linear-gradient(180deg, var(--paper) 0%, #f5f0d8 100%);
+    border-color: var(--gold);
+  }
+  .problem-head {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .problem-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--moss);
+    color: var(--paper);
+    flex-shrink: 0;
+  }
+  .problem-tag.basic { background: var(--rust); }
+  .problem-tag.essay { background: var(--gold); color: var(--ink); }
+  .problem-num {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 900;
+    color: var(--forest);
+    font-size: 15px;
+  }
+  .problem-q {
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.65;
+    font-weight: 500;
+  }
+  .problem-options {
+    margin-top: 10px;
+    padding-left: 16px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.9;
+  }
+  .answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, margin 0.3s ease, padding 0.3s ease;
+    margin-top: 0;
+  }
+  .problem.revealed .answer {
+    max-height: 800px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1.5px dashed var(--gold);
+  }
+  .answer-label {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--rust);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .answer-text {
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 700;
+    line-height: 1.7;
+    margin-bottom: 6px;
+  }
+  .answer-explain {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    background: rgba(255,255,255,0.5);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border-left: 3px solid var(--moss);
+  }
+  .reveal-hint {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-weight: 500;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .problem:hover .reveal-hint { opacity: 1; }
+  .problem.revealed .reveal-hint { display: none; }
+
+  .footer {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--ink-muted);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 20px 12px 60px; }
+    .card { padding: 18px 18px; }
+    .section-title { font-size: 18px; }
+    .section-num { font-size: 24px; }
+    h1 { font-size: 24px; }
+    .tab { padding: 12px 8px; font-size: 13px; }
+    .problem { padding: 16px 18px; }
+    .reveal-hint { display: none; }
+    .summary-box { padding: 20px; }
+    .summary-row { grid-template-columns: 26px 1fr; gap: 10px; }
+    .compare-table { font-size: 12px; }
+    .compare-table th, .compare-table td { padding: 10px 8px; }
+    .compare-table tbody td:first-child { width: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="header">
+    <span class="badge">Ⅰ. 타인과의 관계</span>
+    <h1><span class="num">2.</span> 평화적 갈등 해결</h1>
+    <div class="subtitle">서일중학교 2학년 2학기 · 도덕 시험 대비</div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="reading">📖 본문정리</button>
+    <button class="tab" data-tab="quiz">📝 암기확인 문제</button>
+  </div>
+
+  <!-- ============ 📖 본문정리 ============ -->
+  <div class="panel active" id="panel-reading">
+
+    <!-- Section 1 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">①</span>
+        <h2 class="section-title">갈등의 의미와 특징</h2>
+        <span class="section-meta">30~31쪽</span>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">갈등의 의미</h3>
+        <div class="card-body">
+          <div class="def">
+            <span class="def-label">갈등</span>사람의 마음속에 <span class="key">두 가지 이상의 감정이나 의지가 대립</span>하여 어느 하나를 선택하지 못하고 있는 상태. 또는 개인이나 집단 사이에 <span class="key">입장이나 추구하는 가치가 달라 서로 충돌·대립</span>하는 상태.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">갈등의 특징 (3가지)</h3>
+        <div class="card-body">
+          <ul class="list">
+            <li><span class="key">보편적인 현상</span> — 누구나 살면서 다른 사람과 충돌·대립을 경험. 특정 일부가 아니라 모든 사람이 공통적으로 겪는 일</li>
+            <li><span class="key">필연적인 현상</span> — 다른 사람과 어울려 살다 보면 갈등은 반드시 발생. 사람들은 이를 해결하고 의견을 조율하기 위해 노력함</li>
+            <li><span class="key">전화위복(轉禍爲福)의 계기</span> — 갈등을 무조건 피할 게 아니라 적극적으로 해결할 때 더 좋은 결과가 생김. "비가 온 뒤 땅이 굳는다"</li>
+          </ul>
+          <div class="def" style="margin-top:10px;">
+            <span class="def-label">조율</span>문제를 어떤 대상에 알맞거나 마땅하도록 조절함을 비유적으로 이르는 말. <span class="def-label">전화위복</span>재앙과 근심, 어려움이 바뀌어 오히려 복이 됨.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">②</span>
+        <h2 class="section-title">갈등의 원인 (4가지)</h2>
+        <span class="section-meta">32~33쪽</span>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <p>시험 단골 출제! 4가지 원인과 그 예시 꼭 구분해서 암기.</p>
+          <div class="principles" style="margin-top:14px;">
+            <div class="principle">
+              <div class="principle-num">1</div>
+              <div class="principle-body">
+                <div class="principle-name">가치의 충돌</div>
+                <div class="principle-desc"><span class="key">서로 추구하는 가치나 신념이 충돌</span>할 때 발생. 예) 자유 vs 평등, 노인에게 자리 양보(전통적 미덕 vs 개인의 자유와 권리)</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">2</div>
+              <div class="principle-body">
+                <div class="principle-name">이해관계의 충돌</div>
+                <div class="principle-desc">자원이 한정되어 있는데 <span class="key">서로 더 많은 자원을 얻기 위해 경쟁</span>할 때, 또는 <span class="key">원하지 않는 것을 서로 미루다가</span> 발생. 예) 지하철역·병원·학교 유치 경쟁(핌피), 화장터·하수 처리장 미루기(님비)</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">3</div>
+              <div class="principle-body">
+                <div class="principle-name">잘못된 의사소통</div>
+                <div class="principle-desc">의사소통 과정에서 <span class="key">서로 존중하지 않으면 불신과 오해</span>가 생김. <span class="em">흑백 논리</span>와 왜곡된 정보로 자신의 주장을 합리화할 때도 발생.</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">4</div>
+              <div class="principle-body">
+                <div class="principle-name">분노와 폭력 사용</div>
+                <div class="principle-desc"><span class="key">감정 조절을 못하거나 힘으로 문제를 해결</span>하려 할 때. 분노와 폭력은 상대방을 무시하는 태도에서 비롯되며, 합리적 대화를 어렵게 만들어 갈등을 더 깊게 한다.</div>
+              </div>
+            </div>
+          </div>
+          <div class="def" style="margin-top:14px;">
+            <span class="def-label">이해관계</span>서로 이익과 손해가 걸려 있는 관계. <span class="def-label">유치</span>행사나 사업 등을 이끌어 들임.
+          </div>
+          <div class="def">
+            <span class="def-label">흑백 논리</span>모든 문제를 흑과 백, 선과 악, 득과 실의 양 극단으로만 구분하고 중립적인 것을 인정하지 않으려는, 한쪽으로 치우친 사고방식이나 논리.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">③</span>
+        <h2 class="section-title">평화적 갈등 해결의 의미와 이로움</h2>
+        <span class="section-meta">34~35쪽</span>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">평화적 갈등 해결의 의미</h3>
+        <div class="card-body">
+          <div class="def">
+            <span class="def-label">평화적 갈등 해결</span>갈등 당사자들이 <span class="key">원만한 방법으로 갈등을 해결하기 위한 대안을 찾는 것</span>. 서로의 인격을 존중하며 상대방의 주장을 경청하여 합리적인 의견을 나누고, <span class="key">힘이나 폭력에 의존하지 않고</span> 해결책을 찾는 것.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">평화적 갈등 해결의 이로움 ⭐</h3>
+        <div class="card-body">
+          <p style="margin-bottom:8px;"><span class="key">개인적 차원</span></p>
+          <ul class="list">
+            <li>서로 <span class="key">만족할 수 있는 해결책</span>을 찾을 수 있음</li>
+            <li>갈등 당사자들 간에 <span class="key">서로를 이해하고 존중하는 기회</span>가 됨</li>
+            <li>다른 갈등도 해결할 수 있다는 <span class="key">자신감과 문제 해결 능력</span>을 키움</li>
+            <li>인간에 대한 이해의 폭이 넓어져 <span class="em">대인 관계 능력</span>이 향상됨</li>
+          </ul>
+          <p style="margin-top:12px;margin-bottom:8px;"><span class="key">사회적 차원</span></p>
+          <ul class="list">
+            <li>사회는 <span class="key">바람직한 방향</span>을 잡고 공동의 목표를 설정할 수 있음</li>
+            <li>사회 구성원에게 <span class="key">자부심과 소속감</span>을 심어 주며 → <span class="em">사회 발전의 원동력</span>이 됨</li>
+          </ul>
+          <div class="def" style="margin-top:12px;">
+            <span class="def-label">경청</span>귀를 기울여 들음. <span class="def-label">원동력</span>어떤 움직임의 근본이 되는 힘.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">④</span>
+        <h2 class="section-title">평화적 갈등 해결의 자세 (4가지)</h2>
+        <span class="section-meta">36쪽</span>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="principles">
+            <div class="principle">
+              <div class="principle-num">1</div>
+              <div class="principle-body">
+                <div class="principle-name">갈등의 핵심을 정확하게 이해</div>
+                <div class="principle-desc">눈앞에 닥친 문제가 무엇인지 알고, 나의 주장과 상대방의 주장이 어떻게 다른지 이해.</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">2</div>
+              <div class="principle-body">
+                <div class="principle-name">상대방을 존중하는 마음</div>
+                <div class="principle-desc">자신의 의사를 솔직하게 전달하되, 상대방의 주장을 경청. <span class="key">상대방을 인정할 때 나 자신도 존중받을 수 있다.</span></div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">3</div>
+              <div class="principle-body">
+                <div class="principle-name">이성적으로 생각하고 행동</div>
+                <div class="principle-desc">감정에 싸여 있으면 감정적 대응·인신공격·폭력적 말과 행동으로 갈등이 더 커짐. <span class="key">화가 날 때는 마음을 가라앉히고 이성적으로 판단</span>.</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">4</div>
+              <div class="principle-body">
+                <div class="principle-name">양보와 타협의 자세</div>
+                <div class="principle-desc">자신의 생각만 옳다고 주장하면 갈등 해결 불가. <span class="key">상대방의 주장을 수용하여 의견 차이를 좁혀 가는 노력</span>이 필요.</div>
+              </div>
+            </div>
+          </div>
+          <div class="def" style="margin-top:14px;">
+            <span class="def-label">인신공격</span>신상에 관한 일을 들어서 남을 공격함.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">경청을 실천하기 위한 다섯 가지 행동 가이드</h3>
+        <div class="card-body">
+          <ul class="list">
+            <li>공감을 준비하자</li>
+            <li>상대를 인정하자</li>
+            <li>말하기를 절제하자</li>
+            <li>겸손하게 이해하자</li>
+            <li>온몸으로 응답하자</li>
+          </ul>
+          <p style="margin-top:8px;font-size:13px;color:var(--ink-muted);">— 조신영, 『경청』</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">⑤</span>
+        <h2 class="section-title">평화적 갈등 해결의 방법 — 협상·조정·중재 ⭐⭐</h2>
+        <span class="section-meta">36쪽</span>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <p>가장 바람직한 방법은 <span class="key">대화를 통해 해결책을 찾는 것</span>. 시험에 자주 나오는 비교 포인트!</p>
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>구분</th>
+                <th>의미</th>
+                <th>제삼자 개입</th>
+                <th>강제성</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>협상</td>
+                <td><span class="key">당사자가 대화를 통해</span> 갈등을 해결. 양보와 타협으로 합의안 도출</td>
+                <td style="text-align:center;">❌ 없음</td>
+                <td style="text-align:center;">❌ 없음</td>
+              </tr>
+              <tr>
+                <td>조정</td>
+                <td>당사자가 해결하기 어려울 때, <span class="key">조정자가 의사소통을 도움</span>. 조정자는 결론을 내리지 않고 중립적이어야 함</td>
+                <td style="text-align:center;">⭕ 있음</td>
+                <td style="text-align:center;">❌ 없음</td>
+              </tr>
+              <tr>
+                <td>중재</td>
+                <td>양측의 주장을 듣고 <span class="key">중재자(제삼자)가 해결책을 제시</span>. 당사자가 중재자의 개입을 인정·요청할 때 시작</td>
+                <td style="text-align:center;">⭕ 있음</td>
+                <td style="text-align:center;">⭕ <span class="em">있음</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="def" style="margin-top:14px;">
+            <span class="def-label">⚠️ 핵심 차이</span>조정과 중재는 <strong>둘 다 제삼자가 개입</strong>하지만, <strong>중재자의 해결책에는 강제성이 있다</strong>는 것이 다른 점!
+          </div>
+          <div class="def">
+            <span class="def-label">쟁점</span>서로 다른 의견을 가진 사람들이 말이나 글로 논하여 다투는 것의 중심이 되는 점. <span class="def-label">편파</span>공정하지 못하고 어느 한쪽으로 치우쳐 있음. <span class="def-label">제삼자</span>당사자가 아닌 사람.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">⑥</span>
+        <h2 class="section-title">갈등 대처 유형 (5가지)</h2>
+        <span class="section-meta">35쪽</span>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="principles">
+            <div class="principle">
+              <div class="principle-num">1</div>
+              <div class="principle-body">
+                <div class="principle-name">회피형</div>
+                <div class="principle-desc">갈등을 <span class="key">피하거나 해결하는 것을 미룸</span>. 예) "난 몰라. 그냥 갈래."</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">2</div>
+              <div class="principle-body">
+                <div class="principle-name">경쟁형</div>
+                <div class="principle-desc"><span class="key">상대의 욕구는 좌절시키고, 이기려는</span> 전략. 예) "내가 꼭 이겨야 해."</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">3</div>
+              <div class="principle-body">
+                <div class="principle-name">조정형</div>
+                <div class="principle-desc"><span class="key">상대와의 관계를 중시하여 상대의 요구나 입장을 수용</span>. 예) "난 항복. 네가 이겼어."</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">4</div>
+              <div class="principle-body">
+                <div class="principle-name">타협형</div>
+                <div class="principle-desc">자신과 상대 모두에게 <span class="key">부분적인 승리</span>를 줄 수 있는 해결책. 예) "너랑 나랑 줄 건 주고 받을 건 받자."</div>
+              </div>
+            </div>
+            <div class="principle">
+              <div class="principle-num">5</div>
+              <div class="principle-body">
+                <div class="principle-name">협력형 ⭐</div>
+                <div class="principle-desc">양쪽 모두에게 이익이 되는 해결 방법으로 <span class="em">'윈윈(win-win)'</span>을 추구. 예) "우리 같이 일하자. 둘 다 이긴 거야." → 가장 이상적인 유형</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 중단원 마무리 -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">📌</span>
+        <h2 class="section-title">중단원 마무리 — 빈칸 정답 정리</h2>
+        <span class="section-meta">40쪽</span>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-title">⭐ 시험에 꼭 나오는 핵심 키워드</div>
+        <div class="summary-grid">
+          <div class="summary-row">
+            <div class="summary-key">㉠</div>
+            <div class="summary-val"><strong>갈등</strong> — 서로의 입장, 추구하는 가치가 달라 서로 대립하는 상태</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">㉡</div>
+            <div class="summary-val"><strong>이해관계</strong>의 충돌 — 한정된 자원을 서로 얻기 위해 경쟁하거나 원하지 않는 것을 서로 미루어 발생</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">㉢</div>
+            <div class="summary-val"><strong>평화적</strong> 갈등 해결의 의미 — 원만한 방법으로 갈등을 해결하기 위한 대안을 찾는 것</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">㉣</div>
+            <div class="summary-val"><strong>대인</strong> 관계 능력이 향상됨</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">㉤</div>
+            <div class="summary-val"><strong>협상</strong> — 당사자들이 대화를 통해 갈등을 해결하는 방법</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">㉥</div>
+            <div class="summary-val"><strong>중재</strong> — 제삼자가 양측의 주장을 듣고 해결책을 제시하는 방법</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ 📝 암기확인 문제 ============ -->
+  <div class="panel" id="panel-quiz">
+
+    <div class="progress-bar">
+      <div class="progress-text">확인한 문제 <strong id="cnt">0</strong> / <strong id="total">0</strong></div>
+      <div class="progress-actions">
+        <button class="btn-mini" onclick="resetAll()">초기화</button>
+        <button class="btn-mini" onclick="revealAll()">전체 보기</button>
+      </div>
+    </div>
+
+    <!-- 교과서 기본 문제 -->
+    <div class="cat-head">📘 교과서 기본 문제</div>
+
+    <div class="problem" data-id="b1">
+      <div class="problem-head">
+        <span class="problem-tag basic">기본·객관식</span>
+        <span class="problem-num">기본1.</span>
+      </div>
+      <div class="problem-q">갈등의 특징을 설명한 것이 <span class="em">아닌</span> 것은?</div>
+      <div class="problem-options">
+        ① 갈등은 해결이 쉬운 것도, 복잡한 것도 있다.<br>
+        ② 가치와 이해관계의 충돌은 갈등의 원인이다.<br>
+        ③ 갈등은 모든 사람이 겪는 보편적인 현상이다.<br>
+        ④ 갈등을 피하는 것이 가장 좋은 해결 방법이다.<br>
+        ⑤ 사람이 살아가면서 갈등은 필연적으로 나타난다.
+      </div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">④ 갈등을 피하는 것이 가장 좋은 해결 방법이다.</div>
+        <div class="answer-explain">갈등은 피해야 할 것이 아니라 <strong>전화위복의 계기</strong>가 됨. 적극적으로 해결할 때 더 좋은 결과가 생긴다.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="b2">
+      <div class="problem-head">
+        <span class="problem-tag basic">기본·객관식</span>
+        <span class="problem-num">기본2.</span>
+      </div>
+      <div class="problem-q">다음에서 찾을 수 있는 <span class="em">갈등의 원인</span>은?<br><br><strong>갑:</strong> 개인의 자유는 무엇보다 중요해. 그래야 개인은 자신의 능력을 최대한 개발할 수 있어.<br><strong>을:</strong> 공평하지 못하다면 그 자유는 일부의 자유일 뿐이야. 평등이 우선되어야 자유도 보장돼.</div>
+      <div class="problem-options">
+        ① 가치의 충돌 &nbsp; ② 정보의 왜곡 &nbsp; ③ 잘못된 의사소통 &nbsp; ④ 이해관계의 충돌 &nbsp; ⑤ 힘에 의한 문제 해결
+      </div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">① 가치의 충돌</div>
+        <div class="answer-explain">'자유 vs 평등' 같은 <strong>서로 추구하는 가치·신념의 충돌</strong>. 이해관계(자원·이익)가 아닌 가치관 차이임을 구분!</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="b3">
+      <div class="problem-head">
+        <span class="problem-tag basic">기본·객관식</span>
+        <span class="problem-num">기본3.</span>
+      </div>
+      <div class="problem-q">다음 설명이 의미하는 개념은?<br><br>"모든 문제를 두 가지로 구분하여, 둘 중에 하나를 선택하도록 강요하는 방법"</div>
+      <div class="problem-options">
+        ① 왜곡 &nbsp; ② 인격 &nbsp; ③ 유언비어 &nbsp; ④ 과장 &nbsp; ⑤ 흑백 논리
+      </div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">⑤ 흑백 논리</div>
+        <div class="answer-explain">흑과 백, 선과 악, 득과 실의 양 극단으로만 구분하고 중립을 인정하지 않는 사고방식. <strong>잘못된 의사소통</strong>의 원인이 됨.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="b4">
+      <div class="problem-head">
+        <span class="problem-tag essay">기본·서술</span>
+        <span class="problem-num">기본4.</span>
+      </div>
+      <div class="problem-q">갈등을 평화적으로 해결하면 어떤 <span class="em">이로움</span>이 있는지 서술하시오.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">개인적으로는 ① 서로 <strong>만족할 수 있는 해결책</strong>을 찾고, ② 갈등 당사자들 간 <strong>이해와 존중의 기회</strong>가 되며, ③ <strong>자신감과 문제 해결 능력</strong>을 키우고, ④ <strong>대인 관계 능력</strong>이 향상된다. 사회적으로는 ⑤ 사회가 <strong>바람직한 방향과 공동 목표</strong>를 설정할 수 있고, ⑥ 구성원에게 <strong>자부심과 소속감</strong>을 심어 주어 <strong>사회 발전의 원동력</strong>이 된다.</div>
+        <div class="answer-explain">개인적·사회적 차원으로 나누어 답하면 안전. 핵심 키워드 6개 모두 포함하면 만점 가능.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="b5">
+      <div class="problem-head">
+        <span class="problem-tag essay">기본·서술</span>
+        <span class="problem-num">기본5.</span>
+      </div>
+      <div class="problem-q">갈등을 해결하고 관계를 회복하기 위한 <span class="em">마음가짐(자세)</span>에 대하여 서술하시오.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">① <strong>갈등의 핵심을 정확하게 이해</strong>하고, ② <strong>상대방을 존중</strong>하며 경청하고, ③ <strong>이성적으로 생각하고 행동</strong>하며 감정적 대응을 피하고, ④ <strong>양보와 타협의 자세</strong>를 가지고 의견 차이를 좁혀 가야 한다.</div>
+        <div class="answer-explain">평화적 갈등 해결의 4가지 자세를 모두 답하기. 시험 출제 1순위!</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="b6">
+      <div class="problem-head">
+        <span class="problem-tag essay">기본·서술</span>
+        <span class="problem-num">기본6.</span>
+      </div>
+      <div class="problem-q">평화적 갈등 해결 방법으로 <span class="em">조정과 중재의 차이점</span>을 서술하시오.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">조정과 중재는 둘 다 <strong>제삼자가 개입</strong>한다는 공통점이 있다. 그러나 <strong>조정자는 의사소통을 도울 뿐 결론을 내리지 않으며 강제성이 없는</strong> 반면, <strong>중재자는 직접 해결책을 제시하며 그 해결책에 강제성이 있다</strong>는 점이 다르다.</div>
+        <div class="answer-explain">핵심 = <strong>강제성의 유무</strong>. "둘 다 제삼자 개입" → "그러나 강제성에서 차이" 구조로 답하면 좋다.</div>
+      </div>
+    </div>
+
+    <!-- 핵심 단답 빈칸 -->
+    <div class="cat-head">✏️ 핵심 개념 단답·빈칸 (자작 보완)</div>
+
+    <div class="problem" data-id="s1">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">1.</span>
+      </div>
+      <div class="problem-q">사람의 마음속에 두 가지 이상의 감정이나 의지가 대립하여 어느 하나를 선택하지 못하고 있는 상태, 또는 개인이나 집단 사이에 입장이나 추구하는 가치가 달라 서로 충돌·대립하는 상태를 무엇이라 하는가?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">갈등</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s2">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">2.</span>
+      </div>
+      <div class="problem-q">"재앙과 근심, 어려움이 바뀌어 오히려 복이 됨"을 뜻하는 한자성어로, 갈등의 특징 중 하나는?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">전화위복(轉禍爲福)</div>
+        <div class="answer-explain">"비가 온 뒤 땅이 굳는다"라는 속담과 같은 뜻. 갈등을 해결하면 더 신뢰가 깊어진다는 의미.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s3">
+      <div class="problem-head">
+        <span class="problem-tag">빈칸</span>
+        <span class="problem-num">3.</span>
+      </div>
+      <div class="problem-q">갈등의 4가지 원인은 ① ( &nbsp;&nbsp;&nbsp; )의 충돌, ② ( &nbsp;&nbsp;&nbsp; )의 충돌, ③ 잘못된 의사소통, ④ 분노와 폭력 사용이다.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">가치 / 이해관계</div>
+        <div class="answer-explain">'자유 vs 평등' 같은 가치관 차이는 <strong>가치의 충돌</strong>, 자원 경쟁이나 시설 유치/회피는 <strong>이해관계의 충돌</strong>.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s4">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">4.</span>
+      </div>
+      <div class="problem-q">"서로 이익과 손해가 걸려 있는 관계"를 뜻하는 용어는?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">이해관계</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s5">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">5.</span>
+      </div>
+      <div class="problem-q">모든 문제를 흑과 백, 선과 악의 양 극단으로만 구분하고 중립적인 것을 인정하지 않는 한쪽으로 치우친 사고방식을 무엇이라 하는가?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">흑백 논리(黑白論理)</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s6">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">6.</span>
+      </div>
+      <div class="problem-q">갈등 당사자들이 원만한 방법으로 갈등을 해결하기 위한 대안을 찾는 것을 무엇이라 하는가?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">평화적 갈등 해결</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s7">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">7.</span>
+      </div>
+      <div class="problem-q">"귀를 기울여 들음"을 뜻하는 용어로, 평화적 갈등 해결의 자세 중 상대방 존중과 관련된 것은?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">경청(傾聽)</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s8">
+      <div class="problem-head">
+        <span class="problem-tag">빈칸</span>
+        <span class="problem-num">8.</span>
+      </div>
+      <div class="problem-q">평화적 갈등 해결의 4가지 자세는 ① 갈등의 ( &nbsp;&nbsp;&nbsp; )을 정확하게 이해, ② 상대방 ( &nbsp;&nbsp;&nbsp; ), ③ ( &nbsp;&nbsp;&nbsp; ) 생각·행동, ④ ( &nbsp;&nbsp;&nbsp; )와 타협의 자세이다.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">핵심 / 존중 / 이성적 / 양보</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s9">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">9.</span>
+      </div>
+      <div class="problem-q">평화적 갈등 해결의 3가지 방법 중, <span class="em">당사자가 직접 대화를 통해</span> 양보와 타협으로 합의안을 찾는 방법은?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">협상</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s10">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">10.</span>
+      </div>
+      <div class="problem-q">평화적 갈등 해결의 3가지 방법 중, <span class="em">제삼자가 의사소통을 도와주지만 결론을 내리지 않고 강제성도 없는</span> 방법은?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">조정</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s11">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">11.</span>
+      </div>
+      <div class="problem-q">평화적 갈등 해결의 3가지 방법 중, <span class="em">제삼자가 양측의 주장을 듣고 해결책을 제시하며 강제성이 있는</span> 방법은?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">중재</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s12">
+      <div class="problem-head">
+        <span class="problem-tag">빈칸</span>
+        <span class="problem-num">12.</span>
+      </div>
+      <div class="problem-q">조정과 중재의 공통점은 ( &nbsp;&nbsp;&nbsp; )가 개입한다는 점이고, 차이점은 중재자의 해결책에 ( &nbsp;&nbsp;&nbsp; )이 있다는 것이다.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">제삼자 / 강제성</div>
+        <div class="answer-explain">시험 단골 출제 포인트! 조정·중재의 결정적 차이 = <strong>강제성의 유무</strong>.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s13">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">13.</span>
+      </div>
+      <div class="problem-q">갈등 대처 5가지 유형 중, "내가 꼭 이겨야 해."처럼 <span class="em">상대의 욕구는 좌절시키고 이기려는</span> 전략은?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">경쟁형</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s14">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">14.</span>
+      </div>
+      <div class="problem-q">갈등 대처 5가지 유형 중, "우리 같이 일하자. 둘 다 이긴 거야."처럼 <span class="em">양쪽 모두에게 이익(win-win)</span>이 되는 가장 이상적인 유형은?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">협력형</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s15">
+      <div class="problem-head">
+        <span class="problem-tag">단답</span>
+        <span class="problem-num">15.</span>
+      </div>
+      <div class="problem-q">갈등 대처 5가지 유형 중, "너랑 나랑 줄 건 주고 받을 건 받자."처럼 <span class="em">양쪽 모두에게 부분적 승리</span>를 주는 유형은?</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">타협형</div>
+        <div class="answer-explain">⚠️ 협력형(win-win, 둘 다 100% 승리)과 헷갈리지 말 것! <strong>타협형은 부분적 승리</strong>.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="s16">
+      <div class="problem-head">
+        <span class="problem-tag">빈칸</span>
+        <span class="problem-num">16.</span>
+      </div>
+      <div class="problem-q">갈등 대처 5가지 유형: ① ( &nbsp;&nbsp;&nbsp; )형(피하기) ② 경쟁형 ③ ( &nbsp;&nbsp;&nbsp; )형(상대 수용) ④ 타협형 ⑤ ( &nbsp;&nbsp;&nbsp; )형(win-win)</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">회피 / 조정 / 협력</div>
+      </div>
+    </div>
+
+    <!-- OX -->
+    <div class="cat-head">⭕❌ OX로 개념 점검</div>
+
+    <div class="problem" data-id="o1">
+      <div class="problem-head">
+        <span class="problem-tag">OX</span>
+        <span class="problem-num">OX1.</span>
+      </div>
+      <div class="problem-q">갈등은 특정한 일부의 사람만 겪는 우연적 현상이다.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">❌ X</div>
+        <div class="answer-explain">갈등은 <strong>모든 사람이 겪는 보편적·필연적 현상</strong>. 우연적·일부적 현상이 아니다.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="o2">
+      <div class="problem-head">
+        <span class="problem-tag">OX</span>
+        <span class="problem-num">OX2.</span>
+      </div>
+      <div class="problem-q">갈등은 피할수록 자연스럽게 사라지므로 무조건 회피하는 것이 좋다.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">❌ X</div>
+        <div class="answer-explain">갈등을 피한다고 해결되지 않는다. 적극적으로 해결할 때 <strong>전화위복</strong>의 계기가 됨.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="o3">
+      <div class="problem-head">
+        <span class="problem-tag">OX</span>
+        <span class="problem-num">OX3.</span>
+      </div>
+      <div class="problem-q">조정자는 갈등 해결의 최종 결론을 직접 내려야 한다.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">❌ X</div>
+        <div class="answer-explain">조정자는 <strong>최종 결론을 내리지 않으며</strong> 당사자가 스스로 해결책을 찾도록 도와주는 역할만 한다. 결론을 내리는 것은 중재자.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="o4">
+      <div class="problem-head">
+        <span class="problem-tag">OX</span>
+        <span class="problem-num">OX4.</span>
+      </div>
+      <div class="problem-q">조정자는 어느 한쪽 당사자의 편을 들어도 무방하다.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">❌ X</div>
+        <div class="answer-explain">조정자는 <strong>중립적</strong>이어야 함. 편파적이지 않아야 신뢰가 생기고 조정 과정이 유지될 수 있다.</div>
+      </div>
+    </div>
+
+    <div class="problem" data-id="o5">
+      <div class="problem-head">
+        <span class="problem-tag">OX</span>
+        <span class="problem-num">OX5.</span>
+      </div>
+      <div class="problem-q">평화적 갈등 해결은 사회 구성원에게 자부심과 소속감을 심어 주어 사회 발전의 원동력이 된다.</div>
+      <div class="answer">
+        <span class="answer-label">A.</span>
+        <div class="answer-text">⭕ O</div>
+        <div class="answer-explain">평화적 갈등 해결의 <strong>사회적 이로움</strong>. 사회 발전의 원동력 = 시험 단골 키워드.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    📚 서일중 도덕 시험 대비 · Ⅰ-2 평화적 갈등 해결
+  </footer>
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById('panel-' + t.dataset.tab).classList.add('active');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+  });
+
+  const problems = document.querySelectorAll('.problem');
+  document.getElementById('total').textContent = problems.length;
+
+  problems.forEach(p => {
+    p.addEventListener('click', () => {
+      p.classList.toggle('revealed');
+      updateCount();
+    });
+  });
+
+  function updateCount() {
+    const revealed = document.querySelectorAll('.problem.revealed').length;
+    document.getElementById('cnt').textContent = revealed;
+  }
+
+  function resetAll() {
+    document.querySelectorAll('.problem.revealed').forEach(p => p.classList.remove('revealed'));
+    updateCount();
+  }
+
+  function revealAll() {
+    document.querySelectorAll('.problem').forEach(p => p.classList.add('revealed'));
+    updateCount();
+  }
+</script>
+
+</body>
+</html>

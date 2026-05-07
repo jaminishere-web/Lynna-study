@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2021년 기출 — 서일중 도덕</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wine: #7a2c3f;
+    --wine-deep: #5a1f2e;
+    --wine-light: #a04e62;
+    --rose: #c79da9;
+    --parchment: #f5efe0;
+    --paper: #faf7ec;
+    --paper-soft: #f3e9ec;
+    --ink: #1a1814;
+    --ink-soft: #4a443e;
+    --ink-muted: #7a7268;
+    --rust: #b8542d;
+    --gold: #c8941e;
+    --highlight: rgba(122,44,63,0.08);
+    --border: rgba(122,44,63,0.18);
+    --border-soft: rgba(122,44,63,0.10);
+    --shadow: rgba(122,44,63,0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: var(--parchment);
+    background-image:
+      radial-gradient(ellipse at 15% 10%, rgba(122,44,63,0.06) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 90%, rgba(184,84,45,0.05) 0%, transparent 55%);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 32px 16px 80px;
+    line-height: 1.65;
+  }
+
+  .wrap { max-width: 880px; margin: 0 auto; }
+
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header::before {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--wine), transparent);
+    margin: 0 auto 18px;
+  }
+  .badge {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--wine-light);
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: block;
+  }
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(26px, 4.5vw, 36px);
+    font-weight: 900;
+    color: var(--wine-deep);
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+  }
+  h1 .num { color: var(--rust); margin-right: 4px; }
+  .subtitle {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-top: 10px;
+    letter-spacing: 0.3px;
+  }
+
+  .progress-bar {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    position: sticky;
+    top: 12px;
+    z-index: 50;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .progress-text { color: var(--ink-soft); font-weight: 500; }
+  .progress-text strong {
+    color: var(--wine);
+    font-weight: 900;
+    font-size: 18px;
+    margin: 0 2px;
+    font-family: 'Noto Serif KR', serif;
+  }
+  .progress-actions { display: flex; gap: 8px; }
+  .btn-mini {
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--wine);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.2s;
+  }
+  .btn-mini:hover { background: var(--wine); color: var(--paper); }
+
+  .unit-head {
+    margin: 28px 0 14px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, var(--wine) 0%, var(--wine-deep) 100%);
+    color: var(--paper);
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(122,44,63,0.18);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .unit-head:first-of-type { margin-top: 0; }
+  .unit-icon {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px;
+    font-weight: 900;
+    color: #f0d893;
+  }
+  .unit-name {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.3px;
+  }
+  .unit-count {
+    margin-left: auto;
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    font-weight: 500;
+  }
+
+  .problem {
+    background: var(--paper);
+    border: 1.5px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+  }
+  .problem:hover {
+    border-color: var(--wine);
+    box-shadow: 0 3px 12px var(--shadow);
+    transform: translateY(-1px);
+  }
+  .problem.revealed {
+    background: linear-gradient(180deg, var(--paper) 0%, #f5f0d8 100%);
+    border-color: var(--gold);
+  }
+  .problem-head {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .problem-num {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 900;
+    color: var(--wine);
+    font-size: 18px;
+    min-width: 36px;
+  }
+  .problem-score {
+    font-size: 11px;
+    color: var(--ink-muted);
+    background: var(--paper-soft);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .problem-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--wine-light);
+    color: var(--paper);
+  }
+  .problem-q {
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.65;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .problem-passage {
+    background: var(--paper-soft);
+    border-left: 3px solid var(--wine-light);
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    border-radius: 0 6px 6px 0;
+  }
+  .problem-options {
+    margin-top: 10px;
+    padding-left: 4px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 2;
+  }
+  .answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, margin 0.3s ease, padding 0.3s ease;
+    margin-top: 0;
+  }
+  .problem.revealed .answer {
+    max-height: 1000px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1.5px dashed var(--gold);
+  }
+  .answer-label {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--rust);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .answer-text {
+    font-size: 16px;
+    color: var(--wine-deep);
+    font-weight: 900;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    font-family: 'Noto Serif KR', serif;
+  }
+  .answer-explain {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    background: rgba(255,255,255,0.5);
+    padding: 10px 14px;
+    border-radius: 6px;
+    border-left: 3px solid var(--wine-light);
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--ink-muted);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 20px 12px 60px; }
+    .problem { padding: 16px 18px; }
+    h1 { font-size: 22px; }
+    .problem-q { font-size: 14px; }
+    .problem-passage { padding: 10px 12px; font-size: 13px; }
+    .unit-head { padding: 10px 14px; }
+    .unit-name { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="header">
+    <span class="badge">2021학년도 1학기 기말고사</span>
+    <h1>서일중학교 도덕 기출</h1>
+    <div class="subtitle">총 33문항 · 클릭하면 정답·해설이 펼쳐집니다</div>
+  </header>
+
+  <div class="progress-bar">
+    <div class="progress-text">확인 <strong id="cnt">0</strong> / <strong id="total">33</strong></div>
+    <div class="progress-actions">
+      <button class="btn-mini" onclick="resetAll()">초기화</button>
+      <button class="btn-mini" onclick="revealAll()">전체 보기</button>
+    </div>
+  </div>
+
+  <!-- ============ Ⅰ-1. 정보화 사회와 도덕 (1~8) ============ -->
+  <div class="unit-head">
+    <span class="unit-icon">Ⅰ-1</span>
+    <span class="unit-name">정보화 사회와 도덕</span>
+    <span class="unit-count">1번 ~ 8번</span>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">1</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-1</span>
+    </div>
+    <div class="problem-q">기사를 통해서 알 수 있는 정보 통신 사회의 특징으로 가장 알맞은 것은?</div>
+    <div class="problem-passage">
+      4월 7일, 서울과 부산시장 등을 뽑는 '2021 재·보궐선거'가 치러진 가운데, 아이돌 ○○○부터 배우 △△△까지 많은 연예인들이 투표 인증샷과 독려 멘트를 쏟아냈다.<br><br>
+      ○○○이 이날 오전 자신의 인스타그램에 "투표합시다 #투표"라는 짧은 글과 함께 여러 장의 사진을 게재했다. 배우 △△△은 자신의 인스타그램 "투표해 주세요"라는 글과 함께 사진을 올렸다. 사진에는 보궐선거 투표소에서 투표를 마친 △△△이 인증을 하고 있는 모습이 담겨 있다.<br><br>
+      <em>— 2021. 4 OSEN</em>
+    </div>
+    <div class="problem-options">
+      ① 삶의 질이 향상되었다.<br>
+      ② 정치 참여의 기회가 확대되었다.<br>
+      ③ 다양한 정보가 생산되고 공유되었다.<br>
+      ④ 생활이 편리해지고 시간적 여유가 생겨났다.<br>
+      ⑤ 다양한 사람들과 다양한 인간관계를 맺을 수 있다.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">② 정치 참여의 기회가 확대되었다.</div>
+      <div class="answer-explain">연예인들이 SNS로 투표 인증샷·독려 멘트를 게시 → <strong>정치 참여 기회 확대</strong>. ①③④⑤는 일반적 특징이지만 기사 내용과 직접 관련 없음.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">2</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-1</span>
+    </div>
+    <div class="problem-q">&lt;보기&gt;에서 강조하는 정보 통신 윤리의 원칙으로 알맞은 것은?</div>
+    <div class="problem-passage">
+      <strong>&lt;보기&gt;</strong><br>
+      사이버 공간에서도 모든 사람을 자신과 같이 소중하게 여겨야 한다. 예를 들면, 상대방이 나와 생각이 다르다고 비난해서는 안 되고, 누구나 자신의 의견을 자유롭게 표현할 권리가 있음을 인정해야 한다. 또, 사이버 공간에서 타인의 사생활을 침해하지 않아야 한다.
+    </div>
+    <div class="problem-options">
+      ① 자유 &nbsp; ② 책임 &nbsp; ③ 정의 &nbsp; ④ 해악 금지 &nbsp; ⑤ 인간 존중
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">⑤ 인간 존중</div>
+      <div class="answer-explain">"모든 사람을 자신과 같이 소중하게" + "권리 인정" + "사생활 침해 금지" = <strong>인간 존중</strong>의 원칙.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">3</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅰ-1</span>
+    </div>
+    <div class="problem-q">사이버 공간에서 A군이 글에서 알 수 있는 행동을 쉽게 하는 이유로 알맞은 것은?</div>
+    <div class="problem-passage">
+      ○○의 복합쇼핑몰이 붕괴할 것이라는 괴담을 퍼트린 고등학생이 경찰에 붙잡혔다. A군은 △△△가 무너진다는 허위 사실을 인터넷 카페와 트위터 등에 27회에 걸쳐 게시한 혐의를 받고 있다. 경찰은 A군이 △△△에 한번도 가본 적이 없으면서 페이스북에 떠도는 풍문을 마치 사실인 것처럼 인터넷에 게시, 불안감을 조성했다고 밝혔다.
+    </div>
+    <div class="problem-options">
+      ① 익명성 &nbsp; ② 폭력성 &nbsp; ③ 정체성 &nbsp; ④ 중독성 &nbsp; ⑤ 평등성
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">① 익명성</div>
+      <div class="answer-explain">A군이 가본 적도 없으면서 풍문을 사실인 양 게시 → 자신을 드러내지 않는 <strong>익명성</strong> 때문에 무책임한 행동이 쉬워짐.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">4</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-1</span>
+    </div>
+    <div class="problem-q">(가), (나)에서 공통적으로 나타난 정보화 사회의 도덕 문제로 알맞은 것은?</div>
+    <div class="problem-passage">
+      <strong>(가)</strong> 국어 수행 평가로 독후 감상문 쓰기가 있었는데, 책을 읽고 쓰기가 귀찮아서 인터넷 검색으로 다른 사람의 독후감을 베낀 적이 있다.<br><br>
+      <strong>(나)</strong> 파일 공유 사이트에서 무료로 다운 받은 최신 영화 파일을 SNS에 올려 친구들과 공유한 적이 있다.
+    </div>
+    <div class="problem-options">
+      ① 사이버 전쟁 &nbsp; ② 정체성의 혼란 &nbsp; ③ 사이버 스토킹<br>
+      ④ 사이버 명예 훼손 &nbsp; ⑤ 지식 재산권 침해
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">⑤ 지식 재산권 침해</div>
+      <div class="answer-explain">(가) 독후감 베끼기, (나) 불법 영화 파일 공유 → 모두 타인의 창작물 무단 사용 = <strong>지식 재산권 침해</strong>.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">5</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-1</span>
+    </div>
+    <div class="problem-q">(가), (나)에 관련된 설명으로 알맞은 것은?</div>
+    <div class="problem-passage">
+      <strong>(가)</strong> 인터넷 쇼핑몰에 가입을 할 때 개인 정보 제삼자 제공 동의를 했더니, 게임 사이트 가입 권유 문자가 왔다.<br><br>
+      <strong>(나)</strong> 책을 인터넷으로 구입하려고 찾던 중 할인권을 준다는 창이 떠서 이름, 학교, 전화번호를 적은 후 할인권을 받았는데 그 이후 모르는 곳에서 전화와 문자를 받았다.
+    </div>
+    <div class="problem-options">
+      ① 지식 재산권 침해에 해당하는 사례이다.<br>
+      ② 특정한 개인만이 피해를 볼 뿐 평범한 사람들은 피해를 보지 않는다.<br>
+      ③ 이러한 문제가 발생했을 때 받은 메시지를 모두 삭제하고 외출을 삼가야 한다.<br>
+      ④ 사생활을 침해당하는 사례가 나올 수 있으나 각종 금융 사기 및 범죄와는 관련이 없다.<br>
+      ⑤ SNS에 게시물을 기재할 때에는 자신이나 친구, 가족의 정보가 드러날 수 있는 게시물은 삼간다.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">⑤</div>
+      <div class="answer-explain"><strong>개인정보 유출</strong> 사례. ①(저작권 X), ②(누구나 피해 가능), ③(외출 삼가는 것은 관련 없음), ④(금융 사기 가능). ⑤만 올바른 예방 자세.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">6</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅰ-1</span>
+    </div>
+    <div class="problem-q">위의 ㉠에 공통적으로 들어갈 알맞은 말은?</div>
+    <div class="problem-passage">
+      ( ㉠ )는/은 넘쳐 나는 정보 속에서 올바른 정보를 선택하고 바르게 충분히 잘 이용할 수 있는 능력을 말한다. 인터넷에 있는 수많은 정보 가운데에는 불법적이고 거짓된 정보도 있다. 잘못된 정보와 신뢰할 만한 정보를 선별하는 능력뿐만 아니라, 정보에 담긴 의미를 찾아내는 통찰력이 필요하다.<br><br>
+      정보화 사회에서 올바른 판단을 내리기 위해서는 책임 의식과 도덕적인 자세를 바탕으로 ( ㉠ )을/를 키워야 한다.
+    </div>
+    <div class="problem-options">
+      ① 네티켓 &nbsp; ② 정보 활용 능력 &nbsp; ③ 정보 생산 능력<br>
+      ④ 개인 정보 보호 능력 &nbsp; ⑤ 지식 재산권 보호 능력
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">② 정보 활용 능력</div>
+      <div class="answer-explain">정보 선택·활용 능력 + 의미를 찾는 통찰력 = <strong>정보 활용 능력</strong>. 네티켓은 예절.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">7</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-1</span>
+    </div>
+    <div class="problem-q">위의 내용을 바탕으로 정보를 바람직하게 사용하는 학생이 <strong>아닌</strong> 것은?</div>
+    <div class="problem-options">
+      ① 갑: 정보에 담긴 숨은 의미를 찾아보았어.<br>
+      ② 을: 새로운 정보를 받자마자 사람들에게 공유했어.<br>
+      ③ 병: 보고서 쓸 때 출처와 참고 문헌을 올바로 기입하고 작성했어.<br>
+      ④ 정: 나에게 필요한 정보를 신뢰할 수 있는 사이트에서 찾아서 썼어.<br>
+      ⑤ 무: 검색을 통해 찾은 보고서 자료는 진위 여부와 가치를 평가할 수 있는 정보를 활용했어.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">②</div>
+      <div class="answer-explain">을: 새로운 정보를 검증 없이(<strong>진위·가치 평가 없이</strong>) 받자마자 공유 → 정보 활용 능력 부족.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">8</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-1</span>
+    </div>
+    <div class="problem-q">스마트폰 과다 사용의 부작용 사례이다. 건강한 정보통신 매체의 올바른 이용 수칙으로 알맞지 <strong>않은</strong> 것은?</div>
+    <div class="problem-passage">
+      <strong>(가) 디지털 격리 증후군</strong>: 한 공간에 있어도 각자 스마트폰을 만지고 스마트폰으로만 소통하기 때문에 따로 있는 것 같은 현상.<br>
+      <strong>(나) 스몸비</strong>: 스마트폰을 들여다보며 길을 걷는 사람들 (smart phone + zombie).<br>
+      <strong>(다) 유령 진동 증후군</strong>: 실제로 전화나 문자가 오지 않았는데 휴대전화 벨 소리가 들리거나 진동을 느낀 것처럼 착각하는 현상.<br>
+      <strong>(라) 팝콘 브레인</strong>: 현실에 무감각해지고 주의력이 크게 떨어져 팝콘처럼 강한 자극에만 반응하는 현상.
+    </div>
+    <div class="problem-options">
+      ① 밤 9시 이후에는 SNS에 접속하지 않는다.<br>
+      ② 특별한 목적이 없이 컴퓨터를 켜지 않는다.<br>
+      ③ 기분에 따라 스마트폰 사용 시간을 조절하도록 한다.<br>
+      ④ 인터넷을 사용하기 위해 식사나 취침 시간을 어기지 않는다.<br>
+      ⑤ 스스로 조절이 어려울 경우는 시간 관리 프로그램을 이용한다.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">③</div>
+      <div class="answer-explain">"기분에 따라" 조절은 절제가 아님. <strong>일정한 규칙</strong>으로 사용 시간을 정해야 함.</div>
+    </div>
+  </div>
+
+  <!-- ============ Ⅰ-2. 평화적 갈등 해결 (9~16) ============ -->
+  <div class="unit-head">
+    <span class="unit-icon">Ⅰ-2</span>
+    <span class="unit-name">평화적 갈등 해결</span>
+    <span class="unit-count">9번 ~ 16번</span>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">9</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-2</span>
+    </div>
+    <div class="problem-q">&lt;보기&gt;를 통해 알 수 있는 갈등에 대한 설명으로 알맞지 <strong>않은</strong> 것은?</div>
+    <div class="problem-passage">
+      <strong>&lt;보기&gt;</strong><br>
+      <strong>아 들:</strong> 어머니는 왜 동생 편만 드세요. 공평해야죠.<br>
+      <strong>어머니:</strong> 네가 형이잖아. 너는 스스로 잘못을 구분할 때가 되었는데 못하니까 혼나지.<br>
+      <strong>아 들:</strong> 형, 동생이 뭐가 중요해요. 똑같은 잘못을 저지르는데 왜 제가 더 혼나야 돼요?<br>
+      <strong>어머니:</strong> 동생은 아직 어리잖아.<br>
+      <strong>아 들:</strong> 뭐가 어려요. 저하고 겨우 두 살 차이거든요.
+    </div>
+    <div class="problem-options">
+      ① 개인의 성장과 성숙을 위해 겪어야 하는 과정이다.<br>
+      ② 다른 사람들과 살아가면서 나타나는 필연적인 현상이다.<br>
+      ③ 특정한 일부의 사람만이 아니라 누구나 겪는 보편적인 현상이다.<br>
+      ④ 적극적으로 해결하기 위해 노력할 때 더 좋은 결과가 생기기도 한다.<br>
+      ⑤ 자신의 주장만을 끝까지 밀고 나가는 강단을 통해 원만하게 해결할 수 있다.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">⑤</div>
+      <div class="answer-explain">갈등은 양보·타협으로 해결해야 함. <strong>자기 주장만 끝까지 밀고 나가면 갈등이 더 심화</strong>됨.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">10</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-2</span>
+    </div>
+    <div class="problem-q">&lt;보기&gt;에서 찾을 수 있는 갈등의 원인으로 알맞은 것은?</div>
+    <div class="problem-passage">
+      <strong>&lt;보기&gt;</strong><br>
+      <strong>갑:</strong> 개인의 자유는 무엇보다 중요해. 그래야 개인은 자신의 능력을 최대한 발휘할 수 있어.<br>
+      <strong>을:</strong> 공평하지 못하다면 그 자유는 일부의 자유일 뿐이야. 평등이 우선되어야 자유도 보장돼.
+    </div>
+    <div class="problem-options">
+      ① 흑백논리 &nbsp; ② 가치의 충돌 &nbsp; ③ 정보의 왜곡<br>
+      ④ 이해관계의 충돌 &nbsp; ⑤ 분노와 폭력 사용
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">② 가치의 충돌</div>
+      <div class="answer-explain">갑(자유 중시) vs 을(평등 중시) → 추구하는 가치의 차이 = <strong>가치의 충돌</strong>.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">11</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅰ-2</span>
+    </div>
+    <div class="problem-q">평화적 갈등 해결의 방법으로 조정과 중재에 대한 설명으로 알맞은 것은?</div>
+    <div class="problem-options">
+      ① 조정과 중재는 당사자가 대화를 통해 갈등을 해결하는 방법이다.<br>
+      ② 조정은 갈등 당사자가 제삼자의 개입을 인정하고 조정을 요청할 때 시작된다.<br>
+      ③ 중재는 갈등 해결을 돕기 위해서 양측의 주장을 듣고 제삼자가 해결책을 제시하는 방법이다.<br>
+      ④ 중재자는 최종적인 결론을 내리지 않으며 당사자가 스스로 해결 방법을 찾도록 도와주는 역할만 한다.<br>
+      ⑤ 조정자는 중간 입장에서 최종적인 결론을 내리지는 않으나 어느 한쪽 당사자의 입장을 지지할 수 있다.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">②</div>
+      <div class="answer-explain">조정은 당사자가 <strong>제3자 개입을 인정하고 요청할 때 시작</strong>됨. ①은 협상 설명, ④는 조정자 설명, ⑤는 조정자 중립 원칙 위반.<br><br>※ 잠깐! ③도 중재의 정의로 맞는 설명인데, 출제자 의도는 ②가 정답. (③도 부분적으로 맞지만 ②가 가장 정확함)</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">12</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅰ-2</span>
+    </div>
+    <div class="problem-q">갈등 상황을 원만하게 해결하기 위해서 수민에게 요구되는 자세를 &lt;보기&gt;에서 모두 고른 것은?</div>
+    <div class="problem-passage">
+      수민이는 장난이 너무 심하다. 한번은 뒤에서 갑자기 당겨 목이 아팠다. 그런데 수민이는 "친한 친구끼리 장난도 못 치나!"라며 오히려 큰소리를 쳤다. 화가 났다.<br><br>
+      <strong>&lt;보기&gt;</strong><br>
+      ㄱ. 상대방을 존중하는 자세<br>
+      ㄴ. 법을 통해서 갈등을 해결하려는 자세<br>
+      ㄷ. 합의된 결과를 감정적으로 대응하는 자세<br>
+      ㄹ. 자신의 갈등 상황을 객관적으로 바라보는 자세
+    </div>
+    <div class="problem-options">
+      ① ㄱ, ㄴ &nbsp; ② ㄱ, ㄷ &nbsp; ③ ㄱ, ㄹ &nbsp; ④ ㄴ, ㄷ &nbsp; ⑤ ㄴ, ㄹ
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">③ ㄱ, ㄹ</div>
+      <div class="answer-explain">갈등 해결에 필요한 자세: <strong>상대방 존중(ㄱ), 객관적으로 바라봄(ㄹ)</strong>. 친구 사이에 법(ㄴ)·감정적 대응(ㄷ)은 부적절.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">13</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-2</span>
+    </div>
+    <div class="problem-q">다음 사례와 관련된 설명으로 알맞지 <strong>않은</strong> 것은?</div>
+    <div class="problem-passage">
+      아파트에 사는 ○○씨는 집을 나서다 현관문 앞에 '개 짖는 소리가 크고 늦은 시간까지 계속됩니다. 생각 좀 하고 살았으면 좋겠네요.'라고 쓰인 종이가 붙어 있는 것을 발견했다. 알아보니 아래층 사람이 붙인 것이었다. ○○씨는 화가 났다. 글귀가 마음에 걸렸던 것이다. 아래층에 가서 따졌더니 아래층 사람은 다짜고짜 욕설을 했고, 결국 몸싸움을 하고 말았다. 아래층 사람은 ○○씨의 고소로 재판에 넘겨져 벌금 50만 원을 선고받았다.
+    </div>
+    <div class="problem-options">
+      ① 이웃 간에 발생하기 쉬운 갈등의 사례이다.<br>
+      ② 감정을 조절하지 못해 갈등이 심화되었다.<br>
+      ③ 원만한 의사소통이 되지 않으면 힘이나 물리적 강제력을 사용해야 한다.<br>
+      ④ 상대방을 존중하지 않은 의사소통으로 불신과 오해가 생겨 갈등이 깊어진다.<br>
+      ⑤ 서로 자신이 겪는 고충을 말하고 기분 나쁘지 않게 주의를 부탁하는 노력이 필요하다.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">③</div>
+      <div class="answer-explain">갈등은 <strong>대화·소통으로 해결</strong>해야 함. 힘이나 물리적 강제력은 폭력을 부르고 갈등을 더 심화시킴.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">14</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅰ-2</span>
+    </div>
+    <div class="problem-q">위의 갈등이 발생하는 원인으로 알맞은 것은?</div>
+    <div class="problem-passage">
+      B시는 길거리 플리마켓으로 유명하다. 하지만 과거 B시에서는 노점상들이 인도를 차지해서 보행자들이 불편했고, 주변 상가의 가게 주인들은 임대료도 내지 않고 장사하는 노점을 불공평하다고 여겼다. 참다못한 가게 주인들과 보행자들은 노점상 철거를 요구하는 시위를 하기도 했다. B시는 이 문제에 대한 대안으로 요일을 지정해서 길거리 플리마켓을 진행했고, 참가비를 받아 시민들의 편의를 위한 사업에 쓰고 있다.
+    </div>
+    <div class="problem-options">
+      ① 가치의 충돌 &nbsp; ② 이해관계의 충돌 &nbsp; ③ 잘못된 의사소통<br>
+      ④ 분노와 폭력 사용 &nbsp; ⑤ 왜곡된 정보로 자신의 주장 합리화
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">② 이해관계의 충돌</div>
+      <div class="answer-explain">노점상 vs 상가 주인/보행자 → 서로의 이익이 충돌 = <strong>이해관계의 충돌</strong>.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">15</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-2</span>
+    </div>
+    <div class="problem-q">위의 사례에 대한 설명으로 알맞지 <strong>않은</strong> 것은?</div>
+    <div class="problem-options">
+      ① 갈등은 특수한 현상으로 갈등을 피하는 것이 가장 좋은 해결 방법이다.<br>
+      ② 갈등 해결을 통해 갈등 당사자들 간에 서로를 이해하고 존중하는 기회가 된다.<br>
+      ③ 합의를 바탕으로 만든 대안은 대립과 분쟁을 막을 수 있고, 윈윈(win-win)하여 서로가 만족할 수 있다.<br>
+      ④ 가게 주인한테는 플리마켓으로 유명해져 다른 지역의 손님들까지도 많이 와서 서로 장사에 도움이 되었다.<br>
+      ⑤ 노점상들도 길거리 플리마켓으로 손님들이 더 많아지고, 상가 주인과 보행자들의 불평이 잦아들어 장사하기에 편해진 전화위복의 사례이다.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">①</div>
+      <div class="answer-explain">갈등은 <strong>보편적 현상</strong>이며, 잘 해결하면 win-win이 가능. <strong>갈등을 피하는 것이 최선이 아님</strong>.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">16</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-2</span>
+    </div>
+    <div class="problem-q">글에서 설명하는 개념으로 알맞은 것은?</div>
+    <div class="problem-passage">
+      모든 문제를 양극단으로만 구분하고 중립적인 것을 인정하지 않으려는 한쪽으로 치우친 사고방식이나 논리
+    </div>
+    <div class="problem-options">
+      ① 흑백논리 &nbsp; ② 가짜뉴스 &nbsp; ③ 유언비어 &nbsp; ④ 왜곡된 정보 &nbsp; ⑤ 성급한 일반화
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">① 흑백논리</div>
+      <div class="answer-explain">"양극단으로만 구분, 중립 인정 X" = <strong>흑백논리</strong>.</div>
+    </div>
+  </div>
+
+  <!-- ============ Ⅰ-3. 폭력의 문제 해결 (17~20, 22) ============ -->
+  <div class="unit-head">
+    <span class="unit-icon">Ⅰ-3</span>
+    <span class="unit-name">폭력의 문제 해결</span>
+    <span class="unit-count">17번 ~ 20번, 22번</span>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">17</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-3</span>
+    </div>
+    <div class="problem-q">글에서 설명하는 행위의 요인 중 개인적인 원인을 &lt;보기&gt;에서 모두 고른 것은?</div>
+    <div class="problem-passage">
+      정당하지 못한 방법으로 힘을 행사하여 다른 사람에게 물리적·정신적 피해를 일으키는 공격적 행위<br><br>
+      <strong>&lt;보기&gt;</strong><br>
+      ㄱ. 지배 욕구<br>
+      ㄴ. 자제력 부족<br>
+      ㄷ. 폭력을 용인하는 사회적 인식<br>
+      ㄹ. 미디어를 통한 폭력적인 장면의 노출
+    </div>
+    <div class="problem-options">
+      ① ㄱ, ㄴ &nbsp; ② ㄱ, ㄷ &nbsp; ③ ㄱ, ㄹ &nbsp; ④ ㄴ, ㄷ &nbsp; ⑤ ㄴ, ㄹ
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">① ㄱ, ㄴ</div>
+      <div class="answer-explain"><strong>개인적 원인</strong>: 지배 욕구(ㄱ), 자제력 부족(ㄴ). ㄷ(사회적 인식)·ㄹ(미디어 노출)은 사회적 원인.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">18</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-3</span>
+    </div>
+    <div class="problem-q">글의 내용과 관련된 폭력 예방 방법으로 알맞은 것은?</div>
+    <div class="problem-passage">
+      <strong>(가)</strong> 학교 폭력을 가한 이유에 대한 설문에서 가장 높은 응답은 장난으로 한 경우가 가장 많았다.<br><br>
+      <strong>(나)</strong> 학생 간의 폭력 중 가해자가 행동의 심각성을 깨닫지 못하고 단지 장난이라고 생각하는 경우가 많다. 이러한 경우 상대방에게 폭력에 대한 불쾌감을 전달하는 것만으로도 폭력을 감소시키고 폭력을 가하려는 상대방이 자신의 잘못을 돌아볼 수 있다.
+    </div>
+    <div class="problem-options">
+      ① 감정의 조절 &nbsp; ② 공감하는 자세 &nbsp; ③ 불쾌감 표현하기<br>
+      ④ 결과 예측을 통한 책임감 갖기 &nbsp; ⑤ 평화적 해결의 사회 분위기 조성
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">③ 불쾌감 표현하기</div>
+      <div class="answer-explain">가해자가 장난으로만 인식 → 직접 불쾌감을 표현해 알리는 것이 효과적 = <strong>불쾌감 표현하기</strong>.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">19</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅰ-3</span>
+    </div>
+    <div class="problem-q">윗글에 나타난 폭력의 유형을 &lt;보기&gt;에서 모두 고른 것은?</div>
+    <div class="problem-passage">
+      나는 ○○이가 마음에 들지 않았다. 게다가 내가 부탁한 일을 하지 않아서 기분이 나빴다. 그래서 나는 가까운 친구들에게 ○○이의 흉을 봤고, 친구가 ○○이와 노는 것을 보면 방해를 했다. 그래도 분이 안 풀려서 단체 대화방에서 ○○이를 불러서 친구들과 다같이 욕을 하고 나와 버렸다. 난 직접 몸을 부딪힌 적은 없다. 절대 주먹을 휘두른 적이 없단 말이다.<br><br>
+      <strong>&lt;보기&gt;</strong><br>
+      ㄱ. 언어 폭력 &nbsp; ㄴ. 집단적 폭력 &nbsp; ㄷ. 간접적 폭력 &nbsp; ㄹ. 정서적 폭력 &nbsp; ㅁ. 부작위에 의한 폭력
+    </div>
+    <div class="problem-options">
+      ① ㄱ, ㄴ, ㄷ &nbsp; ② ㄱ, ㄴ, ㄹ &nbsp; ③ ㄱ, ㄷ, ㅁ &nbsp; ④ ㄴ, ㄷ, ㄹ &nbsp; ⑤ ㄴ, ㄹ, ㅁ
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">② ㄱ, ㄴ, ㄹ</div>
+      <div class="answer-explain">흉 봄(언어 ㄱ), 단체 대화방 욕(집단 ㄴ), 직접 몸 안 부딪힘(정서적 피해 ㄹ). ㄷ(간접적)·ㅁ(부작위)는 의미가 다름.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">20</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-3</span>
+    </div>
+    <div class="problem-q">폭력 가해자가 겪는 고통으로 가장 알맞은 것은?</div>
+    <div class="problem-options">
+      ① 정신적 고통 &nbsp; ② 지속적인 불안 &nbsp; ③ 수치심과 모욕감<br>
+      ④ 자기 존중감의 상실 &nbsp; ⑤ 법적 책임과 죄책감
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">⑤ 법적 책임과 죄책감</div>
+      <div class="answer-explain"><strong>가해자</strong>: 법적 책임과 죄책감. ①~④는 모두 피해자가 겪는 고통.</div>
+    </div>
+  </div>
+
+  <!-- 21번은 Ⅱ-1 / 22번은 Ⅰ-3 -->
+  <div class="unit-head">
+    <span class="unit-icon">Ⅱ-1</span>
+    <span class="unit-name">국가 구성원의 바람직한 자세 (준법)</span>
+    <span class="unit-count">21번</span>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">21</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅱ-1</span>
+    </div>
+    <div class="problem-q">빈칸에 들어갈 말로 알맞은 것은?</div>
+    <div class="problem-passage">
+      ( &nbsp;&nbsp;&nbsp; )은/는 자신뿐만 아니라 다른 사람의 권리와 자유를 지켜 주며, 사회 전체의 공익을 늘린다.
+    </div>
+    <div class="problem-options">
+      ① 평화 &nbsp; ② 의무 &nbsp; ③ 준법 &nbsp; ④ 관용 &nbsp; ⑤ 결과의 평등
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">③ 준법</div>
+      <div class="answer-explain">"자신과 타인의 권리 지킴 + 사회 공익 늘림" = 법을 지키는 것 = <strong>준법</strong>.</div>
+    </div>
+  </div>
+
+  <div class="unit-head">
+    <span class="unit-icon">Ⅰ-3</span>
+    <span class="unit-name">폭력의 문제 해결 (이어서)</span>
+    <span class="unit-count">22번</span>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">22</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅰ-3</span>
+    </div>
+    <div class="problem-q">윗글에 나타난 폭력의 유형으로 알맞은 것은?</div>
+    <div class="problem-passage">
+      백인우월주의에 근거한 ㉠<strong>아파르트헤이트</strong>는 1948년 수립된 국민당 정부 수립 이후 국민을 반투(순수한 아프리카 흑인)와 유색인(혼혈 인종) 및 백인으로 구분하는 1950년의 주민등록법으로 시행되었다.<br><br>
+      그 밖에 여러 인종차별 법률로써 흑인 등 토착민에 대한 직업 제한, 노동조합 결성 금지, 백인과의 결혼 금지, 백인과 흑인이 같은 버스를 타지 못하도록 승차 분리, 공공시설 사용제한, 선거인명부의 차별적 작성 등을 실시하였다.
+    </div>
+    <div class="problem-options">
+      ① 구조적 폭력 &nbsp; ② 신체적 폭력 &nbsp; ③ 개인적 폭력<br>
+      ④ 직접적 폭력 &nbsp; ⑤ 작위에 의한 폭력
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">① 구조적 폭력</div>
+      <div class="answer-explain">아파르트헤이트(인종차별 법률)는 사회 제도에 의한 폭력 = <strong>구조적 폭력</strong>(간접적 폭력의 일종).</div>
+    </div>
+  </div>
+
+  <!-- ============ Ⅱ-2. 정의 (23~25) + Ⅱ-1 (26~30) + Ⅱ-2 (31~33) ============ -->
+  <div class="unit-head">
+    <span class="unit-icon">Ⅱ-2</span>
+    <span class="unit-name">정의란 무엇인가</span>
+    <span class="unit-count">23번 ~ 25번</span>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">23</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅱ-2</span>
+    </div>
+    <div class="problem-q">㉠과 사회 정의와의 관계에 대한 설명으로 알맞은 것은? (㉠ = 아파르트헤이트)</div>
+    <div class="problem-options">
+      ① ㉠은 해당 국가에 실정에 맞는 정의로운 제도이다.<br>
+      ② ㉠은 해당 국가 구성원에게 동등한 자유와 평등을 보장하였다.<br>
+      ③ ㉠과 같이 사회의 규칙이나 제도가 공정하지 않다면 사회 정의를 이루기 어렵다.<br>
+      ④ 사회 정의는 ㉠와 같이 국가 실정에 맞는 제도를 강력하게 실현하면서 이루어진다.<br>
+      ⑤ ㉠는 공익을 위해서 만들어진 제도로 불합리하더라도 따르는 것이 사회 정의이다.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">③</div>
+      <div class="answer-explain">아파르트헤이트는 공정하지 않은 제도 → 이런 제도가 존재하면 <strong>사회 정의 실현 불가</strong>. ①②④⑤는 모두 틀린 설명.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">24</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅱ-2</span>
+    </div>
+    <div class="problem-q">빈칸에 들어갈 사람으로 알맞은 것은?</div>
+    <div class="problem-passage">
+      부정의한 사회를 개선하기 위해서는 개인의 도덕성을 기르는 개인 윤리도 필요하지만, 사회를 도덕적으로 만드는 사회 윤리도 필요하다. 그래서 ( &nbsp;&nbsp;&nbsp; )은/는 정의로운 사회를 만들기 위해서는 개인의 도덕성에만 의지해서는 안 되고, 도덕적인 사회 제도가 필요하다고 하였다.
+    </div>
+    <div class="problem-options">
+      ① 니체 &nbsp; ② 처칠 &nbsp; ③ 간디 &nbsp; ④ 파스칼 &nbsp; ⑤ 니부어
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">⑤ 니부어</div>
+      <div class="answer-explain">"개인 도덕성 + 도덕적 사회 제도 필요" → <strong>라인홀드 니부어</strong> (『도덕적 인간과 비도덕적 사회』).</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">25</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅱ-2</span>
+    </div>
+    <div class="problem-q">글의 내용과 관련된 공정한 경쟁의 조건에 대해서 알맞지 <strong>않은</strong> 것은?</div>
+    <div class="problem-passage">
+      알에서 깨어난 병아리 가운데 한 마리가 유난히 작고 허약해서, 모이를 먹을 때도 다른 병아리들에게 밀려 살아남기 힘들어 보였다. 그래서 주인은 허약한 병아리를 특별히 돌보고 사랑해 주어야겠다고 생각하였다.
+    </div>
+    <div class="problem-options">
+      ① 조건이 불리한 사람을 배려한 경쟁은 도덕적이고 공정한 경쟁이다.<br>
+      ② 조건이 다른 경우 그 때문에 특별한 대우를 받고 경쟁하는 것이 공정하다.<br>
+      ③ 출발점이 크게 차이 나는 경우에는 똑같이 대우하는 것이 오히려 불공정할 수 있다.<br>
+      ④ 동등한 기회를 주고 동등한 기준으로 평가하는 것이 오히려 불공평한 경우도 있다.<br>
+      ⑤ 경쟁의 기회를 똑같이 주었다면 공정한 경쟁을 위해 특별히 약자에게 특권을 줄 수 없다.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">⑤</div>
+      <div class="answer-explain">공정한 경쟁은 <strong>약자 배려가 필요</strong>(허약한 병아리 사례). 기회를 똑같이 줘도 출발점이 다르면 특별 배려가 공정함.</div>
+    </div>
+  </div>
+
+  <div class="unit-head">
+    <span class="unit-icon">Ⅱ-1</span>
+    <span class="unit-name">국가 구성원의 바람직한 자세</span>
+    <span class="unit-count">26번 ~ 30번</span>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">26</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅱ-1</span>
+    </div>
+    <div class="problem-q">㉠, ㉡에 해당하는 말로 알맞은 것은?</div>
+    <div class="problem-passage">
+      <strong>(가)</strong> 그리스의 철학자 아리스토텔레스는 서로 함께 살아가려는 인간의 ( ㉠ ) 때문에 자연스럽게 국가가 발생했다고 하였다.<br><br>
+      <strong>(나)</strong> 영국의 철학자 ( ㉡ )은(는) 인간이 자연 상태에서 겪는 어려움을 함께 극복하기 위해 국가를 만들었다고 보았다. 그는 국가가 없는 상태에서는 개인이 각자의 이익만 앞세워 서로 투쟁하는 혼란스러운 상황이 되어, 인간은 자신의 생명과 재산을 지키기 어렵다고 보았다.
+    </div>
+    <div class="problem-options">
+      ① 이성적 사고 - 홉스<br>
+      ② 이성적 사고 - 칸트<br>
+      ③ 사회적 본성 - 루소<br>
+      ④ 사회적 본성 - 홉스<br>
+      ⑤ 도덕적 본성 - 플라톤
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">④ 사회적 본성 - 홉스</div>
+      <div class="answer-explain">㉠ 아리스토텔레스: <strong>사회적 본성</strong>(인간은 정치적 동물). ㉡ 영국 철학자, 자연 상태=투쟁: <strong>홉스</strong>(만인 대 만인의 투쟁).</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">27</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅱ-1</span>
+    </div>
+    <div class="problem-q">바람직한 시민의 자질로 알맞지 <strong>않은</strong> 것은?</div>
+    <div class="problem-options">
+      ① 국방, 근로, 교육, 납세, 환경 보전의 의무 등 국민의 의무를 충실히 이행한다.<br>
+      ② 선거를 통해 뽑은 시민의 대표나 공직자들이 맡은 일을 잘하고 있는지 감시한다.<br>
+      ③ 국가 공직자가 잘못을 저질렀을 경우에는 이를 바로잡도록 요구하고 잘못에 대해 비판한다.<br>
+      ④ 사회의 발전과 개인의 권리 보장을 위해 타인의 권리와 공익을 침해하면서 자신의 권리를 추구한다.<br>
+      ⑤ 국가가 하는 일에 항상 관심을 가지고 대통령, 국회의원 등 대표를 뽑는 선거에 적극적으로 참여한다.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">④</div>
+      <div class="answer-explain">바람직한 시민은 <strong>타인의 권리와 공익을 존중</strong>해야 함. ④는 정반대(타인 권리·공익 침해하며 자기 권리 추구).</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">28</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅱ-1</span>
+    </div>
+    <div class="problem-q">재형과 아람의 국가관을 알맞게 연결한 것은?</div>
+    <div class="problem-passage">
+      <strong>아람:</strong> 내 집, 내 점포 앞의 눈을 치우는 것은 우리가 스스로 해야 해. 국가는 개인이 할 수 없는 치안이나 국방 같은 일만 해야 해. 국가가 이러한 역할 외에 다른 것을 하다 보면, 그 역할을 수행하는 과정에서 오히려 국민의 자유를 침해할 수 있어. ㉠국가의 역할은 최소한에 그쳐야 해.<br><br>
+      <strong>재형:</strong> 시내 곳곳의 눈을 개인이 자발적으로 치운다는 것은 불가능해. 국가의 역할은 국민의 어려움을 덜어 주기 위해 적극적으로 개입해서 국민이 행복하게 살 수 있도록 보살피는 것이야.
+    </div>
+    <div class="problem-options">
+      ① 아람: 자유주의 국가 / 재형: 공산주의 국가<br>
+      ② 아람: 복지 국가 / 재형: 선진 국가<br>
+      ③ 아람: 민주주의 국가 / 재형: 사회주의 국가<br>
+      ④ 아람: 소극적 국가 / 재형: 적극적 국가<br>
+      ⑤ 아람: 사회주의 국가 / 재형: 자본주의 국가
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">④ 아람: 소극적 국가 / 재형: 적극적 국가</div>
+      <div class="answer-explain">아람=국가 역할 최소(<strong>소극적 국가</strong>, 자유방임), 재형=국가 적극 개입(<strong>적극적 국가</strong>, 복지국가).</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">29</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅱ-1</span>
+    </div>
+    <div class="problem-q">밑줄 친 ㉠의 국가관(소극적 국가관)의 한계점으로 알맞은 것은?</div>
+    <div class="problem-options">
+      ① 빈부 격차의 문제<br>
+      ② 개인의 인권 침해의 문제<br>
+      ③ 국민의 세금 부담이 증가<br>
+      ④ 개인이 국가의 역할에 지나치게 의존<br>
+      ⑤ 국가가 개인의 생활에 적극적으로 개입
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">① 빈부 격차의 문제</div>
+      <div class="answer-explain">소극적 국가관(자유방임)의 한계: 시장 자유로 인한 <strong>빈부 격차 발생</strong>. ②~⑤는 적극적 국가관의 한계점.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">30</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅱ-1</span>
+    </div>
+    <div class="problem-q">글을 읽고 비폭력 시민 불복종이 성립하기 위한 조건으로 알맞지 <strong>않은</strong> 것은?</div>
+    <div class="problem-passage">
+      간디는 영국 정부의 소금법에 반대하여 하루 60km씩, 25일간 쉬지 않고 해안가로 걸어가는 '소금의 행진'을 한다. 일행은 사람들에게 직접 소금을 만드는 법을 가르친다. 비록 한 줌의 소금이었지만 부당한 '소금법'에 대항하는 비폭력 불복종 운동이었다. 이로 인해 간디는 법정에 서게 되었다.
+    </div>
+    <div class="problem-options">
+      ① 평화로운 방법으로 이루어져야 한다.<br>
+      ② 사회 전체의 공익을 위한 목적이어야 한다.<br>
+      ③ 과정의 정의를 따지며 결과에 대해서는 책임을 묻지 않아야 한다.<br>
+      ④ 다양한 수단과 방법을 써 본 뒤에 행해지는 최후의 수단이 되어야 한다.<br>
+      ⑤ 자신의 행동으로 구속될 수도 있음을 알고 있었고 이를 기꺼이 감수할 수 있어야 한다.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">③</div>
+      <div class="answer-explain">시민 불복종의 핵심 조건: 행동 결과(처벌)를 <strong>기꺼이 감수</strong>하는 것. 결과 책임을 묻지 않으면 시민 불복종이 성립 X.</div>
+    </div>
+  </div>
+
+  <div class="unit-head">
+    <span class="unit-icon">Ⅱ-2</span>
+    <span class="unit-name">정의란 무엇인가 (이어서)</span>
+    <span class="unit-count">31번 ~ 33번</span>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">31</span>
+      <span class="problem-score">2점</span>
+      <span class="problem-tag">Ⅱ-2</span>
+    </div>
+    <div class="problem-q">정의로운 사회의 조건을 &lt;보기&gt;에서 모두 고른 것은?</div>
+    <div class="problem-passage">
+      <strong>&lt;보기&gt;</strong><br>
+      ㄱ. 공정한 분배가 이루어져야 한다.<br>
+      ㄴ. 모두에게 언제나 같은 몫을 주어야 한다.<br>
+      ㄷ. 합의한 절차나 규칙을 잘 준수해야 한다.<br>
+      ㄹ. 모든 구성원들에게 무한한 자유를 주어야 한다.<br>
+      ㅁ. 사회 구성원들 모두의 동등한 자유와 평등이 보장되어야 한다.
+    </div>
+    <div class="problem-options">
+      ① ㄱ, ㄴ, ㄷ &nbsp; ② ㄱ, ㄷ, ㅁ &nbsp; ③ ㄴ, ㄷ, ㄹ &nbsp; ④ ㄴ, ㄷ, ㅁ &nbsp; ⑤ ㄴ, ㄹ, ㅁ
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">② ㄱ, ㄷ, ㅁ</div>
+      <div class="answer-explain">정의로운 사회: <strong>공정한 분배(ㄱ), 합의된 절차 준수(ㄷ), 동등한 자유·평등 보장(ㅁ)</strong>. ㄴ(같은 몫)·ㄹ(무한한 자유)은 잘못된 설명.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">32</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅱ-2</span>
+    </div>
+    <div class="problem-q">글에서와 같은 일이 발생했을 때의 문제점으로 알맞지 <strong>않은</strong> 것은?</div>
+    <div class="problem-passage">
+      공공 기관의 계약직 특별 채용에 그 기관의 고위 간부의 자녀 ○○가 유일하게 합격하였다. 그런데 응시 자격 요건이 처음과 달리 ○○의 학력에 맞게 바뀌었다. 또, 필기시험 없이 서류 심사와 면접만으로 이루어졌고 심사 위원 일부가 아버지와 같은 부서의 직원인 것으로 드러났다.
+    </div>
+    <div class="problem-options">
+      ① 사회 구성원들 간의 신뢰가 무너진다.<br>
+      ② 성실하게 살아가는 사람들이 피해를 본다.<br>
+      ③ 사회의 발전이 어려워져 국가 경쟁력이 약화된다.<br>
+      ④ 빈부의 격차가 현저하게 줄어드는 현상이 생긴다.<br>
+      ⑤ 정당한 방법으로 노력하기보다 더 교묘하고 불공정한 방법을 이용하려고 한다.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">④</div>
+      <div class="answer-explain">부패·특혜는 <strong>빈부격차를 심화</strong>시킴. 줄어든다는 것은 정반대.</div>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-head">
+      <span class="problem-num">33</span>
+      <span class="problem-score">3점</span>
+      <span class="problem-tag">Ⅱ-2</span>
+    </div>
+    <div class="problem-q">글은 우리 조상들이 부패를 방지하기 위한 제도이다. 오늘날 부패를 예방하기 위한 노력으로 알맞지 <strong>않은</strong> 것은?</div>
+    <div class="problem-passage">
+      상피제도란 고려와 조선 시대에 가까운 친척과 같은 관서에 근무하지 않게 하거나 출신 지역 또는 연고 지역에 임명하지 않는 제도이다.
+    </div>
+    <div class="problem-options">
+      ① 부패에 대한 시민 사회의 감시 체계를 구축한다.<br>
+      ② 국민에 대한 체계적인 반부패 청렴 교육을 실시한다.<br>
+      ③ 국제연합과 국제 투명성 기구 등 부패 척결을 위한 국제적 협력을 지원한다.<br>
+      ④ 개인의 이기심을 억제하고 연고주의나 정실주의의 원칙으로 부패를 척결하는 노력을 기울인다.<br>
+      ⑤ '부정 청탁 및 금품 수수의 금지에 관한 법률' 같은 처벌 법규를 만들고 법 적용도 엄격하게 한다.
+    </div>
+    <div class="answer">
+      <span class="answer-label">정답</span>
+      <div class="answer-text">④</div>
+      <div class="answer-explain"><strong>연고주의·정실주의는 부패의 원인</strong>이지 척결 원칙이 아님. ④의 설명 자체가 모순됨.</div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    📄 2021학년도 서일중 1학기 기말고사 · 도덕
+  </footer>
+</div>
+
+<script>
+  const problems = document.querySelectorAll('.problem');
+  document.getElementById('total').textContent = problems.length;
+
+  problems.forEach(p => {
+    p.addEventListener('click', () => {
+      p.classList.toggle('revealed');
+      updateCount();
+    });
+  });
+
+  function updateCount() {
+    const revealed = document.querySelectorAll('.problem.revealed').length;
+    document.getElementById('cnt').textContent = revealed;
+  }
+
+  function resetAll() {
+    document.querySelectorAll('.problem.revealed').forEach(p => p.classList.remove('revealed'));
+    updateCount();
+  }
+
+  function revealAll() {
+    document.querySelectorAll('.problem').forEach(p => p.classList.add('revealed'));
+    updateCount();
+  }
+</script>
+
+</body>
+</html>
