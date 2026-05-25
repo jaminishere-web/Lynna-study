@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2024 서일중 3-1 기말 사회 기출</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2C5F7C;
+    --primary-light: #4A8DAB;
+    --primary-dark: #1A3F54;
+    --accent: #D97757;
+    --accent-light: #E89B7F;
+    --bg: #F5F1EA;
+    --paper: #FFFFFF;
+    --ink: #1C1C1C;
+    --muted: #6B6B6B;
+    --correct: #2D8659;
+    --correct-bg: #E0F0E5;
+    --wrong: #C04545;
+    --wrong-bg: #F5E5E5;
+    --border: #D9D2C5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 10% 0%, rgba(44,95,124,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 90% 100%, rgba(217,119,87,0.06) 0%, transparent 60%);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+  }
+
+  .container { max-width: 760px; margin: 0 auto; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 28px; padding-top: 16px; }
+  .header::before {
+    content: ''; display: block; width: 60px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    margin: 0 auto 18px;
+  }
+  .badge {
+    display: inline-block; font-family: 'Noto Serif KR', serif;
+    font-size: 11px; letter-spacing: 4px; color: var(--primary);
+    text-transform: uppercase; margin-bottom: 10px; font-weight: 700;
+  }
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(22px, 5vw, 32px);
+    font-weight: 900; color: var(--ink);
+    line-height: 1.3; margin-bottom: 6px;
+  }
+  h1 span { color: var(--accent); }
+  .subtitle {
+    font-size: 12px; color: var(--muted);
+    letter-spacing: 1px; margin-top: 10px;
+  }
+  .header::after {
+    content: ''; display: block; width: 100px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-dark), transparent);
+    margin: 18px auto 0;
+  }
+
+  /* Progress */
+  .progress-wrap {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 18px; margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: sticky; top: 8px; z-index: 50;
+    backdrop-filter: blur(8px);
+    background: rgba(255,255,255,0.95);
+  }
+  .progress-info {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px; font-size: 13px; color: var(--muted); font-weight: 500;
+  }
+  .progress-info .pct { color: var(--primary); font-weight: 700; }
+  .progress-bar {
+    height: 6px; background: #ECE6DA;
+    border-radius: 3px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width .3s ease; border-radius: 3px;
+  }
+
+  /* Jump nav */
+  .jump-nav {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 12px; padding: 12px; margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .jump-title {
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    letter-spacing: 2px; margin-bottom: 8px; text-align: center;
+  }
+  .jump-grid {
+    display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px;
+  }
+  .jump-btn {
+    aspect-ratio: 1; border: 1px solid var(--border);
+    background: #FBFAF6; border-radius: 6px;
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    cursor: pointer; transition: all .15s;
+    font-family: 'Noto Sans KR', sans-serif;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .jump-btn:hover { background: var(--primary-light); color: white; }
+  .jump-btn.correct { background: var(--correct-bg); color: var(--correct); border-color: var(--correct); }
+  .jump-btn.wrong { background: var(--wrong-bg); color: var(--wrong); border-color: var(--wrong); }
+
+  /* Controls */
+  .controls { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+  .btn {
+    flex: 1; min-width: 110px; padding: 10px 14px;
+    border: 1px solid var(--border); background: var(--paper);
+    color: var(--ink); font-size: 13px; font-weight: 600;
+    border-radius: 10px; cursor: pointer; transition: all .2s;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .btn.primary { background: var(--primary); color: white; border-color: var(--primary); }
+  .btn.primary:hover { background: var(--primary-dark); }
+
+  /* Question card */
+  .question-card {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px 20px; margin-bottom: 18px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    transition: all .25s; scroll-margin-top: 100px;
+  }
+  .question-card.answered {
+    border-color: var(--primary-light);
+    box-shadow: 0 4px 16px rgba(44,95,124,0.1);
+  }
+
+  .q-header {
+    display: flex; align-items: flex-start; gap: 12px;
+    margin-bottom: 16px; padding-bottom: 14px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .q-num {
+    flex-shrink: 0; width: 38px; height: 38px;
+    background: var(--primary); color: white; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 15px;
+  }
+  .q-text {
+    flex: 1; font-size: 15px; font-weight: 600;
+    line-height: 1.55; color: var(--ink); padding-top: 6px;
+  }
+  .q-text .neg {
+    color: var(--wrong); text-decoration: underline; text-underline-offset: 3px;
+  }
+
+  /* 보기 박스 */
+  .passage-box {
+    background: #FAF6EE; border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+    font-size: 13.5px; line-height: 1.75; color: #2A2A2A;
+  }
+  .passage-title {
+    text-align: center; font-family: 'Noto Serif KR', serif;
+    font-size: 13px; font-weight: 700; color: var(--primary-dark);
+    margin-bottom: 10px; letter-spacing: 2px;
+  }
+  .passage-box .mark {
+    background: rgba(217,119,87,0.18); padding: 1px 3px;
+    border-radius: 3px; font-weight: 500;
+    border-bottom: 1px solid var(--accent);
+  }
+  .passage-box .news-date {
+    text-align: right; font-size: 12px; color: var(--muted);
+    margin-top: 6px; font-style: italic;
+  }
+  .passage-box .sub-label {
+    font-weight: 700; color: var(--primary-dark);
+    margin-top: 8px; margin-bottom: 4px;
+  }
+  .passage-box .sub-label:first-child { margin-top: 0; }
+
+  /* Choices */
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 12px 14px; border: 1.5px solid var(--border);
+    border-radius: 10px; cursor: pointer; transition: all .15s;
+    background: #FBFAF6; font-size: 14px; line-height: 1.5;
+  }
+  .choice:hover { border-color: var(--primary-light); background: #F3F8FB; }
+  .choice-num {
+    flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+    border: 1.5px solid var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--muted);
+    background: white; transition: all .15s;
+  }
+  .choice-text { flex: 1; padding-top: 1px; color: #2A2A2A; }
+
+  .choice.selected {
+    border-color: var(--primary); background: #EAF1F6;
+  }
+  .choice.selected .choice-num {
+    background: var(--primary); color: white; border-color: var(--primary);
+  }
+  .choice.correct {
+    border-color: var(--correct); background: var(--correct-bg);
+  }
+  .choice.correct .choice-num {
+    background: var(--correct); color: white; border-color: var(--correct);
+  }
+  .choice.wrong {
+    border-color: var(--wrong); background: var(--wrong-bg);
+  }
+  .choice.wrong .choice-num {
+    background: var(--wrong); color: white; border-color: var(--wrong);
+  }
+  .choice.disabled { cursor: default; }
+  .choice.selected.disabled { cursor: pointer; }
+  .choice.selected.disabled:hover { opacity: 0.85; }
+
+  /* Explanation */
+  .explanation {
+    margin-top: 14px; padding: 14px 16px;
+    background: linear-gradient(135deg, #F5EFE2 0%, #F0E8D6 100%);
+    border-left: 4px solid var(--accent); border-radius: 8px;
+    font-size: 13.5px; line-height: 1.7; color: #2A2A2A; display: none;
+  }
+  .explanation.show { display: block; animation: slideDown .3s ease; }
+  .explanation .ex-title {
+    font-family: 'Noto Serif KR', serif; font-weight: 700;
+    color: var(--accent); font-size: 12px; letter-spacing: 2px;
+    margin-bottom: 6px; text-transform: uppercase;
+  }
+  .explanation .ex-answer {
+    font-weight: 700; color: var(--correct); margin-bottom: 4px;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Table */
+  .data-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px; margin: 10px 0;
+    background: white; border: 1px solid var(--border);
+  }
+  .data-table th, .data-table td {
+    border: 1px solid var(--border); padding: 8px 10px;
+    text-align: center; vertical-align: middle;
+  }
+  .data-table th {
+    background: #F0EBE0; font-weight: 700; font-size: 12px;
+  }
+  .data-table td.left { text-align: left; }
+
+  /* Pair choices */
+  .pair-choice .choice-text {
+    display: flex; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap;
+  }
+  .pair-choice .pair-left, .pair-choice .pair-right { font-weight: 500; }
+  .pair-divider { color: var(--muted); margin: 0 6px; }
+
+  /* Score panel */
+  .score-panel {
+    margin-top: 30px; padding: 22px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white; border-radius: 14px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 16px; flex-wrap: wrap;
+  }
+  .score-text {
+    font-family: 'Noto Serif KR', serif; font-size: 13px;
+    opacity: 0.85; letter-spacing: 1px;
+  }
+  .score-number {
+    font-family: 'Noto Serif KR', serif; font-size: 36px;
+    font-weight: 900; line-height: 1; margin-top: 4px;
+  }
+  .score-number .total { font-size: 16px; opacity: 0.7; }
+
+  /* Scene box */
+  .scene-box {
+    background: linear-gradient(135deg, #FAE8B4 0%, #F5D78E 100%);
+    border: 1px solid #C9A55C; border-radius: 12px;
+    padding: 16px 14px; margin-bottom: 14px;
+    font-size: 13px; color: #3A2C0F;
+  }
+  .scene-title {
+    text-align: center; font-family: 'Noto Serif KR', serif;
+    font-weight: 700; font-size: 14px; margin-bottom: 12px; color: #5A3F0F;
+  }
+  .speech {
+    display: inline-block; background: white;
+    padding: 6px 10px; border-radius: 10px; margin: 4px;
+    font-size: 12px; border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .speech.demand { color: #2C5F7C; }
+  .scene-center { text-align: center; margin-bottom: 8px; }
+  .scene-board {
+    display: inline-block;
+    background: #FBFAF6;
+    border: 2px solid #8B6F3C;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-weight: 700;
+    color: #5A3F0F;
+    margin-top: 6px;
+  }
+
+  /* Graph illustration */
+  .graph-box {
+    background: #F8F4EA; border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px; margin-bottom: 14px;
+    text-align: center;
+  }
+  .graph-svg { max-width: 100%; height: auto; }
+  .graph-caption {
+    font-size: 12px; color: var(--muted);
+    margin-top: 6px; font-weight: 600;
+  }
+
+  /* Graph choices */
+  .graph-choices {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }
+  .graph-choice {
+    cursor: pointer; border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 10px; background: #FBFAF6;
+    transition: all .15s; text-align: center;
+  }
+  .graph-choice:hover { border-color: var(--primary-light); background: #F3F8FB; }
+  .graph-choice .gc-num {
+    display: inline-flex; width: 22px; height: 22px;
+    border-radius: 50%; border: 1.5px solid var(--muted);
+    background: white; color: var(--muted);
+    font-size: 12px; font-weight: 700;
+    align-items: center; justify-content: center; margin-bottom: 6px;
+  }
+  .graph-choice.selected { border-color: var(--primary); background: #EAF1F6; }
+  .graph-choice.selected .gc-num { background: var(--primary); color: white; border-color: var(--primary); }
+  .graph-choice.correct { border-color: var(--correct); background: var(--correct-bg); }
+  .graph-choice.correct .gc-num { background: var(--correct); color: white; border-color: var(--correct); }
+  .graph-choice.wrong { border-color: var(--wrong); background: var(--wrong-bg); }
+  .graph-choice.wrong .gc-num { background: var(--wrong); color: white; border-color: var(--wrong); }
+  .graph-choice.disabled { cursor: default; }
+  .graph-choice.selected.disabled { cursor: pointer; }
+  .graph-choice.selected.disabled:hover { opacity: 0.85; }
+
+  /* Search box */
+  .search-box {
+    background: white; border: 2px solid var(--ink);
+    border-radius: 6px; padding: 10px 14px;
+    margin: 10px auto; max-width: 320px;
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Noto Serif KR', serif;
+  }
+  .search-input { flex: 1; color: var(--wrong); font-weight: 700; font-size: 15px; }
+  .search-btn {
+    background: var(--ink); color: white;
+    padding: 4px 12px; border-radius: 4px; font-size: 12px;
+  }
+
+  /* Tree diagram for unemployment classification */
+  .tree-diagram {
+    background: white; border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px; margin: 10px 0;
+    font-size: 13px;
+  }
+  .tree-diagram .tree-svg { width: 100%; max-width: 480px; display: block; margin: 0 auto; }
+
+  @media (max-width: 600px) {
+    .question-card { padding: 18px 14px; }
+    .q-text { font-size: 14px; }
+    .choice { padding: 10px 12px; font-size: 13.5px; }
+    .passage-box { font-size: 13px; padding: 12px 14px; }
+    .jump-grid { grid-template-columns: repeat(6, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="badge">2024 기출 · 사회</div>
+    <h1>서일중학교 <span>3-1 기말</span><br>사회 기출문제</h1>
+    <div class="subtitle">국민 경제 · 국제 거래 · 시장과 가격 · 객관식 30문제</div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-info">
+      <span id="progressText">0 / 30 풀이 완료</span>
+      <span class="pct" id="progressPct">정답률 0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="jump-nav">
+    <div class="jump-title">문제 바로가기</div>
+    <div class="jump-grid" id="jumpGrid"></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="resetAll()">처음부터 다시</button>
+    <button class="btn" onclick="revealAll()">전체 정답 보기</button>
+  </div>
+
+  <div id="quizContainer"></div>
+
+  <div class="score-panel">
+    <div>
+      <div class="score-text">현재 점수</div>
+      <div class="score-number" id="scoreNum">0<span class="total"> / 30</span></div>
+    </div>
+    <button class="btn primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">맨 위로 ↑</button>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  // ===== 1번 =====
+  {
+    n: 1,
+    q: "생애 주기와 그 특징을 옳게 연결한 것을 &lt;보기&gt;에서 모두 고른 것은?",
+    passage: "<span class='mark'>ㄱ. 유소년기 - 소득보다 소비가 많은 시기이다.</span><br><span class='mark'>ㄴ. 청년기 - 자녀교육, 주택마련, 은퇴 계획 등으로 생애에서 소비가 가장 많은 시기이다.</span><br><span class='mark'>ㄷ. 중장년기 - 소득과 소비가 모두 적은 시기다. 때문에 소비 관리에 신경 써야 하는 시기이다.</span><br><span class='mark'>ㄹ. 노년기 - 이전에 마련해둔 노후 자금이나 연금으로 생활하므로 안정적인 자산 관리가 필요하다.</span>",
+    choices: ["ㄱ, ㄴ", "ㄱ, ㄷ", "ㄱ, ㄹ", "ㄴ, ㄷ", "ㄷ, ㄹ"],
+    answer: 2,
+    explain: "정답은 <b>③ ㄱ, ㄹ</b>이에요.<br>• ㄱ ✓ 유소년기는 소득이 없고 소비만 있으니 옳음.<br>• ㄴ ✗ '자녀교육·주택마련·은퇴 계획'은 <b>중장년기</b>의 설명이에요.<br>• ㄷ ✗ 중장년기는 <b>소득이 가장 많은</b> 시기예요.<br>• ㄹ ✓ 노년기 설명 정확."
+  },
+  // ===== 2번 =====
+  {
+    n: 2,
+    q: "&lt;보기&gt;는 자산 관리와 관련한 형성평가 문제와 학생 답안이다. 해당 학생이 받은 점수로 옳은 것은?",
+    table: 2,
+    choices: ["0점", "1점", "2점", "3점", "4점"],
+    answer: 0,
+    explain: "정답은 <b>① 0점</b>이에요.<br>① '주식이 예금보다 안전성·수익성 모두 높다' → 주식은 수익성↑이지만 <b>안전성↓</b>. 학생 O → 오답<br>② '자산만 늘리는데 집중' → <b>지출 관리도 중요</b>. 학생 O → 오답<br>③ '쉽고 빠르게 현금 전환 = 수익성' → 이건 <b>유동성</b>이에요. 학생 O → 오답<br>④ '분산 투자가 더 안정적' → <b>옳은 설명</b>. 학생 X → 오답<br>→ 모두 틀려서 <b>0점</b>"
+  },
+  // ===== 3번 =====
+  {
+    n: 3,
+    q: "&lt;보기&gt;의 내용과 같이 자산을 구분할 때 그 종류가 다른 하나를 고른 것은?",
+    passage: "개인이나 단체가 소유하고 있는 경제적 가치가 있는 것을 자산이라 한다. 자산은 <b>금융 자산</b>과 <b>실물 자산</b>으로 구분된다.",
+    choices: ["현금", "채권", "주식", "보험", "부동산"],
+    answer: 4,
+    explain: "정답은 <b>⑤ 부동산</b>이에요. 부동산은 <b>실물 자산</b>이고 나머지(현금·채권·주식·보험)는 모두 <b>금융 자산</b>이에요.<br>• 금융 자산 = 돈/증권 형태의 자산<br>• 실물 자산 = 부동산·금·자동차처럼 형태가 있는 자산"
+  },
+  // ===== 4번 =====
+  {
+    n: 4,
+    q: "&lt;보기&gt;의 ㉠~㉣ 중 옳은 것을 모두 고른 것은?",
+    passage: "<span class='mark'>㉠ 개인의 소비 생활은 평생 지속되지만 생산 활동을 통해 소득을 얻을 수 있는 기간은 한정되어 있다. 따라서 개인은 일생동안 소득과 소비를 고려하여 자산을 확보하고 운영하는 자산 관리가 필요하다.</span> 자산 관리의 여러 유형을 살펴보자. 첫째, 은행 등의 금융 기관에 돈을 맡기는 것으로 정기 예금과 정기 적금이 있다. <span class='mark'>㉡ 정기 적금은 일정 금액의 돈을 한꺼번에 은행에 맡기고 정해진 기간이 지난 다음 약속한 이자와 원금을 돌려받는 것이다.</span> <span class='mark'>㉢ 정기 예금은 정해진 기간 동안 매달 일정 금액을 입금하고, 만기 시 이자와 원금을 받는다.</span> 둘째, <span class='mark'>㉣ 보험은 미래에 발생할 수 있는 질병이나 사고 등의 위험에 대비하기 위해 현재에 미리 돈을 내고 사고를 당하면 일정 금액을 받는 상품이다.</span> 셋째, 주식은 주식회사가 자금을 마련하기 위해 투자자에게서 돈을 받고 발행하는 것이다.",
+    choices: ["㉠, ㉡", "㉠, ㉢", "㉠, ㉣", "㉡, ㉢", "㉢, ㉣"],
+    answer: 2,
+    explain: "정답은 <b>③ ㉠, ㉣</b>이에요.<br>• ㉠ ✓ 자산 관리 필요성 설명 정확.<br>• ㉡ ✗ 이건 <b>정기 예금</b> 설명이에요 (한 번에 맡기는 것).<br>• ㉢ ✗ 이건 <b>정기 적금</b> 설명이에요 (매달 일정 금액 납입).<br>• ㉣ ✓ 보험 설명 정확.<br>→ ㉡과 ㉢의 정의가 서로 바뀌어 있어요!"
+  },
+  // ===== 5번 =====
+  {
+    n: 5,
+    q: "인플레이션 해결을 위해 각 경제 주체들이 해야 할 노력으로 <span class='neg'>옳지 않은</span> 것은?",
+    choices: [
+      "정부 - 조세를 늘린다.",
+      "정부 - 재정 지출을 늘린다.",
+      "소비자 - 합리적 소비 생활을 한다.",
+      "중앙은행 - 시중 은행의 이자율을 높인다.",
+      "기업 - 경영과 기술 혁신을 통해 생산 효율성을 높인다."
+    ],
+    answer: 1,
+    explain: "정답은 <b>②</b>예요. 인플레이션은 <b>총수요를 줄이는</b> 방향으로 해결해야 해요. <b>재정 지출을 늘리면</b> 총수요가 증가해서 <b>인플레이션이 더 심해져요</b>. 인플레이션 해결 시 정부는 <b>재정 지출을 줄여야</b> 해요.<br>① ✓ 조세↑ → 가계 소비↓ → 총수요↓<br>③ ✓ 합리적 소비로 수요 안정<br>④ ✓ 이자율↑ → 저축↑, 소비·투자↓<br>⑤ ✓ 생산 효율성↑ → 공급↑ → 물가 안정"
+  },
+  // ===== 6번 =====
+  {
+    n: 6,
+    q: "&lt;보기&gt;에 제시된 상황 중 외환 공급이 증가하는 경우의 개수는?",
+    passage: "- 차관 도입 증가<br>- 외국 상품의 수입 증가<br>- 자국민의 해외여행의 증가<br>- 자국민의 해외 투자와 유학의 증가",
+    choices: ["0개", "1개", "2개", "3개", "4개"],
+    answer: 1,
+    explain: "정답은 <b>② 1개</b>예요. 외환 <b>공급 증가</b> = 외화가 국내로 <b>들어오는</b> 경우예요.<br>• 차관 도입↑ → 외화 유입 <b>✓ 공급 증가</b><br>• 수입 증가 → 외화 <b>유출</b> ✗ (수요 증가)<br>• 해외여행↑ → 외화 <b>유출</b> ✗ (수요 증가)<br>• 해외 투자·유학↑ → 외화 <b>유출</b> ✗ (수요 증가)<br>→ 외환 공급 증가는 <b>차관 도입</b> 1개뿐!"
+  },
+  // ===== 7번 =====
+  {
+    n: 7,
+    q: "&lt;자료&gt;와 관련한 설명으로 옳은 것을 (가)~(라)에서 모두 고른 것은?",
+    passage: "소프트웨어 회사 개발자 A씨는 어린이집에 다니는 딸의 책가방에서 종이 알림장을 발견. 부모가 자녀의 하루 생활을 알 길이 없어 스마트폰으로 실시간 확인할 수 있으면 좋겠다고 생각. A씨는 '키즈 OO' 서비스를 개발. 전국 어린이집·유치원에 도입되는 <b>스마트 알림장이라는 새로운 시장을 개척</b>. 현재는 일본·미국·호주·중국·베트남 등 7개국에 수출. <span style='color:var(--muted);font-size:12px;'>— ○○신문, 2015. 02. 04 —</span><br><br><div class='sub-label'>(가)</div>기업은 새로운 시장 개발 없이 상품과 기술 개발을 통해서만 성장할 수 있다.<div class='sub-label'>(나)</div>기술 혁신을 통해 새로운 것을 창조하는 '창조적 파괴' 과정이 기업의 원동력이다.<div class='sub-label'>(다)</div>기업 발전을 위해 변화를 탐구하고, 변화에 대응하며, 변화를 기회로 이용하는 정신이 필요하다.<div class='sub-label'>(라)</div>기업은 현재 상황을 변화 없이 지속하기 위해 기업가 정신에 의해 기업을 운영할 필요가 있다.",
+    choices: ["(가), (나)", "(가), (다)", "(가), (라)", "(나), (다)", "(다), (라)"],
+    answer: 3,
+    explain: "정답은 <b>④ (나), (다)</b>예요. 자료는 <b>기업가 정신</b>의 사례예요.<br>• (가) ✗ 기업은 <b>새로운 시장 개척</b>으로도 성장. A씨처럼!<br>• (나) ✓ 슘페터의 '창조적 파괴' = 기업가 정신의 핵심.<br>• (다) ✓ 변화 대응·기회 이용 = 기업가 정신.<br>• (라) ✗ 기업가 정신은 <b>변화·혁신</b>을 추구하지 현상 유지가 아니에요."
+  },
+  // ===== 8번 =====
+  {
+    n: 8,
+    q: "기업의 역할로 <span class='neg'>옳지 않은</span> 것을 고른 것은?",
+    choices: [
+      "고용을 통해 소득을 창출한다.",
+      "이윤을 얻기 위해 재화와 서비스를 생산한다.",
+      "정부에 세금을 납부함으로써 국가 재정에 기여한다.",
+      "국가 경제 정책을 수립하여 물가가 안정되도록 노력한다.",
+      "좋은 품질의 재화와 서비스를 공급하여 소비자의 만족을 높인다."
+    ],
+    answer: 3,
+    explain: "정답은 <b>④</b>예요. <b>국가 경제 정책 수립은 정부의 역할</b>이에요. 기업은 정책을 만드는 주체가 아니라 정책의 적용을 받는 주체예요.<br>①②③⑤는 모두 기업의 역할:<br>• 고용 창출, 재화·서비스 생산, 세금 납부, 좋은 품질 공급 → 모두 기업의 일!"
+  },
+  // ===== 9번 =====
+  {
+    n: 9,
+    q: "(가)~(마)에 대한 설명을 &lt;보기&gt;에서 골라 바르게 짝지어진 것은?",
+    passage: "<div class='sub-label'>(가) A기업</div>소비자가 신발 한 켤레 구매 시 아프리카 어린이에게 신발 한 켤레 기부.<div class='sub-label'>(나) B기업</div>관련 법령에 따라 투명하게 세금을 납부, 모범 납세자상 수상.<div class='sub-label'>(다) C기업</div>저소득층 아이들 대상 무료 학습 지도, 도서 기증, 장학금 지급을 꾸준히 전개.<div class='sub-label'>(라) D기업</div>유해 물질이 검출되지 않는 깨끗하고 안전한 제품을 만들기 위해 끊임없이 연구·설비 투자.<div class='sub-label'>(마) E기업</div>근로자 자녀 장학금 지급, 자기 개발 안식년 제공, 일자리 확보 위해 경영 조직 개편.<br><br><b>&lt;보기&gt;</b><br>ㄱ. 기업은 보다 많은 일자리 창출과 근로자 복지 향상을 위해 노력한다.<br>ㄴ. 기업은 안전한 제품을 생산하고 소비자 권익을 침해하지 않도록 노력한다.<br>ㄷ. 기업은 이윤 추구 과정에서 경제 활동 관련 법률을 지키고 공정 경쟁한다.<br>ㄹ. 기업은 교육·문화·사회 복지 사업 등을 지원함으로써 사회 전체 복지 증진에 기여한다.",
+    choices: [
+      "(가) - ㄱ",
+      "(나) - ㄹ",
+      "(다) - ㄷ",
+      "(라) - ㄴ",
+      "(마) - ㄷ"
+    ],
+    answer: 3,
+    explain: "정답은 <b>④ (라) - ㄴ</b>이에요. D기업은 안전한 제품 생산 → ㄴ(소비자 권익) 정확히 매칭.<br><br>나머지 정답 매칭:<br>• (가) A기업(신발 기부) → <b>ㄹ</b> (사회 복지 기여)<br>• (나) B기업(세금 납부) → <b>ㄷ</b> (법률 준수)<br>• (다) C기업(저소득층 학습 지원) → <b>ㄹ</b> (사회 복지 기여)<br>• (라) D기업(안전한 제품) → <b>ㄴ</b> ✓<br>• (마) E기업(일자리·복지) → <b>ㄱ</b> (일자리·복지 향상)"
+  },
+  // ===== 10번 =====
+  {
+    n: 10,
+    q: "국내 총생산에 관한 설명으로 옳은 것을 모두 고른 것은?",
+    passage: "표는 국내 총생산(GDP)의 정의를 부분별로 나눈 것이에요:<br>㉠ <b>일정 기간 동안</b> — 보통 1년 동안 생산된 것만 포함함<br>㉡ <b>한 나라 안에서</b> — 그 나라의 국경 안에서 생산된 것만 포함함<br>㉢ <b>새롭게 생산된</b> — 그해에 새롭게 생산된 것만 포함하며, 중고 거래된 상품은 새 상품으로 계산에 포함함<br>㉣ <b>최종 생산물의 가치를</b> — 생산 과정에서 사용된 중간재를 포함함<br>㉤ <b>시장 가격으로 환산</b> — 시장에서 거래되지 않는 것은 포함하지 않음",
+    choices: ["㉠, ㉡, ㉢", "㉠, ㉡, ㉣", "㉠, ㉡, ㉤", "㉠, ㉢, ㉣", "㉠, ㉣, ㉤"],
+    answer: 2,
+    explain: "정답은 <b>③ ㉠, ㉡, ㉤</b>이에요.<br>• ㉠ ✓ '1년 동안' 옳음.<br>• ㉡ ✓ '국경 안에서' 옳음 (GDP의 핵심).<br>• ㉢ ✗ 중고 거래 상품은 <b>포함하지 않음</b> (이전 해에 이미 계산됨).<br>• ㉣ ✗ <b>중간재는 제외</b>하고 최종 생산물만 포함.<br>• ㉤ ✓ 시장 거래되는 것만 포함."
+  },
+  // ===== 11번 =====
+  {
+    n: 11,
+    q: "학생들의 대화를 읽고 국내 총생산의 한계를 바르게 설명한 학생을 모두 고른 것은?",
+    passage: "<b>민지</b>: 국내 총생산만으로는 빈부 격차 정도는 알기가 어려워.<br><b>희진</b>: 국내 총생산만으로는 국민의 평균적인 소득 수준을 파악하기 어려워서 1인당 국내 총생산을 함께 계산해 보아야 해.<br><b>미연</b>: 국내 총생산은 주부의 가사 노동이나 봉사활동 같은 것들은 포함하지 않아서 실제 우리가 생산해내고 있는 생산량과 다르게 측정될 거야.<br><b>유진</b>: 국내 총생산은 자원 고갈이나 환경오염 등의 피해를 <b>반영하지만</b> 여가 시간은 반영하지 않아 삶의 질 수준을 완벽하게 파악하기가 어려워.<br><b>지민</b>: 국내 총생산은 외국에 나가 경제 활동하는 우리나라 국민의 소득을 모두 조사하여야 하므로 세계화 시대에 측정의 어려움이 있어.",
+    choices: [
+      "희진, 유진",
+      "민지, 지민",
+      "민지, 희진, 유진",
+      "희진, 유진, 지민",
+      "민지, 희진, 미연"
+    ],
+    answer: 4,
+    explain: "정답은 <b>⑤ 민지, 희진, 미연</b>이에요.<br>• 민지 ✓ GDP는 평균값이라 빈부 격차를 못 봐요.<br>• 희진 ✓ 1인당 GDP가 평균 소득 수준을 보여줘요.<br>• 미연 ✓ 가사·봉사는 시장 거래 X라 GDP 미포함.<br>• 유진 ✗ GDP는 자원 고갈·환경오염 피해도 <b>반영하지 않아요</b>.<br>• 지민 ✗ GDP는 '국내'에서 생산된 것만 측정. 외국 활동 국민 소득은 <b>GNI(국민총소득)</b>의 개념이에요."
+  },
+  // ===== 12번 =====
+  {
+    n: 12,
+    q: "실업률 통계를 위한 인구 분류도이다. 이에 대한 설명으로 옳은 것은?",
+    treeDiag: true,
+    choices: [
+      "㉡에는 일할 의사가 없는 전업주부가 포함된다.",
+      "노동 가능 인구는 만 18세 이상의 성인들을 일컫는다.",
+      "실업률을 구하기 위해서는 노동 가능 인구와 ㉢이 필요하다.",
+      "노동 가능 인구 가운데 일할 능력만을 기준으로 ㉠과 ㉡을 분류한다.",
+      "취업을 하려고 했으나 뜻대로 되지 않아 일자리 구하기를 포기한 경우 ㉢에 포함된다."
+    ],
+    answer: 0,
+    explain: "정답은 <b>①</b>이에요. ㉠=경제활동인구, ㉡=비경제활동인구, ㉢=실업자.<br>① ✓ ㉡(비경제활동인구)에는 일할 의사가 없는 전업주부 포함.<br>② ✗ 노동 가능 인구는 <b>만 15세 이상</b>.<br>③ ✗ 실업률 = 실업자/경제활동인구 × 100. <b>경제활동인구(㉠)</b>가 필요해요.<br>④ ✗ 일할 <b>능력과 의사</b>를 모두 기준으로 분류.<br>⑤ ✗ 구직 단념자는 <b>㉡(비경제활동인구)</b>에 포함."
+  },
+  // ===== 13번 =====
+  {
+    n: 13,
+    q: "&lt;보기&gt;에서 물가 상승의 요인으로 옳은 것을 모두 고른 것은?",
+    passage: "㉠ 국제 원유 가격의 상승<br>㉡ 정부의 재정 지출의 감소<br>㉢ 시중에 공급되는 통화량 증가<br>㉣ 기술 개발로 인한 공급의 증가",
+    choices: ["㉠, ㉡", "㉠, ㉢", "㉡, ㉣", "㉠, ㉡, ㉢", "㉡, ㉢, ㉣"],
+    answer: 1,
+    explain: "정답은 <b>② ㉠, ㉢</b>이에요.<br>• ㉠ ✓ 원유↑ → 생산비↑ → 물가↑ (비용 인상 인플레이션).<br>• ㉡ ✗ 재정 지출 감소 → 총수요↓ → 물가↓ (오히려 물가 안정).<br>• ㉢ ✓ 통화량↑ → 화폐 가치↓ → 물가↑.<br>• ㉣ ✗ 공급 증가 → 물가↓ (오히려 안정)."
+  },
+  // ===== 14번 =====
+  {
+    n: 14,
+    q: "검색 사이트에서 검색한 결과이다. &lt;보기&gt;와 같은 검색 결과가 나오기 위해 가장 적합한 검색어를 고른 것은?",
+    passage: "<div class='search-box'><span class='search-input'>?</span><span class='search-btn'>검색</span></div>↳ 가. 일자리가 늘어난다.<br>↳ 나. 국내 총생산이 증가한다.<br>↳ 다. 다양한 문화생활을 할 수 있다.<br>↳ 라. 질 높은 교육과 의료 혜택을 받을 수 있다.",
+    choices: [
+      "경제 성장",
+      "환율의 하락",
+      "실업률의 증가",
+      "물가 상승률의 증가",
+      "경제 성장률의 하락"
+    ],
+    answer: 0,
+    explain: "정답은 <b>① 경제 성장</b>이에요.<br>가~라는 모두 <b>경제 성장의 긍정적 효과</b>예요:<br>• 가 일자리↑ ✓<br>• 나 GDP↑ ✓ (경제 성장의 정의)<br>• 다 문화생활 다양화 ✓<br>• 라 교육·의료 혜택↑ ✓<br>→ '경제 성장'이 가장 적합!"
+  },
+  // ===== 15번 =====
+  {
+    n: 15,
+    q: "다른 경제적 조건들이 일정할 때, 다음 그래프와 같이 인플레이션 경제 상황이 지속되면 유리한 사람은?",
+    graphType: "inflation",
+    choices: [
+      "수출업자",
+      "봉급생활자",
+      "연금생활자",
+      "돈을 빌린 사람",
+      "돈을 빌려준 사람"
+    ],
+    answer: 3,
+    explain: "정답은 <b>④ 돈을 빌린 사람(채무자)</b>이에요. 인플레이션 = 물가↑ = <b>화폐 가치↓</b>.<br><b>유리한 사람</b>:<br>• ④ 채무자: 갚을 돈의 실질 가치가 줄어들어 유리 ✓<br>• 실물 자산 보유자: 자산 가치↑<br><br><b>불리한 사람</b>:<br>• ① 수출업자: 국내 원가↑로 가격 경쟁력↓<br>• ② 봉급생활자: 정해진 봉급의 실질 가치↓<br>• ③ 연금생활자: 정해진 연금의 실질 가치↓<br>• ⑤ 채권자: 받을 돈의 가치↓"
+  },
+  // ===== 16번 =====
+  {
+    n: 16,
+    q: "수요를 변화시키는 요인과 수요 변화 결과가 옳게 설명된 것은?",
+    choices: [
+      "소득이 줄어들면 상품의 수요는 증가한다.",
+      "인구가 증가하여 수요자의 수가 늘어나면 수요는 감소한다.",
+      "소비자의 상품에 대한 선호도가 증가하면 수요는 감소한다.",
+      "신제품이 출시될 예정인 경우 기존 상품의 수요는 증가한다.",
+      "미래에 어떤 가격이 오를 것으로 예상되면 현재의 수요는 증가한다."
+    ],
+    answer: 4,
+    explain: "정답은 <b>⑤</b>예요. 미래에 가격이 오를 것으로 예상되면 미리 사두려는 사람이 늘어 <b>현재 수요가 증가</b>해요.<br>① ✗ 소득↓ → 수요↓ (정상재 기준).<br>② ✗ 인구↑ → 수요자↑ → 수요 <b>증가</b>.<br>③ ✗ 선호도↑ → 수요 <b>증가</b>.<br>④ ✗ 신제품 출시 예고 → 기존 상품 수요 <b>감소</b>."
+  },
+  // ===== 17번 =====
+  {
+    n: 17,
+    q: "&lt;보기&gt;와 같은 상황이 지속되는 경우 우리나라 경제에 미치는 영향으로 가장 적합하지 <span class='neg'>않은</span> 것은?",
+    passage: "통계청은 올해 6월 청년층 실업자가 지난해 같은 달 대비 <b>1만 8,000명 증가</b>하여 <b>청년층 실업률이 10.3%</b>를 기록하였다고 밝혔다. 이는 6월 기준으로 1999년 6월(11.3%) 이후 가장 높은 수치이다.",
+    choices: [
+      "가족 해체나 생계형 범죄의 증가와 같은 사회 문제가 증가한다.",
+      "소비 활동이 줄어 기업의 생산 활동과 투자가 함께 위축될 수 있다.",
+      "기업의 근로자에 대한 복지가 늘어 노사 갈등이 빈번하게 발생할 수 있다.",
+      "일할 능력이 있는 사람이 생산 활동에 참여하지 못하여 인적 자원의 낭비를 가져온다.",
+      "자아실현의 기회가 줄고 자아 존중감이 낮아져 국민들의 정신 건강 문제가 증가할 수 있다."
+    ],
+    answer: 2,
+    explain: "정답은 <b>③</b>이에요. 청년 실업률이 높아진다고 해서 <b>근로자 복지가 늘어나지는 않아요</b>. 오히려 일자리가 줄어드니 노동자 협상력↓ → 복지가 <b>줄어들</b> 가능성이 커요.<br>① ✓ 가족 해체·범죄↑ 사회 문제.<br>② ✓ 소득↓ → 소비↓ → 기업 위축.<br>④ ✓ 인적 자원 낭비.<br>⑤ ✓ 자아실현 기회↓ → 정신 건강 문제."
+  },
+  // ===== 18번 =====
+  {
+    n: 18,
+    q: "다른 조건이 일정할 때, &lt;보기&gt; 상황에 따라 외환 시장 변화를 나타낸 그래프로 옳은 것은?",
+    passage: "우리나라 기업이 베트남에서 운동화를 대량으로 수입하였다.",
+    isExchangeGraph: true,
+    choices: [
+      { type: "supply_down" },
+      { type: "demand_up" },
+      { type: "supply_up" },
+      { type: "demand_down" },
+      { type: "both_down" }
+    ],
+    answer: 1,
+    explain: "정답은 <b>②</b>예요. 베트남 운동화 수입 → 외화(달러) 지불 필요 → <b>외환 수요 증가</b> → 수요 곡선이 <b>오른쪽으로 이동</b> → 환율 상승.<br>외환 수요 증가 요인: 수입↑, 해외여행↑, 해외 투자↑, 외채 상환 등.<br>외환 공급 증가 요인: 수출↑, 외국인 관광객↑, 차관 도입 등."
+  },
+  // ===== 19번 =====
+  {
+    n: 19,
+    q: "국제 거래의 특징으로 옳은 것을 모두 고른 것은?",
+    passage: "㉠ 나라마다 서로 다른 화폐를 사용하므로 거래 시 화폐 교환이 필요하다.<br>㉡ 우리나라는 재화와 서비스의 수출과 수입 과정에서 거래세라는 세금을 부과한다.<br>㉢ 국가 간에 재화와 서비스는 거래하지만 생산 요소는 거래하지 않는다.<br>㉣ 나라마다 법과 제도가 다르므로 재화나 서비스의 수입이 금지되거나 제한될 수 있다.",
+    choices: ["㉠, ㉡", "㉠, ㉢", "㉠, ㉣", "㉡, ㉢", "㉡, ㉣"],
+    answer: 2,
+    explain: "정답은 <b>③ ㉠, ㉣</b>이에요.<br>• ㉠ ✓ 환율 개념의 기초.<br>• ㉡ ✗ 거래세가 아니라 <b>관세</b>예요.<br>• ㉢ ✗ 국제 거래에서는 <b>생산 요소(노동·자본)도 거래</b>해요 (이주 노동자, 해외 투자 등).<br>• ㉣ ✓ 각국의 법·제도 차이로 제한 가능."
+  },
+  // ===== 20번 =====
+  {
+    n: 20,
+    q: "다른 조건이 일정하고, 원-달러 환율이 다음 그래프와 같이 움직일 때 우리나라 경제에 나타날 수 있는 현상으로 <span class='neg'>옳지 않은</span> 것은?",
+    graphType: "exchange_chart",
+    choices: [
+      "원화 가치가 하락할 것이다.",
+      "국내 물가가 상승할 수 있다.",
+      "수입품의 국내 가격이 상승할 것이다.",
+      "외화로 진 빚이 늘어나는 상황이 된다.",
+      "우리나라 상품의 수출이 감소할 것이다."
+    ],
+    answer: 4,
+    explain: "정답은 <b>⑤</b>예요. 환율 상승(원화 약세) 시 우리나라 상품의 외화 가격이 <b>낮아져서 수출이 증가</b>해요!<br>① ✓ 환율↑ = 원화 가치↓.<br>② ✓ 수입품 가격↑ → 국내 물가↑.<br>③ ✓ 수입품 국내 가격 상승.<br>④ ✓ 같은 외화 빚을 갚는 데 더 많은 원화 필요.<br>⑤ ✗ 수출은 <b>증가</b>해요!"
+  },
+  // ===== 21번 =====
+  {
+    n: 21,
+    q: "국민 경제와 국제 거래에 대한 설명으로 옳은 것은?",
+    choices: [
+      "세계화가 진행됨에 따라 지역주의 움직임은 점차 사라지고 있다.",
+      "정부는 대규모 실업 시 재정 지출 감소를 통해 일자리를 늘릴 수 있다.",
+      "실업은 경기 침체나 산업 구조의 변화에 영향을 받지만 계절 변화에는 영향을 받지 않는다.",
+      "물가 지수란 기준 시점의 물가를 100으로 했을 때, 비교 시점의 물가 수준을 환산한 것이다.",
+      "국제 거래 시 각 나라는 생산비가 절대적으로 적은 절대 우위에 있는 품목만 생산하여 거래하게 된다."
+    ],
+    answer: 3,
+    explain: "정답은 <b>④</b>예요. 물가 지수의 정확한 정의예요.<br>① ✗ 세계화와 지역주의는 <b>동시에 진행</b> (EU, ASEAN 등).<br>② ✗ 재정 지출 <b>확대</b>로 일자리 늘리는 게 맞음.<br>③ ✗ <b>계절적 실업</b>도 있어요 (농업, 관광업 등).<br>⑤ ✗ <b>비교 우위</b> 품목을 생산해요 (절대 우위가 없어도 거래 가능)."
+  },
+  // ===== 22번 =====
+  {
+    n: 22,
+    q: "&lt;보기&gt; 그림에서 표현된 시장에 대한 설명으로 옳은 것은?",
+    passage: "<div class='scene-box'><div class='scene-title'>＜ 채용 공고 게시판 앞 ＞</div><div class='scene-center'><span class='speech demand'>\"일자리를 꼭 구해야지\"</span></div><div class='scene-center'><span class='scene-board'>📋 채용 공고</span></div><div style='text-align:center;font-size:11px;color:#5A3F0F;margin-top:8px;'>구직자들이 채용 공고를 살펴보는 모습</div></div>",
+    choices: [
+      "거래 주체가 국가와 노동자로 제한된다.",
+      "거래 대상의 종류에 따라 시장을 구분할 때 영화관과 같이 구분된다.",
+      "인터넷 및 정보통신기술의 발달로 시장의 규모가 줄어들고 있다.",
+      "백화점, 마트와 같이 구체적인 거래 장소와 대상이 보이는 시장이다.",
+      "상품을 생산하는 과정에서 필요한 생산 요소가 거래되는 시장이다."
+    ],
+    answer: 4,
+    explain: "정답은 <b>⑤</b>예요. 그림은 <b>노동 시장(생산 요소 시장)</b>이에요. 노동력이라는 생산 요소가 거래되죠.<br>① ✗ 거래 주체는 <b>기업(수요자)과 노동자(공급자)</b>.<br>② ✗ 노동 시장은 <b>생산 요소 시장</b>으로 영화관(생산물 시장)과 다름.<br>③ ✗ 인터넷 발달로 시장 규모는 <b>확대</b>.<br>④ ✗ 노동 시장은 <b>추상적</b>이에요 (구체적 장소 없음)."
+  },
+  // ===== 23번 =====
+  {
+    n: 23,
+    q: "&lt;보기&gt; 그래프에 관한 설명으로 <span class='neg'>옳지 않은</span> 것은?",
+    graphType: "chocolate",
+    choices: [
+      "가격이 1500원일 때 초과 수요가 발생한다.",
+      "가격이 2000원일 때 수요량과 공급량은 일치한다.",
+      "2000원일 때가 균형 가격, 균형 거래량이 형성된다.",
+      "가격이 2500원일 때 공급자들 간에 경쟁이 발생할 것이다.",
+      "가격이 1000원일 때 균형 거래량보다 10만개 많이 공급된다."
+    ],
+    answer: 4,
+    explain: "정답은 <b>⑤</b>예요. 가격이 1000원일 때 그래프 보면 수요량 25만개, 공급량 5만개. <b>균형 거래량은 15만개</b>이므로 1000원에서는 <b>공급량이 10만개 적어요</b> (5만 < 15만). 오히려 <b>수요량이 10만개 많은</b> 상황(25만 > 15만)이에요.<br>① ✓ 1500원: 수요(20) > 공급(10) → 초과 수요.<br>② ✓ 2000원에서 수요·공급 일치.<br>③ ✓ 균형가 2000원, 균형량 15만개.<br>④ ✓ 2500원: 공급(20) > 수요(10) → 초과 공급 → 공급자 경쟁."
+  },
+  // ===== 24번 =====
+  {
+    n: 24,
+    q: "㉠~㉣에 들어갈 말로 옳게 짝지어진 것은?",
+    passage: "수요자는 일정한 가격에서 상품을 얼마나 구매할지 결정하는데, 이때 수요자가 구매하고자 하는 상품의 양을 수요량이라고 한다. 상품의 가격이 <b>(㉠)</b>하면 수요량은 <b>(㉡)</b>한다. 이처럼 상품의 가격과 수요량은 <b>(㉢)</b>의 관계라고 할 수 있다. 가격과 수요량의 관계를 그래프로 나타내면 <b>(㉣)</b> 곡선이 된다.",
+    isPair: true,
+    pairHeader: { left: "㉠ / ㉡ / ㉢", right: "㉣" },
+    choices: [
+      { left: "상승 / 감소 / 음(-)", right: "우하향" },
+      { left: "상승 / 감소 / 음(-)", right: "우상향" },
+      { left: "상승 / 증가 / 양(+)", right: "우하향" },
+      { left: "하락 / 증가 / 음(-)", right: "우상향" },
+      { left: "하락 / 감소 / 양(+)", right: "우하향" }
+    ],
+    answer: 0,
+    explain: "정답은 <b>①</b>이에요. 수요 법칙: 가격↑ → 수요량↓ (음의 관계).<br>• ㉠ 상승 ✓<br>• ㉡ 감소 ✓<br>• ㉢ 음(-) ✓<br>• ㉣ 우하향 ✓ (수요 곡선은 오른쪽 아래로 향함)<br><br>참고: 공급 곡선은 가격↑ → 공급량↑ (양의 관계)이라 <b>우상향</b>이에요."
+  },
+  // ===== 25번 =====
+  {
+    n: 25,
+    q: "다른 조건이 일정하다고 가정할 때, 다음 상황을 분석하여 시장의 변화를 나타낸 그래프로 옳은 것은?",
+    passage: "올해 11월 들어 비가 온 날이 보름 안팎으로 늘면서 일조량이 지난해 3분의 1수준에 머물고 있다. 제주도에서는 비 때문에 <b>감귤의 수확이 늦어지고</b>, 수확한 것도 곧 썩을 조짐이 보인다.<br><br>감귤 수확기에 비가 자주 오면 감귤 껍질이 부풀어 상품성이 떨어지는 것은 물론 감귤이 나무에 달린 채 썩기도 한다.<br><br>감귤 농사를 짓는 A씨는 \"감귤이 썩게 되더라도 맑은 날이면 그대로 말라 다른 감귤에 피해를 주지 않는다. 그런데 잦은 비로 썩은 감귤이 마르지 않고, 다른 감귤에 영향을 주는 경우가 작년보다 많아졌다\"며 걱정했다.",
+    isMarketGraph: true,
+    choices: [
+      { type: "supply_left" },
+      { type: "supply_right" },
+      { type: "demand_left" },
+      { type: "demand_right" },
+      { type: "both_left" }
+    ],
+    answer: 0,
+    explain: "정답은 <b>①</b>이에요. 비로 감귤 수확량 감소 → 시장 공급량 감소 → <b>공급 곡선이 왼쪽으로 이동</b>.<br>결과: 균형가격↑, 균형거래량↓.<br><br>※ 수요 곡선은 변하지 않아요 (소비자 요인이 아님)."
+  },
+  // ===== 26번 =====
+  {
+    n: 26,
+    q: "&lt;보기&gt;의 상황을 옳게 분석한 학생은?",
+    passage: "다른 조건이 일정할 때, <b>돼지고기의 가격이 오르면 대체 관계에 있는 닭고기</b>는 어떤 상황이 될까?",
+    choices: [
+      "민규 : 수요가 감소할 거야.",
+      "태형 : 수요량이 감소할 거야.",
+      "정한 : 균형 가격이 하락할 거야.",
+      "지민 : 균형 거래량이 증가할 거야.",
+      "우석 : 수요나 공급 모두 아무 변동이 없을 거야."
+    ],
+    answer: 3,
+    explain: "정답은 <b>④ 지민</b>이에요. 돼지고기 가격↑ → 사람들이 닭고기로 갈아탐 → 닭고기 <b>수요 증가</b> → 수요 곡선 <b>오른쪽 이동</b> → 균형가격↑, <b>균형 거래량↑</b>.<br>① ✗ 수요는 <b>증가</b>.<br>② ✗ 수요량이 아니라 수요(곡선) 자체가 이동.<br>③ ✗ 균형 가격은 <b>상승</b>.<br>⑤ ✗ 닭고기 수요에 변동 발생."
+  },
+  // ===== 27번 =====
+  {
+    n: 27,
+    q: "다른 조건이 일정하다고 할 때, &lt;보기&gt;의 그래프와 같이 공급을 변화시키는 요인으로 옳은 것은?",
+    graphType: "supply_left",
+    choices: [
+      "원자재 가격이 하락한다.",
+      "상품을 공급하는 기업의 수가 증가한다.",
+      "보완 관계에 있는 상품의 가격이 하락한다.",
+      "미래에 어떤 상품의 가격이 오를 것으로 예상된다.",
+      "상품을 생산하는 기술이 발달하여 생산성이 높아진다."
+    ],
+    answer: 3,
+    explain: "정답은 <b>④</b>예요. 그래프는 공급 곡선이 <b>왼쪽으로 이동</b>(공급 감소)한 모습이에요. 미래에 가격이 오를 거라 예상되면 공급자는 <b>지금 팔지 않고 미래에 팔려고</b> 해서 현재 공급이 줄어들어요.<br>① ✗ 원자재 가격↓ → 생산비↓ → 공급 <b>증가</b>(오른쪽 이동).<br>② ✗ 기업 수↑ → 공급 <b>증가</b>.<br>③ ✗ 보완재 가격은 <b>수요</b> 관련 요인 (공급과 무관).<br>⑤ ✗ 기술 발달 → 생산성↑ → 공급 <b>증가</b>."
+  },
+  // ===== 28번 =====
+  {
+    n: 28,
+    q: "시장의 형성 과정에 대한 글이다. ㉠~㉤ 중 <span class='neg'>옳지 않은</span> 것은?",
+    passage: "과거에는 <span class='mark'>㉠ 생활에 필요한 물건을 국가에서 모두 배급받아 생활</span>했다. 농사를 짓게 되면서 사람들은 <span class='mark'>㉡ 자신이 쓰고도 남는 생산물이 생기자, 이를 자신에게 필요한 다른 물건과 교환하기 시작</span>하였다. 이 과정에서 <span class='mark'>㉢ 사람들은 자신이 더 잘 만들 수 있는 물건만을 집중적으로 생산</span>하게 되었다. 이러한 교환을 사람들이 만족하게 되면서 일정한 시간과 장소를 정해 모이는 <span class='mark'>㉣ 시장이 생겨났고</span>, <span class='mark'>㉤ 화폐의 출현</span>으로 시장은 더욱더 발달하였다.",
+    choices: ["㉠", "㉡", "㉢", "㉣", "㉤"],
+    answer: 0,
+    explain: "정답은 <b>① ㉠</b>이에요. 과거 농경 사회 이전(원시 사회)에는 국가에서 배급받은 게 아니라 <b>자급자족</b>(스스로 만들어 씀)으로 생활했어요.<br>국가의 배급 체제는 사회주의 계획 경제 같은 특정 체제에서나 있는 일이에요.<br>나머지 ㉡~㉤은 시장 형성 과정을 옳게 설명하고 있어요 (잉여 생산 → 교환 → 특화 → 시장 → 화폐)."
+  },
+  // ===== 29번 =====
+  {
+    n: 29,
+    q: "공급에 관한 설명으로 옳은 것은?",
+    choices: [
+      "상품의 가격이 올라가면 공급량은 줄어든다.",
+      "가격이 변화하면 공급 곡선 자체가 이동한다.",
+      "공급 곡선은 가격과 공급량의 관계를 나타낸 것이다.",
+      "공급자는 수요자에 비해 가격의 영향을 미비하게 받는다.",
+      "공급은 판매 능력과 관계없이 공급자가 일정한 가격에 어떤 상품을 판매하고자 하는 욕구이다."
+    ],
+    answer: 2,
+    explain: "정답은 <b>③</b>이에요. 공급 곡선은 가격과 공급량의 관계를 나타낸 그래프예요.<br>① ✗ 가격↑ → 공급량 <b>증가</b> (공급 법칙).<br>② ✗ 가격이 변하면 곡선 위에서 점이 이동하는 거지 곡선 자체가 이동하는 게 아니에요 (가격 외 요인일 때 곡선 이동).<br>④ ✗ 공급자도 가격의 영향을 <b>크게</b> 받아요.<br>⑤ ✗ 공급은 <b>판매 능력이 뒷받침된</b> 욕구예요."
+  },
+  // ===== 30번 =====
+  {
+    n: 30,
+    q: "&lt;보기&gt;와 같은 상황 때문에 필요한 국민경제지표는?",
+    passage: "국내 총생산은 실제로 재화와 서비스를 많이 생산할 때 증가하기도 하지만, <b>재화와 서비스의 생산량은 늘어나지 않고 물가가 오를 때에도 증가</b>할 수 있다. 따라서 경제 성장 정도를 나타내는 경제 성장률을 계산할 때는 <b>물가의 변동을 제거할 필요</b>가 있다.",
+    choices: [
+      "실업률",
+      "국민총소득",
+      "실질 국내 총생산",
+      "명목 국내 총생산",
+      "1인당 국내 총생산"
+    ],
+    answer: 2,
+    explain: "정답은 <b>③ 실질 국내 총생산</b>이에요.<br>• <b>명목 GDP</b>: 그해 시장 가격으로 계산 (물가 변동 포함)<br>• <b>실질 GDP</b>: <b>기준 연도 가격</b>으로 계산 (물가 변동 제거)<br><br>경제 성장률은 실질 GDP로 계산해야 진짜 경제 규모 변화를 알 수 있어요. 물가가 올라서 GDP가 늘어난 건 진짜 성장이 아니니까요!"
+  }
+];
+
+// State
+const userAnswers = {};
+const container = document.getElementById('quizContainer');
+
+// Inline SVG graphs
+function getGraph(type) {
+  const base = `<svg class="graph-svg" viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">`;
+  const styles = `<style>
+    .axis{stroke:#333;stroke-width:1.5;fill:none}
+    .curve{stroke:#1A3F54;stroke-width:2;fill:none}
+    .curve-d{stroke:#D97757;stroke-width:2;fill:none;stroke-dasharray:4,3}
+    .arrow{stroke:#C04545;stroke-width:1.5;fill:none;marker-end:url(#arr)}
+    .lbl{font-family:'Noto Sans KR',sans-serif;font-size:10px;fill:#333}
+  </style>
+  <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><polygon points="0,0 6,3 0,6" fill="#C04545"/></marker></defs>`;
+  const axes = `<line class="axis" x1="30" y1="20" x2="30" y2="160"/><line class="axis" x1="30" y1="160" x2="220" y2="160"/>`;
+
+  if (type === "inflation") {
+    return base + styles + axes +
+      `<path class="curve" d="M 50 30 L 200 150"/>
+       <path class="curve" d="M 50 150 L 200 30"/>
+       <text class="lbl" x="38" y="32">물가</text>
+       <text class="lbl" x="195" y="170">국내 총생산</text>
+       <text class="lbl" x="200" y="40">총공급</text>
+       <text class="lbl" x="200" y="155">총수요</text>
+       <text class="lbl" x="120" y="70" fill="#C04545" font-weight="700">물가 상승</text>
+       <path class="arrow" d="M 110 95 L 120 75"/>
+       </svg>`;
+  }
+  if (type === "exchange_chart") {
+    return base + styles +
+      `<line class="axis" x1="30" y1="20" x2="30" y2="160"/>
+       <line class="axis" x1="30" y1="160" x2="220" y2="160"/>
+       <polyline class="curve" points="40,135 55,128 75,122 90,115 105,108 120,105 135,90 150,80 170,65 185,55 200,45"/>
+       <line x1="30" y1="135" x2="40" y2="135" stroke="#999" stroke-dasharray="2,2"/>
+       <line x1="30" y1="45" x2="200" y2="45" stroke="#999" stroke-dasharray="2,2"/>
+       <circle cx="40" cy="135" r="2.5" fill="#C04545"/>
+       <circle cx="200" cy="45" r="2.5" fill="#C04545"/>
+       <text class="lbl" x="35" y="148">1,194.7</text>
+       <text class="lbl" x="170" y="40">1,303.9</text>
+       <text class="lbl" x="40" y="174">1월</text>
+       <text class="lbl" x="195" y="174">7월</text>
+       <text class="lbl" x="38" y="32">원/달러</text>
+       <text class="lbl" x="100" y="90" fill="#C04545" font-weight="700">환율↑</text>
+       </svg>`;
+  }
+  if (type === "chocolate") {
+    // 초콜릿 수요공급 그래프: 가격 1000~3000, 수량 5~25만개
+    return base + styles +
+      `<line class="axis" x1="30" y1="15" x2="30" y2="160"/>
+       <line class="axis" x1="30" y1="160" x2="220" y2="160"/>
+       <line x1="30" y1="30" x2="35" y2="30" stroke="#333"/>
+       <line x1="30" y1="60" x2="35" y2="60" stroke="#333"/>
+       <line x1="30" y1="90" x2="35" y2="90" stroke="#333"/>
+       <line x1="30" y1="120" x2="35" y2="120" stroke="#333"/>
+       <line x1="30" y1="150" x2="35" y2="150" stroke="#333"/>
+       <text class="lbl" x="4" y="33">3000</text>
+       <text class="lbl" x="4" y="63">2500</text>
+       <text class="lbl" x="4" y="93">2000</text>
+       <text class="lbl" x="4" y="123">1500</text>
+       <text class="lbl" x="4" y="153">1000</text>
+       <line x1="60" y1="160" x2="60" y2="165" stroke="#333"/>
+       <line x1="90" y1="160" x2="90" y2="165" stroke="#333"/>
+       <line x1="120" y1="160" x2="120" y2="165" stroke="#333"/>
+       <line x1="150" y1="160" x2="150" y2="165" stroke="#333"/>
+       <line x1="180" y1="160" x2="180" y2="165" stroke="#333"/>
+       <text class="lbl" x="55" y="175">5</text>
+       <text class="lbl" x="85" y="175">10</text>
+       <text class="lbl" x="115" y="175">15</text>
+       <text class="lbl" x="145" y="175">20</text>
+       <text class="lbl" x="172" y="175">25</text>
+       <!-- 수요 곡선 (우하향): 가격 3000=수량 5만 / 가격 1000=수량 25만 -->
+       <path class="curve" d="M 60 30 L 180 150"/>
+       <!-- 공급 곡선 (우상향): 가격 1000=수량 5만 / 가격 3000=수량 25만 -->
+       <path class="curve" d="M 60 150 L 180 30"/>
+       <circle cx="120" cy="90" r="3" fill="#D97757"/>
+       <text class="lbl" x="18" y="12">가격(원)</text>
+       <text class="lbl" x="195" y="175">수량(만개)</text>
+       <text class="lbl" x="50" y="25" font-weight="600">수요 곡선</text>
+       <text class="lbl" x="155" y="25" font-weight="600">공급 곡선</text>
+       </svg>`;
+  }
+  if (type === "supply_left") {
+    return base + styles + axes +
+      `<path class="curve" d="M 50 30 L 200 150"/>
+       <path class="curve" d="M 60 150 L 180 30"/>
+       <path class="curve-d" d="M 35 150 L 155 30"/>
+       <path class="arrow" d="M 130 75 L 100 60"/>
+       <text class="lbl" x="38" y="32">가격</text>
+       <text class="lbl" x="195" y="170">수량</text>
+       <text class="lbl" x="55" y="40">수요 곡선</text>
+       <text class="lbl" x="160" y="40">공급 곡선</text>
+       <text class="lbl" x="60" y="55" fill="#C04545" font-weight="700">공급↓</text>
+       </svg>`;
+  }
+  return '';
+}
+
+// Exchange market 5 small graphs (for problem 18)
+function getExchangeChoiceGraph(type) {
+  const base = `<svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:140px;height:auto;">`;
+  const styles = `<style>
+    .ax{stroke:#333;stroke-width:1;fill:none}
+    .c{stroke:#1A3F54;stroke-width:1.5;fill:none}
+    .cd{stroke:#D97757;stroke-width:1.5;fill:none;stroke-dasharray:3,2}
+    .ar{stroke:#C04545;stroke-width:1;fill:none;marker-end:url(#a2)}
+    .l{font-family:'Noto Sans KR',sans-serif;font-size:7px;fill:#333}
+  </style>
+  <defs><marker id="a2" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><polygon points="0,0 5,2.5 0,5" fill="#C04545"/></marker></defs>
+  <line class="ax" x1="15" y1="10" x2="15" y2="78"/>
+  <line class="ax" x1="15" y1="78" x2="115" y2="78"/>
+  <text class="l" x="2" y="14">환율</text>
+  <text class="l" x="75" y="86">외환 거래량</text>
+  <text class="l" x="20" y="22">수요</text>
+  <text class="l" x="95" y="22">공급</text>`;
+
+  if (type === "supply_down") {
+    // 공급 좌측 이동
+    return base + styles +
+      `<path class="c" d="M 25 22 L 105 75"/>
+       <path class="c" d="M 25 75 L 105 22"/>
+       <path class="cd" d="M 25 60 L 95 8"/>
+       <path class="ar" d="M 70 45 L 55 30"/>
+       </svg>`;
+  }
+  if (type === "demand_up") {
+    // 수요 우측 이동 (환율 상승) - 정답
+    return base + styles +
+      `<path class="c" d="M 25 22 L 105 75"/>
+       <path class="c" d="M 25 75 L 105 22"/>
+       <path class="cd" d="M 40 8 L 115 60"/>
+       <path class="ar" d="M 60 35 L 75 50"/>
+       </svg>`;
+  }
+  if (type === "supply_up") {
+    // 공급 우측 이동
+    return base + styles +
+      `<path class="c" d="M 25 22 L 105 75"/>
+       <path class="c" d="M 25 75 L 105 22"/>
+       <path class="cd" d="M 45 75 L 115 30"/>
+       <path class="ar" d="M 70 50 L 85 40"/>
+       </svg>`;
+  }
+  if (type === "demand_down") {
+    // 수요 좌측 이동 (환율 하락)
+    return base + styles +
+      `<path class="c" d="M 25 22 L 105 75"/>
+       <path class="c" d="M 25 75 L 105 22"/>
+       <path class="cd" d="M 15 35 L 90 75"/>
+       <path class="ar" d="M 55 50 L 45 65"/>
+       </svg>`;
+  }
+  if (type === "both_down") {
+    // 수요·공급 모두 좌측 이동
+    return base + styles +
+      `<path class="c" d="M 25 22 L 105 75"/>
+       <path class="c" d="M 25 75 L 105 22"/>
+       <path class="cd" d="M 15 38 L 85 75"/>
+       <path class="cd" d="M 25 78 L 95 28"/>
+       <path class="ar" d="M 55 50 L 42 60"/>
+       <path class="ar" d="M 65 50 L 78 40"/>
+       </svg>`;
+  }
+  return '';
+}
+
+// Market shift graphs (for problem 25)
+function getMarketChoiceGraph(type) {
+  const base = `<svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:140px;height:auto;">`;
+  const styles = `<style>
+    .ax{stroke:#333;stroke-width:1;fill:none}
+    .c{stroke:#1A3F54;stroke-width:1.5;fill:none}
+    .cd{stroke:#D97757;stroke-width:1.5;fill:none;stroke-dasharray:3,2}
+    .ar{stroke:#C04545;stroke-width:1;fill:none;marker-end:url(#m2)}
+    .l{font-family:'Noto Sans KR',sans-serif;font-size:7px;fill:#333}
+  </style>
+  <defs><marker id="m2" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><polygon points="0,0 5,2.5 0,5" fill="#C04545"/></marker></defs>
+  <line class="ax" x1="15" y1="10" x2="15" y2="78"/>
+  <line class="ax" x1="15" y1="78" x2="115" y2="78"/>
+  <text class="l" x="2" y="14">가격</text>
+  <text class="l" x="100" y="86">수량</text>
+  <text class="l" x="20" y="22">수요 곡선</text>
+  <text class="l" x="80" y="22">공급 곡선</text>`;
+
+  if (type === "supply_left") {
+    // 공급 좌측 이동 - 감귤 공급 감소 (정답)
+    return base + styles +
+      `<path class="c" d="M 25 22 L 105 75"/>
+       <path class="c" d="M 25 75 L 105 22"/>
+       <path class="cd" d="M 15 60 L 95 8"/>
+       <path class="ar" d="M 70 45 L 55 30"/>
+       </svg>`;
+  }
+  if (type === "supply_right") {
+    // 공급 우측 이동
+    return base + styles +
+      `<path class="c" d="M 25 22 L 105 75"/>
+       <path class="c" d="M 25 75 L 105 22"/>
+       <path class="cd" d="M 45 75 L 115 30"/>
+       <path class="ar" d="M 70 50 L 85 40"/>
+       </svg>`;
+  }
+  if (type === "demand_left") {
+    // 수요 좌측 이동
+    return base + styles +
+      `<path class="c" d="M 25 22 L 105 75"/>
+       <path class="c" d="M 25 75 L 105 22"/>
+       <path class="cd" d="M 15 35 L 90 75"/>
+       <path class="ar" d="M 55 50 L 45 65"/>
+       </svg>`;
+  }
+  if (type === "demand_right") {
+    // 수요 우측 이동
+    return base + styles +
+      `<path class="c" d="M 25 22 L 105 75"/>
+       <path class="c" d="M 25 75 L 105 22"/>
+       <path class="cd" d="M 40 8 L 115 60"/>
+       <path class="ar" d="M 60 35 L 75 50"/>
+       </svg>`;
+  }
+  if (type === "both_left") {
+    // 수요·공급 모두 좌측 이동
+    return base + styles +
+      `<path class="c" d="M 25 22 L 105 75"/>
+       <path class="c" d="M 25 75 L 105 22"/>
+       <path class="cd" d="M 15 38 L 85 75"/>
+       <path class="cd" d="M 15 60 L 95 8"/>
+       <path class="ar" d="M 55 50 L 42 60"/>
+       <path class="ar" d="M 65 45 L 50 30"/>
+       </svg>`;
+  }
+  return '';
+}
+
+// Tree diagram for problem 12 (unemployment classification)
+function getTreeDiagram() {
+  return `<div class="tree-diagram"><svg class="tree-svg" viewBox="0 0 460 160" xmlns="http://www.w3.org/2000/svg">
+    <style>
+      .box{fill:#FBFAF6;stroke:#1A3F54;stroke-width:1.5}
+      .box-em{fill:#EAF1F6;stroke:#1A3F54;stroke-width:1.5}
+      .line{stroke:#1A3F54;stroke-width:1.5;fill:none}
+      .lbl{font-family:'Noto Sans KR',sans-serif;font-size:13px;fill:#1C1C1C;font-weight:600}
+      .lbl-sm{font-family:'Noto Sans KR',sans-serif;font-size:11px;fill:#1C1C1C}
+    </style>
+    <!-- 노동가능인구 -->
+    <rect class="box" x="10" y="60" width="100" height="40" rx="4"/>
+    <text class="lbl" x="60" y="85" text-anchor="middle">노동가능인구</text>
+    <!-- ㉠ (경제활동인구) -->
+    <rect class="box-em" x="180" y="20" width="80" height="40" rx="4"/>
+    <text class="lbl" x="220" y="45" text-anchor="middle">㉠</text>
+    <!-- ㉡ (비경제활동인구) -->
+    <rect class="box-em" x="180" y="100" width="80" height="40" rx="4"/>
+    <text class="lbl" x="220" y="125" text-anchor="middle">㉡</text>
+    <!-- 취업자 -->
+    <rect class="box" x="340" y="0" width="100" height="40" rx="4"/>
+    <text class="lbl" x="390" y="25" text-anchor="middle">취업자</text>
+    <!-- ㉢ (실업자) -->
+    <rect class="box-em" x="340" y="60" width="100" height="40" rx="4"/>
+    <text class="lbl" x="390" y="85" text-anchor="middle">㉢</text>
+    <!-- 연결선 -->
+    <path class="line" d="M 110 80 L 145 80 L 145 40 L 180 40"/>
+    <path class="line" d="M 110 80 L 145 80 L 145 120 L 180 120"/>
+    <path class="line" d="M 260 40 L 295 40 L 295 20 L 340 20"/>
+    <path class="line" d="M 260 40 L 295 40 L 295 80 L 340 80"/>
+  </svg></div>`;
+}
+
+function renderQuestion(item) {
+  const card = document.createElement('div');
+  card.className = 'question-card';
+  card.id = `q-${item.n}`;
+
+  let passageHTML = '';
+  if (item.passage) {
+    passageHTML = `
+      <div class="passage-box">
+        <div class="passage-title">＜ 보 기 ＞</div>
+        <div>${item.passage}</div>
+      </div>`;
+  }
+
+  if (item.treeDiag) {
+    passageHTML = `<div class="passage-box"><div class="passage-title">＜ 실업률 통계를 위한 인구 분류도 ＞</div>${getTreeDiagram()}</div>`;
+  }
+
+  if (item.table === 2) {
+    passageHTML = `
+      <div class="passage-box">
+        <div class="passage-title">＜ 보 기 ＞</div>
+        <table class="data-table">
+          <thead><tr><th>문제</th><th>학생 답안</th><th>배점</th></tr></thead>
+          <tbody>
+            <tr><td class="left">주식은 예금보다 안전성과 수익성이 모두 높다.</td><td>O</td><td>1</td></tr>
+            <tr><td class="left">자산 관리 시 지출 관리보다 자산을 늘리는데 만 집중해야 한다.</td><td>O</td><td>1</td></tr>
+            <tr><td class="left">쉽고 빠르게 현금으로 전환할 수 있는 정도를 수익성이라 한다.</td><td>O</td><td>1</td></tr>
+            <tr><td class="left">분산 투자할 경우 한 상품에 집중 투자할 때 보다 좀 더 안정적으로 자산을 운용할 수 있다.</td><td>X</td><td>1</td></tr>
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  if (item.graphType) {
+    passageHTML += `<div class="graph-box">${getGraph(item.graphType)}<div class="graph-caption">＜ 그래프 ＞</div></div>`;
+  }
+
+  // Choices
+  let choicesHTML = '';
+  if (item.isExchangeGraph) {
+    // Problem 18 - exchange market graph choices
+    choicesHTML = '<div class="graph-choices">';
+    item.choices.forEach((c, i) => {
+      const num = ['①','②','③','④','⑤'][i];
+      choicesHTML += `
+        <div class="graph-choice" data-idx="${i}" onclick="selectAnswer(${item.n}, ${i})">
+          <div class="gc-num">${num}</div>
+          ${getExchangeChoiceGraph(c.type)}
+        </div>`;
+    });
+    choicesHTML += '</div>';
+  } else if (item.isMarketGraph) {
+    // Problem 25 - market shift graph choices
+    choicesHTML = '<div class="graph-choices">';
+    item.choices.forEach((c, i) => {
+      const num = ['①','②','③','④','⑤'][i];
+      choicesHTML += `
+        <div class="graph-choice" data-idx="${i}" onclick="selectAnswer(${item.n}, ${i})">
+          <div class="gc-num">${num}</div>
+          ${getMarketChoiceGraph(c.type)}
+        </div>`;
+    });
+    choicesHTML += '</div>';
+  } else {
+    choicesHTML = '<div class="choices">';
+    item.choices.forEach((c, i) => {
+      const num = ['①','②','③','④','⑤'][i];
+      if (item.isPair) {
+        choicesHTML += `
+          <div class="choice pair-choice" data-idx="${i}" onclick="selectAnswer(${item.n}, ${i})">
+            <div class="choice-num">${num}</div>
+            <div class="choice-text">
+              <span class="pair-left">${c.left}</span>
+              <span class="pair-divider">／</span>
+              <span class="pair-right">${c.right}</span>
+            </div>
+          </div>`;
+      } else {
+        choicesHTML += `
+          <div class="choice" data-idx="${i}" onclick="selectAnswer(${item.n}, ${i})">
+            <div class="choice-num">${num}</div>
+            <div class="choice-text">${c}</div>
+          </div>`;
+      }
+    });
+    choicesHTML += '</div>';
+  }
+
+  let pairHeaderHTML = '';
+  if (item.isPair && item.pairHeader) {
+    pairHeaderHTML = `<div style="display:flex;justify-content:space-around;font-weight:700;font-size:12px;color:var(--primary-dark);margin-bottom:8px;padding:6px;background:#F0EBE0;border-radius:6px;">
+      <span>${item.pairHeader.left}</span><span>${item.pairHeader.right}</span>
+    </div>`;
+  }
+
+  card.innerHTML = `
+    <div class="q-header">
+      <div class="q-num">${item.n}</div>
+      <div class="q-text">${item.q}</div>
+    </div>
+    ${passageHTML}
+    ${pairHeaderHTML}
+    ${choicesHTML}
+    <div class="explanation" id="exp-${item.n}">
+      <div class="ex-title">해설</div>
+      <div class="ex-answer">정답: ${['①','②','③','④','⑤'][item.answer]}</div>
+      <div>${item.explain}</div>
+    </div>
+  `;
+  container.appendChild(card);
+}
+
+questions.forEach(q => renderQuestion(q));
+
+// Build jump nav
+const jumpGrid = document.getElementById('jumpGrid');
+questions.forEach(q => {
+  const btn = document.createElement('button');
+  btn.className = 'jump-btn';
+  btn.id = `jb-${q.n}`;
+  btn.textContent = q.n;
+  btn.onclick = () => {
+    document.getElementById(`q-${q.n}`).scrollIntoView({behavior:'smooth', block:'start'});
+  };
+  jumpGrid.appendChild(btn);
+});
+
+function selectAnswer(qn, idx) {
+  const item = questions.find(q => q.n === qn);
+  const card = document.getElementById(`q-${qn}`);
+  const isGraph = item.isExchangeGraph || item.isMarketGraph;
+  const choices = card.querySelectorAll(isGraph ? '.graph-choice' : '.choice');
+  const jb = document.getElementById(`jb-${qn}`);
+
+  // 이미 답을 선택한 경우
+  if (userAnswers[qn] !== undefined) {
+    // 같은 답을 다시 클릭하면 초기화
+    if (userAnswers[qn] === idx) {
+      delete userAnswers[qn];
+      choices.forEach(ch => {
+        ch.classList.remove('selected', 'correct', 'wrong', 'disabled');
+      });
+      card.classList.remove('answered');
+      document.getElementById(`exp-${qn}`).classList.remove('show');
+      jb.classList.remove('correct', 'wrong');
+      updateProgress();
+      return;
+    }
+    // 다른 답 클릭은 무시 (이미 채점됨)
+    return;
+  }
+
+  // 새로 답 선택
+  userAnswers[qn] = idx;
+  choices.forEach((ch, i) => {
+    ch.classList.add('disabled');
+    if (i === item.answer) ch.classList.add('correct');
+    if (i === idx && i !== item.answer) ch.classList.add('wrong');
+    if (i === idx) ch.classList.add('selected');
+  });
+
+  card.classList.add('answered');
+  document.getElementById(`exp-${qn}`).classList.add('show');
+  jb.classList.add(idx === item.answer ? 'correct' : 'wrong');
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const answered = Object.keys(userAnswers).length;
+  const correct = Object.entries(userAnswers).filter(([qn, idx]) => {
+    const q = questions.find(q => q.n === parseInt(qn));
+    return q.answer === idx;
+  }).length;
+  const total = questions.length;
+  const pct = answered ? Math.round(correct / answered * 100) : 0;
+  document.getElementById('progressText').textContent = `${answered} / ${total} 풀이 완료`;
+  document.getElementById('progressPct').textContent = `정답률 ${pct}%`;
+  document.getElementById('progressFill').style.width = (answered/total*100) + '%';
+  document.getElementById('scoreNum').innerHTML = `${correct}<span class="total"> / ${total}</span>`;
+}
+
+function resetAll() {
+  Object.keys(userAnswers).forEach(k => delete userAnswers[k]);
+  document.querySelectorAll('.choice, .graph-choice').forEach(c => {
+    c.classList.remove('selected', 'correct', 'wrong', 'disabled');
+  });
+  document.querySelectorAll('.explanation').forEach(e => e.classList.remove('show'));
+  document.querySelectorAll('.question-card').forEach(c => c.classList.remove('answered'));
+  document.querySelectorAll('.jump-btn').forEach(b => b.classList.remove('correct', 'wrong'));
+  updateProgress();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function revealAll() {
+  questions.forEach(item => {
+    if (userAnswers[item.n] === undefined) {
+      const card = document.getElementById(`q-${item.n}`);
+      const isGraph = item.isExchangeGraph || item.isMarketGraph;
+      const choices = card.querySelectorAll(isGraph ? '.graph-choice' : '.choice');
+      choices.forEach((ch, i) => {
+        ch.classList.add('disabled');
+        if (i === item.answer) ch.classList.add('correct');
+      });
+      card.classList.add('answered');
+      document.getElementById(`exp-${item.n}`).classList.add('show');
+    }
+  });
+}
+
+updateProgress();
+</script>
+
+</body>
+</html>

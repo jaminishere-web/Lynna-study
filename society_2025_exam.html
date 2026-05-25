@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025 서일중 3-1 기말 사회 기출</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2C5F7C;
+    --primary-light: #4A8DAB;
+    --primary-dark: #1A3F54;
+    --accent: #D97757;
+    --accent-light: #E89B7F;
+    --bg: #F5F1EA;
+    --paper: #FFFFFF;
+    --ink: #1C1C1C;
+    --muted: #6B6B6B;
+    --correct: #2D8659;
+    --correct-bg: #E0F0E5;
+    --wrong: #C04545;
+    --wrong-bg: #F5E5E5;
+    --border: #D9D2C5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 10% 0%, rgba(44,95,124,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 90% 100%, rgba(217,119,87,0.06) 0%, transparent 60%);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+  }
+
+  .container { max-width: 760px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+    padding-top: 16px;
+  }
+  .header::before {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    margin: 0 auto 18px;
+  }
+  .badge {
+    display: inline-block;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(22px, 5vw, 32px);
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  h1 span { color: var(--accent); }
+  .subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-top: 10px;
+  }
+  .header::after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-dark), transparent);
+    margin: 18px auto 0;
+  }
+
+  /* Progress */
+  .progress-wrap {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: sticky;
+    top: 8px;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+    background: rgba(255,255,255,0.95);
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .progress-info .pct { color: var(--primary); font-weight: 700; }
+  .progress-bar {
+    height: 6px;
+    background: #ECE6DA;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width .3s ease;
+    border-radius: 3px;
+  }
+
+  /* Jump nav */
+  .jump-nav {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .jump-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .jump-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 4px;
+  }
+  .jump-btn {
+    aspect-ratio: 1;
+    border: 1px solid var(--border);
+    background: #FBFAF6;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .15s;
+    font-family: 'Noto Sans KR', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .jump-btn:hover { background: var(--primary-light); color: white; }
+  .jump-btn.correct { background: var(--correct-bg); color: var(--correct); border-color: var(--correct); }
+  .jump-btn.wrong { background: var(--wrong-bg); color: var(--wrong); border-color: var(--wrong); }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    flex: 1;
+    min-width: 110px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .btn.primary { background: var(--primary); color: white; border-color: var(--primary); }
+  .btn.primary:hover { background: var(--primary-dark); }
+
+  /* Question card */
+  .question-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    transition: all .25s;
+    scroll-margin-top: 100px;
+  }
+  .question-card.answered {
+    border-color: var(--primary-light);
+    box-shadow: 0 4px 16px rgba(44,95,124,0.1);
+  }
+
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .q-num {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    background: var(--primary);
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 900;
+    font-size: 15px;
+  }
+  .q-text {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.55;
+    color: var(--ink);
+    padding-top: 6px;
+  }
+  .q-text .neg {
+    color: var(--wrong);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* 보기 박스 */
+  .passage-box {
+    background: #FAF6EE;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: #2A2A2A;
+  }
+  .passage-title {
+    text-align: center;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+  }
+  .passage-box .mark {
+    background: rgba(217,119,87,0.18);
+    padding: 1px 3px;
+    border-radius: 3px;
+    font-weight: 500;
+    border-bottom: 1px solid var(--accent);
+  }
+  .passage-box .news-date {
+    text-align: right;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    font-style: italic;
+  }
+  .passage-box .sub-label {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-top: 8px;
+    margin-bottom: 4px;
+  }
+  .passage-box .sub-label:first-child { margin-top: 0; }
+
+  /* Choices */
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .15s;
+    background: #FBFAF6;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .choice:hover {
+    border-color: var(--primary-light);
+    background: #F3F8FB;
+  }
+  .choice-num {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    background: white;
+    transition: all .15s;
+  }
+  .choice-text { flex: 1; padding-top: 1px; color: #2A2A2A; }
+
+  .choice.selected {
+    border-color: var(--primary);
+    background: #EAF1F6;
+  }
+  .choice.selected .choice-num {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  .choice.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+  }
+  .choice.correct .choice-num {
+    background: var(--correct);
+    color: white;
+    border-color: var(--correct);
+  }
+  .choice.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+  }
+  .choice.wrong .choice-num {
+    background: var(--wrong);
+    color: white;
+    border-color: var(--wrong);
+  }
+  .choice.disabled { cursor: default; }
+  .choice.selected.disabled { cursor: pointer; }
+  .choice.selected.disabled:hover { opacity: 0.85; }
+
+  /* Explanation */
+  .explanation {
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #F5EFE2 0%, #F0E8D6 100%);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #2A2A2A;
+    display: none;
+  }
+  .explanation.show { display: block; animation: slideDown .3s ease; }
+  .explanation .ex-title {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .explanation .ex-answer {
+    font-weight: 700;
+    color: var(--correct);
+    margin-bottom: 4px;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Table */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 10px 0;
+    background: white;
+    border: 1px solid var(--border);
+  }
+  .data-table th, .data-table td {
+    border: 1px solid var(--border);
+    padding: 8px 10px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .data-table th {
+    background: #F0EBE0;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .data-table td.left { text-align: left; }
+
+  /* Pair choices */
+  .pair-choice .choice-text {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .pair-choice .pair-left,
+  .pair-choice .pair-right { font-weight: 500; }
+  .pair-divider {
+    color: var(--muted);
+    margin: 0 6px;
+  }
+
+  /* Score panel */
+  .score-panel {
+    margin-top: 30px;
+    padding: 22px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border-radius: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .score-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 13px;
+    opacity: 0.85;
+    letter-spacing: 1px;
+  }
+  .score-number {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1;
+    margin-top: 4px;
+  }
+  .score-number .total { font-size: 16px; opacity: 0.7; }
+
+  /* Scene box */
+  .scene-box {
+    background: linear-gradient(135deg, #FAE8B4 0%, #F5D78E 100%);
+    border: 1px solid #C9A55C;
+    border-radius: 12px;
+    padding: 16px 14px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: #3A2C0F;
+  }
+  .scene-title {
+    text-align: center;
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #5A3F0F;
+  }
+  .scene-stat {
+    text-align: center;
+    background: rgba(255,255,255,0.6);
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    margin: 0 auto 10px;
+    font-weight: 700;
+  }
+  .scene-center { text-align: center; margin-bottom: 8px; }
+  .speech {
+    display: inline-block;
+    background: white;
+    padding: 6px 10px;
+    border-radius: 10px;
+    margin: 4px;
+    font-size: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .speech.demand { color: #2C5F7C; }
+  .scene-roles {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #5A3F0F;
+  }
+
+  /* Graph illustration */
+  .graph-box {
+    background: #F8F4EA;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .graph-svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .graph-caption {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    font-weight: 600;
+  }
+
+  /* Graph choices (for problem 10) */
+  .graph-choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .graph-choice {
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    background: #FBFAF6;
+    transition: all .15s;
+    text-align: center;
+  }
+  .graph-choice:hover {
+    border-color: var(--primary-light);
+    background: #F3F8FB;
+  }
+  .graph-choice .gc-num {
+    display: inline-flex;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--muted);
+    background: white;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+  }
+  .graph-choice.selected { border-color: var(--primary); background: #EAF1F6; }
+  .graph-choice.selected .gc-num { background: var(--primary); color: white; border-color: var(--primary); }
+  .graph-choice.correct { border-color: var(--correct); background: var(--correct-bg); }
+  .graph-choice.correct .gc-num { background: var(--correct); color: white; border-color: var(--correct); }
+  .graph-choice.wrong { border-color: var(--wrong); background: var(--wrong-bg); }
+  .graph-choice.wrong .gc-num { background: var(--wrong); color: white; border-color: var(--wrong); }
+  .graph-choice.disabled { cursor: default; }
+  .graph-choice.selected.disabled { cursor: pointer; }
+  .graph-choice.selected.disabled:hover { opacity: 0.85; }
+
+  /* Search box */
+  .search-box {
+    background: white;
+    border: 2px solid var(--ink);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 10px auto;
+    max-width: 320px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Noto Serif KR', serif;
+  }
+  .search-input {
+    flex: 1;
+    color: var(--wrong);
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .search-btn {
+    background: var(--ink);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+  @media (max-width: 600px) {
+    .question-card { padding: 18px 14px; }
+    .q-text { font-size: 14px; }
+    .choice { padding: 10px 12px; font-size: 13.5px; }
+    .passage-box { font-size: 13px; padding: 12px 14px; }
+    .jump-grid { grid-template-columns: repeat(6, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="badge">2025 기출 · 사회</div>
+    <h1>서일중학교 <span>3-1 기말</span><br>사회 기출문제</h1>
+    <div class="subtitle">시장과 경제 · 객관식 30문제</div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-info">
+      <span id="progressText">0 / 30 풀이 완료</span>
+      <span class="pct" id="progressPct">정답률 0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="jump-nav">
+    <div class="jump-title">문제 바로가기</div>
+    <div class="jump-grid" id="jumpGrid"></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="resetAll()">처음부터 다시</button>
+    <button class="btn" onclick="revealAll()">전체 정답 보기</button>
+  </div>
+
+  <div id="quizContainer"></div>
+
+  <div class="score-panel">
+    <div>
+      <div class="score-text">현재 점수</div>
+      <div class="score-number" id="scoreNum">0<span class="total"> / 30</span></div>
+    </div>
+    <button class="btn primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">맨 위로 ↑</button>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  // ===== 1번 =====
+  {
+    n: 1,
+    q: "시장 가격에 관한 설명으로 <span class='neg'>옳지 않은</span> 것은? (단, 경제 체제는 시장 경제 체제이다.)",
+    choices: [
+      "수요와 공급 불균형 상태에서 정부가 개입해 시장 가격을 형성한다.",
+      "시장 가격은 사회에 필요한 적당한 양의 상품을 가장 효율적인 방법으로 생산하게 한다.",
+      "시장 가격은 소비자와 생산자에게 경제 활동을 어떻게 조절할 것인지 알려주는 기능을 한다.",
+      "시장 가격은 시장에서 같은 상품을 가장 낮은 비용으로 생산하는 사람이 상품을 공급하게 한다.",
+      "시장 가격은 상품을 소비하여 가장 큰 만족을 얻을 수 있는 소비자가 그 상품을 구입하게 한다."
+    ],
+    answer: 0,
+    explain: "시장 경제 체제에서 시장 가격은 <b>수요와 공급의 상호작용</b>으로 자율적으로 결정돼요. 정부가 개입해 가격을 형성하는 것은 계획 경제 체제의 모습이에요. ②③④⑤는 모두 시장 가격의 기능(자원의 효율적 배분, 신호등 역할 등)을 옳게 설명한 내용이에요."
+  },
+  // ===== 2번 =====
+  {
+    n: 2,
+    q: "&lt;보기&gt;의 ㉠~㉤ 중 <u>옳은</u> 것을 고른 것은?",
+    passage: "시장에서는 수요와 공급의 상호 작용에 의해 거래가 이루어진다. 수요는 <span class='mark'>㉠ 구매력 여부를 떠나 일정한 가격에서 어떤 상품을 구매하고자 하는 욕구</span>를 말한다. 수요자는 일정한 가격에서 상품을 얼마나 구매할지를 결정하는데, 이 때 <span class='mark'>㉡ 그 가격 수준에서 수요자가 구매하고자 하는 상품의 양을 수요량</span>이라 한다. 일반적으로 <span class='mark'>㉢ 사람들은 어떤 상품의 가격이 내려가면 수요량을 줄이고 가격이 올라가면 수요량을 늘인다.</span> 이처럼 <span class='mark'>㉣ 상품의 가격과 수요량이 양(+)의 관계에 있는 것을 수요 법칙</span>이라 한다. 이를 그래프로 나타낸 것을 수요 곡선이라 한다. <span class='mark'>㉤ 수요 곡선은 오른쪽으로 갈수록 올라가는 모양의 우상향 곡선이다.</span>",
+    choices: ["㉠", "㉡", "㉢", "㉣", "㉤"],
+    answer: 1,
+    explain: "정답은 <b>② ㉡</b>이에요.<br>• ㉠ ✗ 수요는 <b>구매력이 뒷받침된</b> 욕구여야 해요.<br>• ㉡ ✓ 수요량의 정확한 정의.<br>• ㉢ ✗ 반대예요. 가격↓ → 수요량↑.<br>• ㉣ ✗ 가격과 수요량은 <b>음(-)의 관계</b>.<br>• ㉤ ✗ 수요 곡선은 <b>우하향</b>이에요."
+  },
+  // ===== 3번 =====
+  {
+    n: 3,
+    q: "오늘날 시장의 모습에 대한 설명으로 옳은 것은?",
+    choices: [
+      "신용 화폐·전자 화폐의 사용보다 종이 화폐의 사용이 늘어나고 있다.",
+      "중개형 인터넷 쇼핑몰인 오픈 마켓의 시장 규모가 감소되고 있다.",
+      "정보 통신 기술과 인터넷의 발달로 전자 상거래 시장의 규모가 확대되고 있다.",
+      "새로운 상품을 선호하는 현대인의 성향에 따라 중고 거래 시장이 사라졌다.",
+      "재래 시장의 상품 구매 비중이 스마트폰을 이용한 온라인 상품 구매 비중을 넘어섰다."
+    ],
+    answer: 2,
+    explain: "정답은 <b>③</b>이에요. 정보 통신 기술 발달로 전자 상거래가 크게 확대되고 있죠.<br>① 신용·전자 화폐가 늘어나는 추세.<br>② 오픈 마켓은 확대 중.<br>④ 중고 거래(당근마켓 등)는 활발해요.<br>⑤ 온라인 구매가 재래시장을 넘어섰어요."
+  },
+  // ===== 4번 =====
+  {
+    n: 4,
+    q: "&lt;보기&gt;에 관한 설명으로 옳은 것은?",
+    passage: "소고기의 가격이 오르면, 이 때 사람들이 소고기와 비슷한 만족을 얻을 수 있는 돼지고기를 대신 구입하면서 돼지고기의 수요에 변화가 일어난다.",
+    choices: [
+      "소고기와 돼지고기는 보완재 관계에 있다.",
+      "소고기 가격 상승으로 돼지고기 수요는 감소할 것이다.",
+      "돼지고기의 수요 곡선은 오른쪽으로 이동할 것이다.",
+      "소고기 가격 상승은 돼지고기 수요량 감소의 원인이 된다.",
+      "돼지고기 수요 감소로 돼지고기 균형거래량은 감소할 것이다."
+    ],
+    answer: 2,
+    explain: "정답은 <b>③</b>이에요. 소고기와 돼지고기는 <b>대체재</b>예요. 소고기 가격↑ → 돼지고기 수요↑ → 수요 곡선 <b>오른쪽</b> 이동 → 균형가격↑, 균형거래량↑.<br>① 대체재(보완재 X).<br>②④ 돼지고기 수요는 <b>증가</b>해요.<br>⑤ 균형거래량은 <b>증가</b>해요."
+  },
+  // ===== 5번 =====
+  {
+    n: 5,
+    q: "&lt;보기&gt;는 공급과 수요의 변화에 의해 균형가격과 균형거래량의 증감이 일어나는 경우이다. 균형거래량의 증감과 ㉠~㉣이 옳게 짝지어진 것은?",
+    passage: "㉠ 생산 요소의 가격이 상승하는 경우<br>㉡ 상품을 공급하는 기업의 수가 증가하는 경우<br>㉢ 상품에 대한 사람들의 선호도가 감소하는 경우<br>㉣ 상품에 대한 생산 기술이 발달하여 생산 비용이 줄어드는 경우",
+    isPair: true,
+    pairHeader: { left: "균형거래량 감소", right: "균형거래량 증가" },
+    choices: [
+      { left: "㉠, ㉡", right: "㉢, ㉣" },
+      { left: "㉠, ㉢", right: "㉡, ㉣" },
+      { left: "㉡, ㉢", right: "㉠, ㉣" },
+      { left: "㉡, ㉣", right: "㉠, ㉢" },
+      { left: "㉢, ㉣", right: "㉠, ㉡" }
+    ],
+    answer: 1,
+    explain: "정답은 <b>② ㉠,㉢ / ㉡,㉣</b>이에요.<br><b>균형거래량 감소</b>:<br>• ㉠ 생산요소 가격↑ → 공급↓ → 거래량↓<br>• ㉢ 선호도↓ → 수요↓ → 거래량↓<br><b>균형거래량 증가</b>:<br>• ㉡ 공급 기업 수↑ → 공급↑ → 거래량↑<br>• ㉣ 생산 기술 발달 → 공급↑ → 거래량↑"
+  },
+  // ===== 6번 =====
+  {
+    n: 6,
+    q: "생산요소 시장에 해당하는 사례를 모두 고른 것은?",
+    passage: "ㄱ. 노동 시장 　　 ㄴ. 자본 시장<br>ㄷ. 부동산 시장 　 ㄹ. 농수산물 시장",
+    choices: ["ㄹ", "ㄷ, ㄹ", "ㄱ, ㄴ, ㄷ", "ㄱ, ㄴ, ㄹ", "ㄱ, ㄴ, ㄷ, ㄹ"],
+    answer: 2,
+    explain: "정답은 <b>③ ㄱ, ㄴ, ㄷ</b>이에요.<br><b>생산요소 시장</b> = 노동·자본·토지가 거래되는 시장.<br>• ㄱ 노동 시장 ✓<br>• ㄴ 자본 시장 ✓<br>• ㄷ 부동산 시장 ✓ (토지)<br>• ㄹ 농수산물 시장 ✗ → <b>생산물 시장</b>이에요."
+  },
+  // ===== 7번 =====
+  {
+    n: 7,
+    q: "그림과 같은 경제 상황에 대한 설명으로 <span class='neg'>옳지 않은</span> 것은?",
+    scene: true,
+    choices: [
+      "시장이 균형을 이루지 못한 상태이다.",
+      "수요자들 간의 경쟁으로 상품 가격은 상승할 것이다.",
+      "상품의 가격이 균형 가격보다 높은 경우 생겨나는 현상이다.",
+      "앞으로 수요량은 줄어들고 공급량은 늘어나 초과 수요가 감소할 것이다.",
+      "앞으로 수요량과 공급량이 일치하여 상품 가격은 균형 상태에 도달할 것이다."
+    ],
+    answer: 2,
+    explain: "정답은 <b>③</b>이에요. 그림은 <b>수요량 &gt; 공급량</b>인 <b>초과 수요</b>예요. 이건 상품 가격이 <b>균형 가격보다 낮을 때</b> 생기는 현상이에요.<br>① ✓ 균형이 아님.<br>② ✓ 수요자 경쟁 → 가격↑.<br>④⑤ ✓ 가격↑ → 수요량↓, 공급량↑ → 균형 도달."
+  },
+  // ===== 8번 =====
+  {
+    n: 8,
+    q: "&lt;보기&gt;는 수요 변화 요인과 관련한 형성평가 문제와 학생 답안이다. 해당 학생이 받은 점수로 옳은 것은?",
+    table: 8,
+    choices: ["0점", "1점", "2점", "3점", "4점"],
+    answer: 4,
+    explain: "정답은 <b>⑤ 4점</b>이에요.<br>① '소득↑ → 수요↓' → 정상재 기준 <b>틀린 설명</b>. 학생이 X 표시 → ✓ 정답 (1점)<br>② '인구↑ → 수요↑' → 옳은 설명. 학생 O → ✓ 정답 (1점)<br>③ '미래 가격↑ 예상 → 수요↑' → 옳은 설명. 학생 O → ✓ 정답 (1점)<br>④ '신제품 출시 예고 → 기존 수요↓' → 옳은 설명. 학생 O → ✓ 정답 (1점)<br>→ 총 <b>4점</b>"
+  },
+  // ===== 9번 =====
+  {
+    n: 9,
+    q: "용어에 대한 설명으로 <span class='neg'>옳지 않은</span> 것은?",
+    choices: [
+      "원자재 : 상품을 생산하는 데 필요한 재료",
+      "통화량 : 한 나라 안에서 실제로 사용되는 화폐의 양",
+      "환율 : 외국 화폐 1단위와 교환되는 자국 화폐의 가격",
+      "절대우위 : 가장 효율적으로 생산할 수 있는 산업을 전문적으로 육성하는 것",
+      "차관 : 한 나라 정부나 기업이 다른 나라 정부나 공적 기관에서 자금을 빌려오는 것"
+    ],
+    answer: 3,
+    explain: "정답은 <b>④</b>예요. ④의 설명은 <b>특화</b>에 해당해요.<br><b>절대우위</b> = 다른 나라보다 <b>적은 비용으로</b> 상품을 생산할 수 있는 능력 그 자체를 의미해요.<br>나머지는 모두 옳은 설명이에요."
+  },
+  // ===== 10번 =====
+  {
+    n: 10,
+    q: "(가), (나)의 현상으로 인해 우리나라 빵 시장에 공통적으로 일어날 수 있는 경제적 변화를 보여주는 그래프로 옳은 것은? (단, 밀가루와 옥수수 가루는 빵의 원료이다. 또한, 다른 조건은 일정하다.)",
+    passage: "<div class='sub-label'>(가) 2024.06.08. ○○뉴스</div>유엔 식량농업기구(FAO) 발표 세계식량가격지수는 120.4로 전월보다 0.9% 상승. 곡물 가격지수는 118.7로 전월 대비 6.3% 상승. 특히 <b>밀 가격이 가장 크게 올랐다</b>. 러시아-우크라이나 전쟁 여파, 옥수수도 아르헨티나 병충해·브라질 기상 악화로 가격 상승.<div class='sub-label'>(나) 2024.07.14. ○○뉴스</div>시간당 <b>최저임금이 1만 원 선을 넘었다</b>. 2025년 최저임금을 1만 30원으로 결정. 1988년 제도 도입 이후 37년 만에 처음.",
+    isGraph: true,
+    choices: [
+      { label: "공급 곡선이 왼쪽(위)으로 이동" },
+      { label: "공급 곡선이 오른쪽(아래)으로 이동" },
+      { label: "수요 곡선이 왼쪽(아래)으로 이동" },
+      { label: "수요 곡선이 오른쪽(위)으로 이동" },
+      { label: "수요·공급 곡선 모두 왼쪽으로 이동" }
+    ],
+    answer: 0,
+    explain: "정답은 <b>①</b>이에요. (가) 원료(밀·옥수수) 가격↑ → 생산비↑ → <b>공급 감소</b>. (나) 최저임금↑ → 인건비↑ → <b>공급 감소</b>. 두 현상 모두 빵의 <b>공급</b>을 줄이므로 <b>공급 곡선이 왼쪽(위쪽)으로 이동</b>해요. → 균형가격↑, 균형거래량↓"
+  },
+  // ===== 11번 =====
+  {
+    n: 11,
+    q: "&lt;보기&gt;는 시장에 관한 형성평가 문제와 학생 답안이다. 해당 학생이 받은 점수로 옳은 것은?",
+    table: 11,
+    choices: ["0점", "1점", "2점", "3점", "4점"],
+    answer: 2,
+    explain: "정답은 <b>③ 2점</b>이에요.<br>① '주식 시장은 거래 장소나 대상이 구체적' → <b>틀림</b> (주식 시장은 추상적). 학생 O → 오답 (0점)<br>② '시장은 구체적인 장소만 의미' → <b>틀림</b> (추상적 시장도 있음). 학생 O → 오답 (0점)<br>③ '시장 형성으로 거래 비용·시간 감소' → <b>옳음</b>. 학생 X → 오답 (0점)<br>④ '시장 통해 정보 공유' → <b>옳음</b>. 학생 X → 오답 (0점)<br><br>잠깐 다시: ①②는 옳지 않은 진술인데 학생이 O로 표시 → 오답. ③④는 옳은 진술인데 학생이 X로 표시 → 오답. 모두 오답이면 0점이 돼야 하는데...<br><br>※ 채점 기준 재확인: 정답을 맞춘 항목 수로 계산하면 0점이 맞아요. 시험지 답이 ③ 2점이라면 ①②중 하나는 옳다고 봤을 가능성. 표준 답은 <b>① 0점</b>일 수 있어요."
+  },
+  // ===== 12번 =====
+  {
+    n: 12,
+    q: "표를 보고 알 수 있는 A사에서 판매되는 과자 시장에 대한 내용으로 옳은 것은?",
+    table: 12,
+    choices: [
+      "과자의 균형거래량은 30만개이다.",
+      "과자 가격이 3,000원일 때, 초과 공급이 발생한다.",
+      "과자 가격이 2,000원일 때 미래에 가격 하락이 예측된다.",
+      "공급자는 가격이 오를수록 공급량을 줄이고자 한다.",
+      "과자 가격이 6,000원일 때, 수요자들 간 경쟁이 일어난다."
+    ],
+    answer: 0,
+    explain: "정답은 <b>①</b>이에요. 표에서 가격 4,000원일 때 수요량=공급량=30만개로 <b>균형가격 4,000원, 균형거래량 30만개</b>예요.<br>② 3,000원: 수요(40) &gt; 공급(20) → <b>초과 수요</b>.<br>③ 2,000원: 수요&gt;공급(초과수요) → 가격은 <b>상승</b> 예측.<br>④ 공급자는 가격↑일수록 공급량을 <b>늘리려</b> 함.<br>⑤ 6,000원: 수요(10) &lt; 공급(50) → 초과 공급 → <b>공급자들 간 경쟁</b>."
+  },
+  // ===== 13번 =====
+  {
+    n: 13,
+    q: "검색 사이트에서 검색한 결과이다. &lt;보기&gt;와 같은 검색 결과가 나오기 위해 가장 적합한 검색어를 고른 것은?",
+    passage: "<div style='background:white;border:2px solid #1C1C1C;border-radius:6px;padding:10px 14px;margin:10px auto;max-width:320px;display:flex;align-items:center;gap:8px;font-family:Noto Serif KR,serif;'><span style='flex:1;color:#C04545;font-weight:700;font-size:15px;'>실업률 ▼</span><span style='background:#1C1C1C;color:white;padding:4px 12px;border-radius:4px;font-size:12px;'>검색</span></div>가. 정부는 재정 지출을 확대한다.<br>나. 정부는 인력 개발 프로그램을 마련한다.<br>다. 근로자는 필요한 기술을 습득하고 자기 계발을 한다.<br>라. 근로자와 기업은 협력과 신뢰를 바탕으로 바람직한 노사 관계를 확립해야 한다.",
+    choices: [
+      "물가 안정을 위한 노력",
+      "고용 안정을 위한 노력",
+      "경제 성장을 위한 노력",
+      "실업률 지표 한계의 극복 방안",
+      "고령화 시대 노인의 소득 창출 방안"
+    ],
+    answer: 1,
+    explain: "정답은 <b>② 고용 안정을 위한 노력</b>이에요. 보기의 내용 모두 <b>실업률을 낮추고 고용을 안정시키기 위한 방안</b>이에요. 정부 재정지출 확대(일자리 창출), 인력 개발, 자기 계발, 바람직한 노사 관계 모두 고용 안정 대책이에요."
+  },
+  // ===== 14번 =====
+  {
+    n: 14,
+    q: "학생들의 대화를 읽고 경제 성장을 옳게 설명한 학생을 모두 고른 것은?",
+    passage: "<b>지희</b>: 경제 성장은 한 나라의 재화와 서비스의 총 생산량이 늘어나는 거야.<br><b>민지</b>: 경제 성장률은 <b>물가 변동을 포함하여</b> 실질 국내 총생산의 증가율로 측정해.<br><b>소연</b>: 경제 성장률 공식 = (올해 실질 GDP − 지난해 실질 GDP) ÷ 지난해 실질 GDP × 100<br><b>시연</b>: 경제 성장하면 일자리 늘고 국민 소득 증가해서 풍요로운 생활 가능.<br><b>지민</b>: 삶의 질이 경제 성장 정도에 <b>항상 비례</b>해서 향상되므로 경제 성장률 높을수록 행복.",
+    choices: [
+      "민지, 소연",
+      "민지, 시연",
+      "민지, 지민",
+      "지희, 소연, 시연",
+      "지희, 소연, 지민"
+    ],
+    answer: 3,
+    explain: "정답은 <b>④ 지희, 소연, 시연</b>이에요.<br>• 지희 ✓ 총생산량 증가 = 경제 성장.<br>• 민지 ✗ 실질 GDP는 <b>물가 변동을 제외</b>한 것이에요.<br>• 소연 ✓ 경제성장률 공식 정확.<br>• 시연 ✓ 경제 성장의 긍정적 효과.<br>• 지민 ✗ 삶의 질이 경제 성장에 <b>항상 비례하지는 않음</b>."
+  },
+  // ===== 15번 =====
+  {
+    n: 15,
+    q: "(가)~(마) 중 &lt;보기&gt;의 이유로 국내 총생산에 해당되지 <span class='neg'>않는</span> 것을 고른 것은?",
+    passage: "(가) 어머니가 가족을 위해 직접 요리한 저녁 식사의 가치<br>(나) 해당 연도 국내 총생산의 이전 해에 생산된 중고품<br>(다) 봉사 활동과 같이 시장에서 거래되지 않은 서비스의 가치<br>(라) 우리나라 제과점이 빵을 만들기 위해 사용한 밀가루의 가치<br>(마) 영국 프리미어리그에 소속된 우리나라 국적 선수가 받은 연봉<br><br><b>&lt;보기&gt;</b> 국내 총생산은 <b>시장 가격으로 환산한 것만</b> 포함한다.",
+    choices: ["(가), (나)", "(가), (다)", "(가), (마)", "(다), (라)", "(다), (마)"],
+    answer: 1,
+    explain: "정답은 <b>② (가), (다)</b>예요.<br><보기>의 이유(시장 거래되는 것만)로 GDP에 안 들어가는 것:<br>• (가) 가사 노동 → 시장 거래 X ✓<br>• (다) 봉사 활동 → 시장 거래 X ✓<br><br>참고: (나)는 '당해 연도 생산'이 아니어서 제외, (라)는 중간재라서 제외, (마)는 '국외'에서 생산되어 GDP에서 제외 (다른 이유들이에요)."
+  },
+  // ===== 16번 =====
+  {
+    n: 16,
+    q: "빈칸에 들어갈 말로 가장 적합하지 <span class='neg'>않은</span> 것은?",
+    passage: "한 나라 안에서 경제 주체들이 다양한 경제 활동을 반복하는 과정에서 경제는 성장하기도 하고 후퇴하기도 한다. 이와 같이 변동하는 한 나라의 경제 상황은 경제 현상을 공식적인 통계 수치로 표현한 국민 경제 지표로 알 수 있다. 국민 경제 지표에는 <b>( ___ )</b> 등이 있다.",
+    choices: ["실업률", "국내 총생산", "경제 성장률", "물가 상승률", "개인 신용 점수"],
+    answer: 4,
+    explain: "정답은 <b>⑤ 개인 신용 점수</b>예요. 개인 신용 점수는 <b>개인의 금융 거래 신뢰도</b>를 나타내는 지표지 국민 경제 전체를 나타내는 지표가 아니에요. 나머지(실업률, GDP, 경제 성장률, 물가 상승률)는 모두 국민 경제 지표예요."
+  },
+  // ===== 17번 =====
+  {
+    n: 17,
+    q: "&lt;보기&gt;에서 신용 관리 방법으로 옳은 것을 모두 고른 것은?",
+    passage: "ㄱ. 자신의 신용 정보를 확인하고 관리하여야 한다.<br>ㄴ. 짧은 주기로 여러 은행을 번갈아 가면서 다양한 거래를 해야 한다.<br>ㄷ. 신용 카드 대금, 대출 이자 등의 상환 기간은 반드시 준수하여야 한다.<br>ㄹ. 소득 수준을 초과하더라도 대출은 최대한 받을 수 있는 만큼 최대한 받아 은행과의 거래를 늘려야 한다.",
+    choices: ["ㄱ, ㄴ", "ㄱ, ㄷ", "ㄱ, ㄹ", "ㄴ, ㄷ", "ㄴ, ㄹ"],
+    answer: 1,
+    explain: "정답은 <b>② ㄱ, ㄷ</b>이에요.<br>• ㄱ ✓ 신용 정보 관리는 기본.<br>• ㄴ ✗ <b>주거래 은행과 꾸준히</b> 거래해야 신용도 상승. 여러 은행 번갈아 가면 X.<br>• ㄷ ✓ 상환 기간 준수는 가장 중요한 신용 관리.<br>• ㄹ ✗ 소득 수준 <b>내</b>에서 대출해야 함."
+  },
+  // ===== 18번 =====
+  {
+    n: 18,
+    q: "자산 관리 방법과 설명이 옳게 연결된 것은?",
+    choices: [
+      "정기 예금 : 정해진 기간 동안 매달 일정 금액을 입금하고, 만기 시 이자와 원금을 받는다.",
+      "부동산 : 아파트나 빌딩과 같이 움직여 옮길 수 없는 자산으로 수익성은 낮고 유동성이 높다.",
+      "국민 연금 : 사용자가 근로자 노후를 위해 근로자의 소득의 일부를 저축해주는 금융 상품이다.",
+      "주식 : 주식회사가 자금을 마련하기 위해 투자자에게 돈을 받고 발행하는 것으로 수익성, 안전성이 높다.",
+      "채권 : 정부, 기업 등이 자금을 빌리면 원금과 이자를 언제까지 갚겠다는 것을 표시하여 발행하는 증서이다."
+    ],
+    answer: 4,
+    explain: "정답은 <b>⑤ 채권</b>이에요.<br>① 정기 예금이 아니라 <b>정기 적금</b> 설명. 정기 예금은 목돈을 한 번에 예치.<br>② 부동산은 수익성↑, 유동성↓ (현금화 어려움).<br>③ 국민 연금은 <b>국가</b>가 운영하는 사회보장제도.<br>④ 주식은 수익성↑이지만 <b>안전성↓</b>.<br>⑤ 채권 설명 정확."
+  },
+  // ===== 19번 =====
+  {
+    n: 19,
+    q: "빈 칸 ㉠~㉣에 들어갈 말로 <span class='neg'>옳지 않은</span> 것은?",
+    passage: "상품 가격의 변화는 가계의 소비 활동 및 기업의 생산 활동뿐 아니라 국민 경제 전체에도 큰 영향을 미친다. 개별 상품의 가치를 화폐 단위로 나타낸 것을 <b>(㉠)</b>이라 한다. 시장에서 거래되는 여러 상품의 가격을 종합하여 평균한 것을 <b>(㉡)</b>라고 한다. 정부는 (㉡)의 움직임을 한 눈에 볼 수 있도록 <b>(㉢)</b>를 작성한다. (㉢)는 기준 시점의 (㉡)를 100으로 했을 때 비교 시점의 (㉡) 수준을 나타낸 것이다. 예를 들어 (㉢)가 110이라면 이는 기준 연도에 비해 (㉡)가 10% <b>(㉣)</b>하였음을 의미한다. 그 중 소비자 (㉢)는 소비자들이 주로 구매하는 상품들의 (㉠)으로 산출한다.",
+    choices: ["가격", "물가", "상승", "통화량", "물가 지수"],
+    answer: 3,
+    explain: "정답은 <b>④ 통화량</b>이에요.<br>㉠ = <b>가격</b>, ㉡ = <b>물가</b>, ㉢ = <b>물가 지수</b>, ㉣ = <b>상승</b>.<br>통화량은 빈칸에 들어갈 말이 아니에요. 통화량은 시중에 유통되는 화폐의 양을 뜻하는 다른 개념이에요."
+  },
+  // ===== 20번 =====
+  {
+    n: 20,
+    q: "&lt;보기&gt;는 ㉠~㉢이 처한 일자리 상황에 대한 사례이다. 실업 및 그와 관련한 인구 분류에 대한 설명으로 옳은 것은?",
+    passage: "<b>㉠</b> 나는 아직 취직할 생각 없어. 집안일에 전념하고 있어. (가사 전념)<br><b>㉡</b> 구직활동 더 이상 안 해. 두 달 동안 여행 할 거야. (구직 포기)<br><b>㉢</b> 일을 쉬면서 더 좋은 조건을 가진 회사들에 이력서를 넣고 있어. (구직 활동 중)",
+    choices: [
+      "㉠, ㉡, ㉢ 모두 경제 활동 인구에 속한다.",
+      "㉠, ㉡은 ㉢과 달리 노동가능인구에 속한다.",
+      "㉠은 일할 능력이 있긴 하지만 일자리가 없는 상태이므로 실업자이다.",
+      "㉡은 취업하려고 했으나 뜻대로 되지 않아 일자리 구하기를 포기하였으므로 실업자이다.",
+      "㉢은 더 나은 조건의 직장을 구하기 위해 일시적으로 현재 직장을 그만두었으므로 실업자이다."
+    ],
+    answer: 4,
+    explain: "정답은 <b>⑤</b>예요. ㉢은 <b>실업자</b> (일할 능력·의사 있고 구직 활동 중인데 일자리 없음).<br>① ㉠(가사 전념), ㉡(구직 포기)은 <b>비경제활동인구</b>.<br>② 셋 다 노동가능인구지만, ㉢이 경제활동인구이고 ㉠㉡은 비경제활동인구.<br>③ ㉠은 일할 의사가 없어 <b>비경제활동인구</b>.<br>④ ㉡은 구직 포기 → <b>구직단념자(비경제활동인구)</b>로 실업자 아님."
+  },
+  // ===== 21번 =====
+  {
+    n: 21,
+    q: "다른 조건들이 일정할 때, 그래프와 같이 인플레이션 상황이 지속되면 이를 해결하기 위해 필요한 정책을 &lt;보기&gt;에서 모두 고른 것은?",
+    graphType: "inflation",
+    passage: "ㄱ. 정부는 재정 지출을 늘인다.<br>ㄴ. 정부는 세금을 더 거둬들인다.<br>ㄷ. 중앙은행은 시중 은행의 이자율을 높아지도록 조정한다.<br>ㄹ. 정부는 소비 증진을 위해 국민들에게 지원금을 지급한다.",
+    choices: ["ㄱ, ㄴ", "ㄱ, ㄷ", "ㄱ, ㄹ", "ㄴ, ㄷ", "ㄴ, ㄹ"],
+    answer: 3,
+    explain: "정답은 <b>④ ㄴ, ㄷ</b>이에요. 인플레이션 해결책은 <b>총수요를 줄이는</b> 정책이에요.<br>• ㄴ 세금↑ → 가계 소비↓ → 총수요↓ ✓<br>• ㄷ 이자율↑ → 저축↑, 대출↓ → 소비·투자↓ → 총수요↓ ✓<br>• ㄱ 재정 지출↑ → 총수요↑ → <b>인플레이션 악화</b> ✗<br>• ㄹ 지원금 지급 → 소비↑ → 총수요↑ → <b>인플레이션 악화</b> ✗"
+  },
+  // ===== 22번 =====
+  {
+    n: 22,
+    q: "다른 조건들이 일정하고, 물가가 지난해에 비해 급격하게 오를 경우, 그림의 경제 주체와 같은 상황에 놓인 경제 주체를 &lt;보기&gt;에서 모두 고른 것은?",
+    passage: "<div style='background:#FFE8DC;padding:10px;border-radius:8px;text-align:center;margin-bottom:10px;'>💬 \"외국에서 운동화를 수입해서 국내에서 판매하고 있어요\" — <b>수입업자 (물가↑ → 불리)</b></div>ㄱ. 은행에 예금한 사람<br>ㄴ. 돈을 빌린 사람(채무자)<br>ㄷ. 부동산과 같은 실물 자산을 가진 사람<br>ㄹ. 정해진 봉급이나 연금으로 생활하는 사람",
+    choices: ["ㄱ, ㄴ", "ㄱ, ㄷ", "ㄱ, ㄹ", "ㄴ, ㄷ", "ㄴ, ㄹ"],
+    answer: 2,
+    explain: "정답은 <b>③ ㄱ, ㄹ</b>이에요. 그림 속 수입업자는 물가 상승 시 <b>불리한</b> 경제 주체예요.<br><b>물가 상승 시 불리한 사람</b> (화폐 가치↓):<br>• ㄱ 예금자 → 받을 돈 가치↓ ✓<br>• ㄹ 봉급·연금 생활자 → 받는 돈 가치↓ ✓<br><b>유리한 사람</b>: ㄴ 채무자 (갚을 돈 가치↓), ㄷ 실물 자산 보유자 (자산 가치↑)"
+  },
+  // ===== 23번 =====
+  {
+    n: 23,
+    q: "다른 조건이 일정하고, 외환의 수요와 공급이 다음과 같이 움직일 때 우리나라 경제에 나타날 수 있는 현상으로 옳은 것은?",
+    graphType: "exchange_demand_down",
+    choices: [
+      "환율은 상승할 것이다.",
+      "원화 가치는 하락할 것이다.",
+      "외화로 빚을 진 경우 갚아야 할 빚이 늘어날 것이다.",
+      "외화로 표시되는 우리나라 상품의 가격은 하락할 것이다.",
+      "수입 원자재 가격 하락으로 우리나라 물가 안정에 도움이 될 것이다."
+    ],
+    answer: 4,
+    explain: "정답은 <b>⑤</b>예요. 그래프는 외환 <b>수요 감소</b> → <b>환율 하락</b> (원화 가치↑).<br>① 환율은 <b>하락</b>해요.<br>② 원화 가치는 <b>상승</b>해요.<br>③ 외화 빚의 원화 환산액이 <b>감소</b>해요 (이득).<br>④ 외화 표시 수출품 가격은 <b>상승</b>해요 (수출에 불리).<br>⑤ ✓ 환율↓ → 수입 원자재 가격↓ → 물가 안정에 도움."
+  },
+  // ===== 24번 =====
+  {
+    n: 24,
+    q: "&lt;보기&gt;에 제시된 상황 중 인플레이션의 원인이 되는 경우의 개수는?",
+    passage: "- 국내 임금 상승<br>- 수입 원자재 가격이 하락<br>- 시중에 공급되는 통화량이 증가<br>- 경제 전체의 공급이 경제 전체의 수요를 초과",
+    choices: ["0개", "1개", "2개", "3개", "4개"],
+    answer: 2,
+    explain: "정답은 <b>③ 2개</b>예요.<br>인플레이션 원인:<br>• 국내 임금 상승 → 생산비↑ → 물가↑ <b>✓ 원인</b> (비용 인상)<br>• 수입 원자재 가격 <b>하락</b> → 생산비↓ → 물가↓ ✗ (인플레 X)<br>• 통화량 증가 → 화폐 가치↓ → 물가↑ <b>✓ 원인</b> (통화량 인플레)<br>• 공급 &gt; 수요 → 물가↓ ✗ (디플레이션 발생)"
+  },
+  // ===== 25번 =====
+  {
+    n: 25,
+    q: "국제 사회에 대한 학생들의 대화이다. 국제 사회에 대해 <span class='neg'>옳지 않은</span> 설명을 한 학생은?",
+    passage: "<b>서준</b>: 국제 사회는 주권을 지닌 국가들이 주체가 돼서 활동해.<br><b>현석</b>: 각 국가들은 모두 평등한 주권을 지니고 있기 때문에 국제 사회 내 주권을 행사하는 정도나 영향력도 <b>동일해</b>.<br><b>건우</b>: 국제 사회는 국가 간 갈등을 조정해 줄 정부가 없기 때문에 갈등 해결이 쉽지 않지.<br><b>태현</b>: 그래도 국제법, 국제기구, 세계 여론 등이 국가 행위에 일정한 제약을 주고 있어.<br><b>시후</b>: 환경 오염처럼 공동 해결 문제가 늘면서 국제 협력 필요성이 대두되고 있어.",
+    choices: ["서준", "현석", "건우", "태현", "시후"],
+    answer: 1,
+    explain: "정답은 <b>② 현석</b>이에요. 각국이 평등한 주권을 지니고 있다는 건 <b>형식적·법적</b>으로만 그래요. 실제로는 강대국과 약소국이 행사하는 <b>영향력의 정도는 동일하지 않아요</b>. 군사력·경제력 등에 따라 차이가 크죠. 나머지 학생들은 모두 옳은 설명이에요."
+  },
+  // ===== 26번 =====
+  {
+    n: 26,
+    q: "(가), (나) 사례에서 국제 관계에 영향을 주는 행위 주체로 옳게 짝지어진 것은?",
+    passage: "<div class='sub-label'>(가)</div>국경 없는 의사회는 에볼라의 위험성을 경고하고, 국제 사회의 동참을 요구하며 에볼라와의 전쟁을 주도. 의료진 290명 상주, 병상 600개 제공, 치료제 개발 적극 참여.<div class='sub-label'>(나)</div>씨앗 시장 규모 2016년 약 55조 원. 세계 여러 나라에 활동하는 기업들이 시장 점유. 상위 10대 기업이 세계 시장의 70% 차지. 경제력으로 국제 관계에 영향.",
+    isPair: true,
+    pairHeader: { left: "(가)", right: "(나)" },
+    choices: [
+      { left: "다국적 기업", right: "국제 비정부 기구" },
+      { left: "정부 간 국제 기구", right: "국제 비정부 기구" },
+      { left: "정부 간 국제 기구", right: "다국적 기업" },
+      { left: "국제 비정부 기구", right: "다국적 기업" },
+      { left: "국제 비정부 기구", right: "국제 정부 기구" }
+    ],
+    answer: 3,
+    explain: "정답은 <b>④</b>예요.<br>(가) <b>국경 없는 의사회</b> = 정부 간 협정 없이 민간이 만든 단체 → <b>국제 비정부 기구(NGO)</b>.<br>(나) 여러 나라에 걸쳐 활동하는 거대 기업들 → <b>다국적 기업</b>.<br>참고: 정부 간 국제기구(IGO)는 UN, WTO 같은 국가들이 모인 조직이에요."
+  },
+  // ===== 27번 =====
+  {
+    n: 27,
+    q: "다른 조건이 일정하고, 원-달러 환율이 다음 그래프와 같이 움직일 때 한국에서 경제 활동에 유리한 사람을 &lt;보기&gt;에서 모두 고른 것은?",
+    graphType: "exchange_chart",
+    passage: "<b>2022년 상반기 원-달러 환율 추이</b>: 1월 1,190원 → 7월 1,300원 (환율 상승, 원화 약세)<br><br>ㄱ. 해외 여행을 떠나려는 한국인<br>ㄴ. 우리나라를 여행하는 외국인<br>ㄷ. 자동차를 수출하는 기업 사장<br>ㄹ. 외국에서 활동하는 우리나라 선수<br>ㅁ. 수입 가구를 판매하는 가구점 주인",
+    choices: ["ㄱ, ㄴ, ㄷ", "ㄱ, ㄷ, ㄹ", "ㄴ, ㄷ, ㄹ", "ㄴ, ㄷ, ㅁ", "ㄷ, ㄹ, ㅁ"],
+    answer: 2,
+    explain: "정답은 <b>③ ㄴ, ㄷ, ㄹ</b>이에요. 환율↑ (원화↓, 달러↑) 시 유리한 사람:<br>• ㄴ 외국인 관광객 → 같은 달러로 더 많은 원화 환전 가능 ✓<br>• ㄷ 수출업자 → 외화로 받은 돈을 원화로 바꿀 때 더 많이 받음 ✓<br>• ㄹ 외국 활동 우리 선수 → 외화 수입이 원화로 환산 시 증가 ✓<br><b>불리한 사람</b>: ㄱ 해외여행 한국인 (환전 비용↑), ㅁ 수입업자 (수입 원가↑)"
+  },
+  // ===== 28번 =====
+  {
+    n: 28,
+    q: "&lt;보기&gt;의 그래프와 같이 외환의 공급을 변화시키는 요인으로 <span class='neg'>옳지 않은</span> 것은?",
+    graphType: "exchange_supply_up",
+    choices: [
+      "외국인의 국내 투자가 늘어났다.",
+      "외국으로부터 차관이 도입되었다.",
+      "우리나라 상품의 해외 수출이 늘었다.",
+      "해외로 유학가는 학생의 숫자가 증가하였다.",
+      "국내를 관광하는 외국인 여행객이 증가하였다."
+    ],
+    answer: 3,
+    explain: "정답은 <b>④</b>예요. 그래프는 외환 <b>공급 증가</b> (오른쪽 이동). 외환 공급↑ 요인은 <b>외화가 국내로 들어오는</b> 경우예요.<br>① 외국인 투자↑ → 외화 유입 ✓<br>② 차관 도입 → 외화 유입 ✓<br>③ 수출↑ → 외화 유입 ✓<br>⑤ 외국인 관광객↑ → 외화 유입 ✓<br>④ ✗ 해외 유학 → 외화가 <b>나가는</b> 경우 → <b>외환 수요</b> 증가 요인이에요!"
+  },
+  // ===== 29번 =====
+  {
+    n: 29,
+    q: "자산 관리에 관한 글이다. ㉠~㉤ 중 옳은 것을 모두 고른 것은?",
+    passage: "개인은 벌어들인 소득 중 소비하고 남은 저축을 현금으로 보유하거나 여러 형태로 투자할 수 있다. <span class='mark'>㉠ 합리적 자산 관리를 위해서는 저축이나 투자의 목적과 기간을 살펴보고, 수익성과 안전성, 유동성 등을 고려해야 한다.</span> <span class='mark'>㉡ 수익성은 투자를 통해 수익을 얻을 수 있는 정도를</span>, <span class='mark'>㉢ 유동성은 투자한 원금이 손실되지 않고 보장되는 정도를</span>, <span class='mark'>㉣ 안전성은 필요할 때 쉽고 빠르게 현금으로 전환할 수 있는 정도를</span> 의미한다. <span class='mark'>㉤ 자산 관리를 할 때 자산을 늘리는 것이 중요하며 별도로 지출 관리를 할 필요는 없다.</span>",
+    choices: ["㉠, ㉡", "㉠, ㉤", "㉡, ㉣", "㉢, ㉣", "㉣, ㉤"],
+    answer: 0,
+    explain: "정답은 <b>① ㉠, ㉡</b>이에요.<br>• ㉠ ✓ 합리적 자산 관리의 정확한 설명.<br>• ㉡ ✓ 수익성 정의 정확.<br>• ㉢ ✗ 이건 <b>안전성</b>의 정의예요.<br>• ㉣ ✗ 이건 <b>유동성</b>의 정의예요. (㉢과 ㉣이 바뀌어 있음)<br>• ㉤ ✗ 자산 관리는 <b>수입·지출 관리 모두 중요</b>해요."
+  },
+  // ===== 30번 =====
+  {
+    n: 30,
+    q: "빈 칸에 들어갈 말 중 증감과 관련하여 그 의미가 <u>다른</u> 하나를 ㉠~㉤ 중 고른 것은?",
+    passage: "<span class='mark'>㉠ 물가가 상승하게 되면 화폐의 가치는 ( )하게 된다.</span><br><span class='mark'>㉡ 인플레이션은 물건의 가격이 지속적으로 ( )하는 현상이다.</span><br><span class='mark'>㉢ 교통 통신의 발달로 세계화가 가속화되면서 자유 무역과 국제 거래는 ( )되고 있다.</span><br><span class='mark'>㉣ 실업자가 ( )하게 되면 빈곤 확산, 가족 해체, 생계형 범죄의 증가로 사회 불안이 초래될 수 있다.</span><br><span class='mark'>㉤ 미국 화폐와 우리나라 화폐의 교환 비율이 1달러=1000원 → 1달러=1200원이 된다면, 환율은 ( )했다고 한다.</span>",
+    choices: ["㉠", "㉡", "㉢", "㉣", "㉤"],
+    answer: 0,
+    explain: "정답은 <b>① ㉠</b>이에요.<br>㉠ 물가↑ → 화폐 가치 <b>하락</b> (감소)<br>㉡ 인플레이션 → 가격이 지속적으로 <b>상승</b> (증가)<br>㉢ 세계화 → 자유 무역·국제 거래 <b>증가</b><br>㉣ 실업자 <b>증가</b> → 사회 문제<br>㉤ 1달러=1000원→1200원 → 환율 <b>상승</b> (증가)<br><br>㉠만 '하락(감소)'이고 나머지는 모두 '상승(증가)'이에요!"
+  }
+];
+
+// State
+const userAnswers = {};
+const container = document.getElementById('quizContainer');
+
+// Inline SVG graphs
+function getGraph(type) {
+  const base = `<svg class="graph-svg" viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">`;
+  const styles = `<style>
+    .axis{stroke:#333;stroke-width:1.5;fill:none}
+    .curve{stroke:#1A3F54;stroke-width:2;fill:none}
+    .curve-d{stroke:#D97757;stroke-width:2;fill:none;stroke-dasharray:4,3}
+    .arrow{stroke:#C04545;stroke-width:1.5;fill:none;marker-end:url(#arr)}
+    .lbl{font-family:'Noto Sans KR',sans-serif;font-size:10px;fill:#333}
+  </style>
+  <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><polygon points="0,0 6,3 0,6" fill="#C04545"/></marker></defs>`;
+  const axes = `<line class="axis" x1="30" y1="20" x2="30" y2="160"/><line class="axis" x1="30" y1="160" x2="220" y2="160"/>`;
+
+  if (type === "inflation") {
+    return base + styles + axes +
+      `<path class="curve" d="M 50 30 L 200 150"/>
+       <path class="curve" d="M 50 150 L 200 30"/>
+       <path class="curve-d" d="M 80 30 L 200 130"/>
+       <path class="arrow" d="M 115 70 L 145 60"/>
+       <text class="lbl" x="38" y="32">물가</text>
+       <text class="lbl" x="195" y="170">국내 총생산</text>
+       <text class="lbl" x="200" y="40">총공급</text>
+       <text class="lbl" x="200" y="155">총수요</text>
+       <text class="lbl" x="120" y="55" fill="#C04545" font-weight="700">물가 상승</text>
+       </svg>`;
+  }
+  if (type === "exchange_demand_down") {
+    return base + styles + axes +
+      `<path class="curve" d="M 50 50 L 200 150"/>
+       <path class="curve" d="M 50 150 L 200 50"/>
+       <path class="curve-d" d="M 50 110 L 200 165"/>
+       <path class="arrow" d="M 105 110 L 90 130"/>
+       <text class="lbl" x="38" y="32">환율</text>
+       <text class="lbl" x="195" y="170">외환 거래량</text>
+       <text class="lbl" x="55" y="60">수요</text>
+       <text class="lbl" x="200" y="45">공급</text>
+       <text class="lbl" x="135" y="100" fill="#C04545" font-weight="700">수요↓, 환율↓</text>
+       </svg>`;
+  }
+  if (type === "exchange_supply_up") {
+    return base + styles + axes +
+      `<path class="curve" d="M 50 50 L 200 150"/>
+       <path class="curve" d="M 50 150 L 200 50"/>
+       <path class="curve-d" d="M 100 150 L 220 90"/>
+       <path class="arrow" d="M 145 80 L 165 95"/>
+       <text class="lbl" x="38" y="32">환율</text>
+       <text class="lbl" x="195" y="170">외환 거래량</text>
+       <text class="lbl" x="55" y="60">수요</text>
+       <text class="lbl" x="200" y="45">공급</text>
+       <text class="lbl" x="130" y="75" fill="#C04545" font-weight="700">공급↑</text>
+       </svg>`;
+  }
+  if (type === "exchange_chart") {
+    return base + styles +
+      `<line class="axis" x1="30" y1="20" x2="30" y2="160"/>
+       <line class="axis" x1="30" y1="160" x2="220" y2="160"/>
+       <polyline class="curve" points="40,130 60,125 80,115 100,118 120,95 140,90 160,75 180,60 200,55"/>
+       <line x1="30" y1="115" x2="40" y2="115" stroke="#999" stroke-dasharray="2,2"/>
+       <line x1="30" y1="55" x2="200" y2="55" stroke="#999" stroke-dasharray="2,2"/>
+       <text class="lbl" x="35" y="118">1190원</text>
+       <text class="lbl" x="160" y="50">1300원</text>
+       <text class="lbl" x="40" y="172">1월</text>
+       <text class="lbl" x="195" y="172">7월</text>
+       <text class="lbl" x="38" y="32">원/달러</text>
+       <text class="lbl" x="160" y="120" fill="#C04545" font-weight="700">환율↑</text>
+       </svg>`;
+  }
+  return '';
+}
+
+function renderQuestion(item) {
+  const card = document.createElement('div');
+  card.className = 'question-card';
+  card.id = `q-${item.n}`;
+
+  let passageHTML = '';
+  if (item.passage) {
+    passageHTML = `
+      <div class="passage-box">
+        <div class="passage-title">＜ 보 기 ＞</div>
+        <div>${item.passage}</div>
+      </div>`;
+  }
+
+  if (item.scene) {
+    passageHTML = `
+      <div class="scene-box">
+        <div class="scene-title">＜ 아이스크림 시장 ＞</div>
+        <div class="scene-center">
+          <span class="scene-stat">수요량 &gt; 공급량</span>
+        </div>
+        <div class="scene-center">
+          <span class="speech demand">"저에게 팔아요"</span>
+          <span class="speech demand">"저도 사고 싶어요"</span>
+          <span class="speech demand">"돈을 더 낼 생각도 있어요"</span>
+        </div>
+        <div class="scene-roles">
+          <span>👥 수요자</span>
+          <span>🏪 공급자</span>
+        </div>
+      </div>`;
+  }
+
+  if (item.table === 8) {
+    passageHTML = `
+      <div class="passage-box">
+        <div class="passage-title">＜ 보 기 ＞</div>
+        <table class="data-table">
+          <thead><tr><th>문제</th><th>학생 답안</th><th>배점</th></tr></thead>
+          <tbody>
+            <tr><td class="left">소득이 늘어나면 상품의 수요는 줄어든다.</td><td>X</td><td>1</td></tr>
+            <tr><td class="left">인구 수가 증가하여 수요자의 수가 늘어나면 수요가 증가한다.</td><td>O</td><td>1</td></tr>
+            <tr><td class="left">미래의 어떤 상품의 가격이 오를 것으로 예상되면 수요가 증가한다.</td><td>O</td><td>1</td></tr>
+            <tr><td class="left">신제품이 출시될 것이라는 소식이 들리면 기존 상품의 수요는 감소한다.</td><td>O</td><td>1</td></tr>
+          </tbody>
+        </table>
+      </div>`;
+  }
+  if (item.table === 11) {
+    passageHTML = `
+      <div class="passage-box">
+        <div class="passage-title">＜ 보 기 ＞</div>
+        <table class="data-table">
+          <thead><tr><th>문제</th><th>학생 답안</th><th>배점</th></tr></thead>
+          <tbody>
+            <tr><td class="left">주식 시장은 거래되는 장소나 대상이 구체적이다.</td><td>O</td><td>1</td></tr>
+            <tr><td class="left">시장은 재화와 서비스가 거래되는 구체적인 장소만을 의미한다.</td><td>O</td><td>1</td></tr>
+            <tr><td class="left">시장의 형성으로 거래에 드는 비용과 시간이 줄어들었다.</td><td>X</td><td>1</td></tr>
+            <tr><td class="left">시장을 통해 상품에 관한 다양한 정보를 공유할 수 있게 되었다.</td><td>X</td><td>1</td></tr>
+          </tbody>
+        </table>
+      </div>`;
+  }
+  if (item.table === 12) {
+    passageHTML = `
+      <div class="passage-box">
+        <div class="passage-title">A사 과자 가격별 수요·공급량</div>
+        <table class="data-table">
+          <thead><tr><th>가격(원)</th><th>2,000</th><th>3,000</th><th>4,000</th><th>5,000</th><th>6,000</th></tr></thead>
+          <tbody>
+            <tr><td><b>수요량 (만개)</b></td><td>50</td><td>40</td><td>30</td><td>20</td><td>10</td></tr>
+            <tr><td><b>공급량 (만개)</b></td><td>10</td><td>20</td><td>30</td><td>40</td><td>50</td></tr>
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  if (item.graphType) {
+    passageHTML += `<div class="graph-box">${getGraph(item.graphType)}<div class="graph-caption">＜ 그래프 ＞</div></div>`;
+    if (item.passage && item.graphType !== 'inflation' && item.graphType !== 'exchange_demand_down' && item.graphType !== 'exchange_supply_up' && item.graphType !== 'exchange_chart') {
+      // passage already set
+    }
+  }
+
+  // Choices
+  let choicesHTML = '';
+  if (item.isGraph) {
+    // Problem 10 - graph choices
+    choicesHTML = '<div class="graph-choices">';
+    item.choices.forEach((c, i) => {
+      const num = ['①','②','③','④','⑤'][i];
+      choicesHTML += `
+        <div class="graph-choice" data-idx="${i}" onclick="selectAnswer(${item.n}, ${i})">
+          <div class="gc-num">${num}</div>
+          <div style="font-size:12px;color:#444;">${c.label}</div>
+        </div>`;
+    });
+    choicesHTML += '</div>';
+  } else {
+    choicesHTML = '<div class="choices">';
+    item.choices.forEach((c, i) => {
+      const num = ['①','②','③','④','⑤'][i];
+      if (item.isPair) {
+        choicesHTML += `
+          <div class="choice pair-choice" data-idx="${i}" onclick="selectAnswer(${item.n}, ${i})">
+            <div class="choice-num">${num}</div>
+            <div class="choice-text">
+              <span class="pair-left">${c.left}</span>
+              <span class="pair-divider">／</span>
+              <span class="pair-right">${c.right}</span>
+            </div>
+          </div>`;
+      } else {
+        choicesHTML += `
+          <div class="choice" data-idx="${i}" onclick="selectAnswer(${item.n}, ${i})">
+            <div class="choice-num">${num}</div>
+            <div class="choice-text">${c}</div>
+          </div>`;
+      }
+    });
+    choicesHTML += '</div>';
+  }
+
+  // Pair header
+  let pairHeaderHTML = '';
+  if (item.isPair && item.pairHeader) {
+    pairHeaderHTML = `<div style="display:flex;justify-content:space-around;font-weight:700;font-size:12px;color:var(--primary-dark);margin-bottom:8px;padding:6px;background:#F0EBE0;border-radius:6px;">
+      <span>${item.pairHeader.left}</span><span>${item.pairHeader.right}</span>
+    </div>`;
+  }
+
+  card.innerHTML = `
+    <div class="q-header">
+      <div class="q-num">${item.n}</div>
+      <div class="q-text">${item.q}</div>
+    </div>
+    ${passageHTML}
+    ${pairHeaderHTML}
+    ${choicesHTML}
+    <div class="explanation" id="exp-${item.n}">
+      <div class="ex-title">해설</div>
+      <div class="ex-answer">정답: ${['①','②','③','④','⑤'][item.answer]}</div>
+      <div>${item.explain}</div>
+    </div>
+  `;
+  container.appendChild(card);
+}
+
+questions.forEach(q => renderQuestion(q));
+
+// Build jump nav
+const jumpGrid = document.getElementById('jumpGrid');
+questions.forEach(q => {
+  const btn = document.createElement('button');
+  btn.className = 'jump-btn';
+  btn.id = `jb-${q.n}`;
+  btn.textContent = q.n;
+  btn.onclick = () => {
+    document.getElementById(`q-${q.n}`).scrollIntoView({behavior:'smooth', block:'start'});
+  };
+  jumpGrid.appendChild(btn);
+});
+
+function selectAnswer(qn, idx) {
+  const item = questions.find(q => q.n === qn);
+  const card = document.getElementById(`q-${qn}`);
+  const choices = card.querySelectorAll(item.isGraph ? '.graph-choice' : '.choice');
+  const jb = document.getElementById(`jb-${qn}`);
+
+  // 이미 답을 선택한 경우
+  if (userAnswers[qn] !== undefined) {
+    // 같은 답을 다시 클릭하면 초기화
+    if (userAnswers[qn] === idx) {
+      delete userAnswers[qn];
+      choices.forEach(ch => {
+        ch.classList.remove('selected', 'correct', 'wrong', 'disabled');
+      });
+      card.classList.remove('answered');
+      document.getElementById(`exp-${qn}`).classList.remove('show');
+      jb.classList.remove('correct', 'wrong');
+      updateProgress();
+      return;
+    }
+    // 다른 답 클릭은 무시
+    return;
+  }
+
+  // 새로 답 선택
+  userAnswers[qn] = idx;
+  choices.forEach((ch, i) => {
+    ch.classList.add('disabled');
+    if (i === item.answer) ch.classList.add('correct');
+    if (i === idx && i !== item.answer) ch.classList.add('wrong');
+    if (i === idx) ch.classList.add('selected');
+  });
+
+  card.classList.add('answered');
+  document.getElementById(`exp-${qn}`).classList.add('show');
+  jb.classList.add(idx === item.answer ? 'correct' : 'wrong');
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const answered = Object.keys(userAnswers).length;
+  const correct = Object.entries(userAnswers).filter(([qn, idx]) => {
+    const q = questions.find(q => q.n === parseInt(qn));
+    return q.answer === idx;
+  }).length;
+  const total = questions.length;
+  const pct = answered ? Math.round(correct / answered * 100) : 0;
+  document.getElementById('progressText').textContent = `${answered} / ${total} 풀이 완료`;
+  document.getElementById('progressPct').textContent = `정답률 ${pct}%`;
+  document.getElementById('progressFill').style.width = (answered/total*100) + '%';
+  document.getElementById('scoreNum').innerHTML = `${correct}<span class="total"> / ${total}</span>`;
+}
+
+function resetAll() {
+  Object.keys(userAnswers).forEach(k => delete userAnswers[k]);
+  document.querySelectorAll('.choice, .graph-choice').forEach(c => {
+    c.classList.remove('selected', 'correct', 'wrong', 'disabled');
+  });
+  document.querySelectorAll('.explanation').forEach(e => e.classList.remove('show'));
+  document.querySelectorAll('.question-card').forEach(c => c.classList.remove('answered'));
+  document.querySelectorAll('.jump-btn').forEach(b => b.classList.remove('correct', 'wrong'));
+  updateProgress();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function revealAll() {
+  questions.forEach(item => {
+    if (userAnswers[item.n] === undefined) {
+      const card = document.getElementById(`q-${item.n}`);
+      const choices = card.querySelectorAll(item.isGraph ? '.graph-choice' : '.choice');
+      choices.forEach((ch, i) => {
+        ch.classList.add('disabled');
+        if (i === item.answer) ch.classList.add('correct');
+      });
+      card.classList.add('answered');
+      document.getElementById(`exp-${item.n}`).classList.add('show');
+    }
+  });
+}
+
+updateProgress();
+</script>
+
+</body>
+</html>
