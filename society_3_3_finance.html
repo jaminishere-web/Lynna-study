@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ⅲ-03. 금융 생활의 중요성</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #7A2E2E;
+    --primary-light: #A04545;
+    --primary-dark: #5A1F1F;
+    --accent: #C9A961;
+    --accent-light: #DCC082;
+    --bg: #F4EFE6;
+    --paper: #FFFFFF;
+    --ink: #1C1410;
+    --muted: #6B5F55;
+    --correct: #2D7A4D;
+    --correct-bg: #DCEDE0;
+    --wrong: #B83A3A;
+    --wrong-bg: #F5E0E0;
+    --border: #D9CFC0;
+    --jaseupseo: #2E5A7A;
+    --jaseupseo-bg: #E0EAF2;
+    --pyeongga: #6B3A7A;
+    --pyeongga-bg: #EDE0F2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 10% 0%, rgba(122,46,46,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 90% 100%, rgba(201,169,97,0.10) 0%, transparent 60%);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+  }
+
+  .wrap { max-width: 820px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+    padding: 28px 20px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-radius: 18px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(90,31,31,0.28);
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(201,169,97,0.05) 18px, rgba(201,169,97,0.05) 36px);
+  }
+  .header-badge {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent-light);
+    font-weight: 700;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .header h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(22px, 5vw, 32px);
+    font-weight: 900;
+    color: #fff;
+    position: relative;
+    line-height: 1.3;
+  }
+  .header .sub {
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.82);
+    position: relative;
+  }
+
+  /* Progress */
+  .progress-card {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+  }
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .progress-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .progress-score { font-size: 15px; font-weight: 900; color: var(--primary); }
+  .progress-score span { color: var(--muted); font-weight: 500; font-size: 13px; }
+  .progress-bar {
+    height: 8px;
+    background: var(--bg);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--primary-light));
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  .progress-stats {
+    display: flex;
+    gap: 16px;
+    margin-top: 10px;
+    font-size: 12px;
+  }
+  .progress-stats .ok { color: var(--correct); font-weight: 700; }
+  .progress-stats .no { color: var(--wrong); font-weight: 700; }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .btn {
+    flex: 1;
+    min-width: 90px;
+    padding: 11px 10px;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    background: var(--paper);
+    color: var(--primary);
+    border: 1.5px solid var(--border);
+  }
+  .btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .btn.primary:hover { background: var(--primary-dark); }
+
+  /* Filter tabs */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 20px;
+  }
+  .filter-tab {
+    padding: 8px 14px;
+    border-radius: 99px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    background: var(--paper);
+    color: var(--muted);
+    border: 1.5px solid var(--border);
+    transition: all 0.18s ease;
+  }
+  .filter-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+  /* Question card */
+  .q-card {
+    background: var(--paper);
+    border-radius: 16px;
+    padding: 22px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  .q-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .q-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14px;
+    font-weight: 900;
+    color: #fff;
+    background: var(--primary);
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .src-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 9px;
+    border-radius: 6px;
+  }
+  .src-tag.jaseupseo { background: var(--jaseupseo-bg); color: var(--jaseupseo); }
+  .src-tag.pyeongga { background: var(--pyeongga-bg); color: var(--pyeongga); }
+  .type-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 9px;
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--muted);
+  }
+  .star-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.3;
+    transition: all 0.18s ease;
+    line-height: 1;
+  }
+  .star-btn.on { opacity: 1; transform: scale(1.1); }
+
+  .q-text {
+    font-size: 15.5px;
+    line-height: 1.65;
+    font-weight: 500;
+    margin-bottom: 14px;
+    word-break: keep-all;
+  }
+  .q-passage {
+    background: var(--bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #3A2E26;
+    word-break: keep-all;
+  }
+  .q-image {
+    margin-bottom: 14px;
+    text-align: center;
+    background: #FFF;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .q-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    display: block;
+    margin: 0 auto;
+  }
+  .q-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 14px;
+    font-size: 13.5px;
+  }
+  .q-table th, .q-table td {
+    border: 1px solid var(--border);
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .q-table th { background: var(--primary); color: #fff; font-weight: 700; }
+  .q-table tr:nth-child(even) td { background: var(--bg); }
+
+  /* Choices */
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    transition: all 0.16s ease;
+    font-size: 14.5px;
+    line-height: 1.5;
+    background: var(--paper);
+    word-break: keep-all;
+  }
+  .choice:hover { border-color: var(--primary-light); background: #FBF8F2; }
+  .choice-num {
+    font-weight: 900;
+    color: var(--primary);
+    flex-shrink: 0;
+  }
+  .choice.correct {
+    background: var(--correct-bg);
+    border-color: var(--correct);
+    color: var(--correct);
+    font-weight: 700;
+  }
+  .choice.correct .choice-num { color: var(--correct); }
+  .choice.wrong {
+    background: var(--wrong-bg);
+    border-color: var(--wrong);
+    color: var(--wrong);
+    font-weight: 700;
+  }
+  .choice.wrong .choice-num { color: var(--wrong); }
+
+  /* OX */
+  .ox-wrap { display: flex; gap: 12px; }
+  .ox-btn {
+    flex: 1;
+    padding: 18px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: var(--paper);
+    font-size: 28px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    color: var(--muted);
+  }
+  .ox-btn:hover { border-color: var(--primary-light); }
+  .ox-btn.correct { background: var(--correct-bg); border-color: var(--correct); color: var(--correct); }
+  .ox-btn.wrong { background: var(--wrong-bg); border-color: var(--wrong); color: var(--wrong); }
+
+  /* Short / essay */
+  .short-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14.5px;
+    margin-bottom: 10px;
+  }
+  .short-input:focus { outline: none; border-color: var(--primary); }
+  textarea.short-input { min-height: 80px; resize: vertical; }
+
+  .reveal-btn {
+    background: var(--accent);
+    color: var(--primary-dark);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  .reveal-btn:hover { background: var(--accent-light); }
+  .reveal-btn.shown { background: var(--muted); color: #fff; }
+
+  /* Reset hint */
+  .reset-hint {
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    text-align: right;
+    opacity: 0.7;
+  }
+
+  /* Answer / explanation */
+  .answer-box {
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #FBF6EC 0%, #F5EFE2 100%);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    display: none;
+  }
+  .answer-box.show { display: block; animation: slideDown 0.3s ease; }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .answer-label {
+    font-size: 11px;
+    font-weight: 900;
+    color: var(--primary);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .answer-text {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+  .explain-text {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #3A2E26;
+    word-break: keep-all;
+  }
+
+  .empty {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="header-badge">사회 · 자습서 &amp; 평가문제집</div>
+    <h1>Ⅲ-03. 금융 생활의 중요성</h1>
+    <div class="sub">자습서(스스로 확인하기 · 탄탄 실력 다지기) · 평가문제집(내공 다지기)</div>
+  </div>
+
+  <div class="progress-card">
+    <div class="progress-top">
+      <div class="progress-label">학습 진행률</div>
+      <div class="progress-score" id="scoreNum">0 <span>/ 0</span></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-stats">
+      <span class="ok" id="okCount">정답 0</span>
+      <span class="no" id="noCount">오답 0</span>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="revealAll()">정답 모두 보기</button>
+    <button class="btn" onclick="hideAll()">정답 모두 숨기기</button>
+    <button class="btn primary" onclick="resetAll()">↻ 전체 초기화</button>
+  </div>
+
+  <div class="filters" id="filters"></div>
+
+  <div id="quizList"></div>
+
+  <div class="footer">린아 학습앱 · 시장 경제와 가격 📚</div>
+</div>
+
+<script>
+const questions = [
+  // ===== 자습서 스스로 확인하기 (03. 금융 생활의 중요성, p.52) =====
+  {
+    id: 'js01', src: 'jaseupseo', type: 'short',
+    q: '다음 경제생활과 관련한 생애 주기의 단계를 〈보기〉에서 골라 기호를 쓰시오.<br><span style="font-size:13px;color:#6B5F55;">ㄱ. 유소년기  ㄴ. 청년기  ㄷ. 중장년기  ㄹ. 노년기</span><br>(1) 생산 활동을 통해 소득을 얻기 시작한다.<br>(2) 부모의 소득에 의존하여 소비 활동을 한다.<br>(3) 은퇴를 하고 이전에 모아 둔 자금이나 연금 등을 통해 생활한다.<br>(4) 소득이 크게 늘어나지만 자녀 교육, 주택 마련 및 확장 등과 관련한 소비도 늘어난다.',
+    answer: '(1) ㄴ  (2) ㄱ  (3) ㄹ  (4) ㄷ',
+    explain: '(1) 소득이 생기기 시작 → <b>청년기(ㄴ)</b>. (2) 부모 의존 → <b>유소년기(ㄱ)</b>. (3) 은퇴·연금 생활 → <b>노년기(ㄹ)</b>. (4) 소득 최대지만 자녀 교육·주택 등 소비도 큼 → <b>중장년기(ㄷ)</b>.'
+  },
+  {
+    id: 'js02', src: 'jaseupseo', type: 'ox',
+    q: '지속 가능한 경제생활을 하려면 현재의 소득만을 고려하여 자산을 관리해야 한다.',
+    answer: 'X',
+    explain: '지속 가능한 경제생활은 <b>현재뿐 아니라 미래의 소득·지출까지 고려</b>해 생애 전체 차원에서 자산을 관리해야 한다.'
+  },
+  {
+    id: 'js03', src: 'jaseupseo', type: 'ox',
+    q: '수익성은 쉽고 빠르게 현금으로 전환할 수 있는 정도를 말한다.',
+    answer: 'X',
+    explain: '쉽고 빠르게 현금으로 전환할 수 있는 정도는 <b>유동성</b>이다. \'수익성\'은 투자를 통해 수익을 얻을 수 있는 정도를 말한다.'
+  },
+  {
+    id: 'js04', src: 'jaseupseo', type: 'ox',
+    q: '예금이나 적금은 안전성은 높은 데 비해 수익성이 낮은 편이다.',
+    answer: 'O',
+    explain: '예금·적금은 원금이 보장되어 <b>안전성은 높지만</b>, 이자율이 낮아 <b>수익성은 낮다</b>. 반대로 주식은 수익성은 높지만 안전성이 낮다.'
+  },
+  {
+    id: 'js05', src: 'jaseupseo', type: 'ox',
+    q: '신용은 나중에 대가를 지불할 것을 약속하고 현재 상품을 이용하거나 돈을 빌릴 수 있는 능력을 말한다.',
+    answer: 'O',
+    explain: '신용은 <b>나중에 대가를 지불할 것을 약속</b>하고 현재 상품·서비스를 이용하거나 돈을 빌릴 수 있는 능력이다.'
+  },
+
+  // ===== 자습서 탄탄 실력 다지기 (03. 금융 생활의 중요성, p.53) =====
+  {
+    id: 'pt01', src: 'jaseupseo', type: 'mc',
+    q: '밑줄 친 \'이것\'에 해당하는 용어로 가장 적절한 것은?',
+    passage: '시간의 흐름에 따라 나의 삶이 어떻게 변화하는지를 몇 단계로 나타낸 <u>이것</u>은 개인의 경제생활에 많은 영향을 미친다. 특히 <u>이것</u>에 따른 재무 계획의 수립은 노후까지 안정적으로 경제생활을 누릴 수 있도록 도와준다.',
+    choices: ['가계부', '사회화', '발달 과업', '생애 주기', '지출 계획'],
+    correct: 3,
+    explain: '삶의 변화를 단계로 나타낸 것은 <b>생애 주기</b>다. 유소년기·청년기·중장년기·노년기로 구분되며 재무 계획 수립의 기준이 된다.'
+  },
+  {
+    id: 'pt02', src: 'jaseupseo', type: 'mc',
+    q: '다음 사례에서 A 씨가 재무 계획을 수립할 때 고려해야 할 사항으로 옳지 <u>않은</u> 것은?',
+    passage: 'A 씨(32세)는 현재 ○○ 회사에서 대리로 근무하고 있다. 곧 과장으로 승진을 앞두고 있으며, 여름에는 유럽 여행을 계획하고 있다. 2년간 사귄 이성 친구와는 내년에 결혼을 할 예정이다.',
+    choices: ['결혼 준비를 위해 목돈을 마련해야 한다.', '예상되는 수입과 지출을 꼼꼼하게 살펴보고 계획을 수립해야 한다.', '현재 다른 시기에 비해 소비가 많은 시기이므로 저축을 하지 말아야 한다.', '유럽 여행을 하는 데 비용이 많이 들어가기 때문에 미리 준비해야 한다.', '결혼 후 자녀의 출산과 양육에 따른 비용 등 장기적인 관점에서 계획을 수립해야 한다.'],
+    correct: 2,
+    explain: '재무 계획은 일생 전체를 보는 장기적 관점이 필요하다. 소비가 많다고 <b>저축을 하지 말라</b>는 ③은 노후 대비를 막아 적절하지 않다.'
+  },
+  {
+    id: 'pt03', src: 'jaseupseo', type: 'mc',
+    q: '일생 동안의 경제생활에 대한 옳은 설명을 〈보기〉에서 고른 것은?',
+    passage: 'ㄱ. 유소년기에는 소비가 소득보다 많다.<br>ㄴ. 중장년기에는 소득은 가장 많지만 소비는 가장 적다.<br>ㄷ. 노년기에는 지속적인 소득 증가로 소비보다 소득이 많아진다.<br>ㄹ. 청년기에 소득이 생겨나면서 그동안 벌어졌던 소비와의 격차가 줄어든다.',
+    choices: ['ㄱ, ㄴ', 'ㄱ, ㄹ', 'ㄴ, ㄷ', 'ㄴ, ㄹ', 'ㄷ, ㄹ'],
+    correct: 1,
+    explain: 'ㄱ 유소년기는 소득이 거의 없어 소비>소득(○), ㄹ 청년기에 소득 발생으로 격차 축소(○). ㄴ 중장년기 소비도 자녀 교육·주택 등으로 큼, ㄷ 노년기는 소득이 줄어 다시 소비>소득이라 틀리다.'
+  },
+  {
+    id: 'pt04', src: 'jaseupseo', type: 'mc',
+    q: '밑줄 친 \'이것\'에 해당하는 용어로 옳은 것은?',
+    passage: '• <u>이것</u>은 투자를 통해 수익을 얻을 수 있는 정도를 말한다.<br>• 일반적으로 예금이나 적금은 <u>이것</u>이 낮고, 주식은 <u>이것</u>이 높은 편이다.',
+    choices: ['수익성', '안전성', '유동성', '위험성', '환금성'],
+    correct: 0,
+    explain: '투자로 수익을 얻을 수 있는 정도는 <b>수익성</b>이다. 예금·적금은 수익성이 낮고 주식은 수익성이 높다.'
+  },
+  {
+    id: 'pt05', src: 'jaseupseo', type: 'mc',
+    q: '다음 명언들이 강조하는 내용으로 가장 적절한 것은?',
+    passage: '• 계란을 한 바구니에 담지 마라.<br>• 모든 이로 하여금 자신의 돈을 세 부분으로 나누게 하여, 3분의 1은 토지에, 3분의 1은 사업에 투자하게 하고, 나머지 3분의 1은 예비로 남겨 두게 하라.',
+    choices: ['생애 주기에 따라 경제생활을 점검해야 한다.', '원활한 경제 활동을 위해서는 신용을 관리해야 한다.', '체계적인 자산 관리를 위해서는 전문가의 도움을 받아야 한다.', '자산을 투자할 때에는 분산 투자를 해야 위험성을 줄일 수 있다.', '자금을 체계적으로 관리하기 위해서는 가계부를 작성해야 한다.'],
+    correct: 3,
+    explain: '두 명언 모두 자산을 여러 곳에 나누어 투자하라는 <b>분산 투자</b>의 중요성을 강조한다. 한 곳에 몰빵하지 말고 위험을 분산해야 한다.'
+  },
+  {
+    id: 'pt06', src: 'jaseupseo', type: 'mc',
+    q: '신용에 대한 옳은 설명을 〈보기〉에서 고른 것은?',
+    passage: 'ㄱ. 신용을 이용하면 과소비를 방지할 수 있다.<br>ㄴ. 신용을 자주 이용하면 미래 경제생활의 부담이 줄어든다.<br>ㄷ. 신용을 이용하면 당장 현금이 없더라도 상품을 구입할 수 있다.<br>ㄹ. 신용 관리를 제대로 하지 못할 경우 신용 카드 발급 제한 등의 불이익을 받을 수 있다.',
+    choices: ['ㄱ, ㄴ', 'ㄱ, ㄹ', 'ㄴ, ㄷ', 'ㄴ, ㄹ', 'ㄷ, ㄹ'],
+    correct: 4,
+    explain: 'ㄷ 신용으로 현금 없이 구매 가능(○), ㄹ 신용 관리 실패 시 카드 발급 제한 등 불이익(○). ㄱ 신용은 오히려 <b>과소비를 유발</b>할 수 있고, ㄴ 자주 쓰면 미래 부담이 <b>늘어난다</b>.'
+  },
+
+  // ===== 평가문제집 내공 다지기 (03. 금융 생활의 중요성, p.54~55) =====
+  {
+    id: 'pg01', src: 'pyeongga', type: 'mc',
+    q: '다음에서 설명하고 있는 용어로 옳은 것은?',
+    passage: '시간의 흐름에 따라 개인이나 가족의 삶이 어떻게 변하는지를 몇 단계로 나타낸 것으로, 보통 \'유소년기-청년기-중장년기-노년기\'로 나눈다. 개인이 처한 상황에 따라 세부적인 특징은 다르게 나타나지만, 경제생활에서 대부분 비슷한 경향을 가진다.',
+    choices: ['사회화', '국가 경제', '생애 주기', '자산 관리', '재무 계획'],
+    correct: 2,
+    explain: '삶을 유소년기-청년기-중장년기-노년기로 나누어 변화를 나타낸 것은 <b>생애 주기</b>다.'
+  },
+  {
+    id: 'pg02', src: 'pyeongga', type: 'mc',
+    q: '㉠, ㉡에 들어갈 용어를 옳게 연결한 것은?',
+    passage: '( ㉠ )은/는 돈의 흐름을 파악하여 필요할 때 돈을 쓸 수 있도록 미리 준비하는 과정으로, 미래에 예상되는 지출과 예상하지 못한 지출까지도 고려해야 한다. 특히 시간이 지남에 따라 경제생활이 변해 가므로 ( ㉡ )을/를 고려하여 각 시기별 소득과 지출을 꼼꼼히 따져 보는 것이 필요하다.',
+    choices: ['㉠ 이윤 - ㉡ 생애 주기', '㉠ 생애 주기 - ㉡ 이윤', '㉠ 생애 주기 - ㉡ 재무 계획', '㉠ 재무 계획 - ㉡ 이윤', '㉠ 재무 계획 - ㉡ 생애 주기'],
+    correct: 4,
+    explain: '돈 흐름을 파악해 미리 준비하는 과정은 <b>재무 계획(㉠)</b>, 시기별 소득·지출을 따지기 위해 고려하는 것은 <b>생애 주기(㉡)</b>다.'
+  },
+  {
+    id: 'pg03', src: 'pyeongga', type: 'mc',
+    q: '생애 주기에 따른 재무 계획을 세울 때 유의해야 할 점으로 옳지 <u>않은</u> 것은?',
+    choices: ['필요할 때만 단기적으로 계획을 세워야 한다.', '생애 주기에 따른 삶의 변화를 반영해야 한다.', '생애 주기에 따른 수입과 지출을 예측해야 한다.', '예상하지 못한 사고나 질병 등에 대비해야 한다.', '일생 동안 이루어지는 경제생활 전체를 고려해야 한다.'],
+    correct: 0,
+    explain: '재무 계획은 노후까지 안정적인 경제생활을 위해 <b>장기적</b>으로 세워야 한다. 필요할 때만 단기적으로 세운다는 ①이 틀렸다.'
+  },
+  {
+    id: 'pg04', src: 'pyeongga', type: 'mc',
+    q: '각 생애 주기에 대한 옳은 설명을 〈보기〉에서 고른 것은?',
+    passage: 'ㄱ. 청년기 - 취업과 함께 소득이 발생함.<br>ㄴ. 유소년기 - 소득이 크게 줄어 연금을 받아 생활함.<br>ㄷ. 중장년기 - 부모의 소득에 의존하여 경제생활을 함.<br>ㄹ. 노년기 - 소득이 거의 없어져 이전에 마련한 노후 자금으로 생활함.',
+    choices: ['ㄱ, ㄴ', 'ㄱ, ㄹ', 'ㄴ, ㄷ', 'ㄴ, ㄹ', 'ㄷ, ㄹ'],
+    correct: 1,
+    explain: 'ㄱ 청년기-취업으로 소득 발생(○), ㄹ 노년기-노후 자금으로 생활(○). ㄴ은 노년기 설명, ㄷ은 유소년기 설명이라 서로 바뀌어 틀리다.'
+  },
+  {
+    id: 'pg05', src: 'pyeongga', type: 'mc',
+    q: '생애 주기에 따른 소득과 소비의 변화에 대해 옳게 말한 사람은?',
+    image: 'data:image/jpeg;base64,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',
+    choices: ['가윤: 유소년기에는 소득이 소비보다 많은 시기이므로 미래를 위해 저축을 해야 해.', '나진: 노년기에는 다시 소득이 많아지기 때문에 미래를 대비해 자금을 마련할 수 있어.', '다영: 유소년기에는 소득이 거의 없기 때문에 소비를 하려면 부모님의 도움이 필요해.', '라익: 청년기에는 소비가 소득을 따라잡기 시작해서 지출이 점점 많아지는 시기이구나.', '마희: 중장년기는 대부분 소득과 소비가 일치하는 시기야. 즉, 버는 만큼 소비하는 시기지.'],
+    correct: 2,
+    explain: '유소년기는 소득이 거의 없어 <b>부모의 도움</b>으로 소비한다(다영○). ① 유소년기는 소비>소득, ② 노년기는 소득 감소, ④ 청년기는 소득이 소비를 따라잡으며 격차 축소, ⑤ 중장년기는 소득>소비라 모두 틀리다.'
+  },
+  {
+    id: 'pg06', src: 'pyeongga', type: 'mc',
+    q: '밑줄 친 부분에서 직접 고려하고 있는 요소로 적절한 것은?',
+    passage: '합리적인 자산 관리를 위해서는 저축이나 투자의 목적과 기간을 살펴보고, 여러 가지 요소를 고려해야 한다. 일반적으로 <u>예금이나 적금은 투자를 통해 이익을 얻을 수 있는 가능성이 낮은 편이고, 주식은 비교적 이익을 얻을 수 있는 가능성이 높은 편이다.</u>',
+    choices: ['수익성', '안전성', '위험성', '유동성', '환금성'],
+    correct: 0,
+    explain: '\'투자를 통해 이익을 얻을 수 있는 가능성\'은 <b>수익성</b>이다. 예금·적금은 수익성이 낮고 주식은 수익성이 높다.'
+  },
+  {
+    id: 'pg07', src: 'pyeongga', type: 'mc',
+    q: '합리적인 자산 관리 방법에 대한 설명으로 옳은 것은?',
+    choices: ['자신의 소득 규모에 맞는 계획적 지출을 통해 불필요한 낭비를 줄인다.', '자산 관리를 할 때에는 투자한 원금이 손실되지 않는 수익성을 고려한다.', '자산을 불리기 위해 투자를 할 때에는 수익을 얻을 수 있는 정도인 유동성을 반드시 확인한다.', '평균 수명의 연장으로 인해 나이가 들수록 소득이 늘어나므로 노년기에는 모험적으로 투자한다.', '소득과 소비는 시기별로 예측 가능하기 때문에 한 번 세워 놓은 자산 관리 계획을 수정하지 않고 계속 사용한다.'],
+    correct: 0,
+    explain: '① 계획적 지출로 낭비를 줄이는 것이 합리적 자산 관리(○). ② 원금 손실 없는 것은 \'안전성\', ③ 수익을 얻는 정도는 \'수익성\', ④ 노년기는 소득이 줄어 안정적 투자가 필요, ⑤ 상황에 따라 계획은 수정 가능해야 한다.'
+  },
+  {
+    id: 'pg08', src: 'pyeongga', type: 'mc',
+    q: '다음 명언들이 강조하는 내용으로 가장 적절한 것은?',
+    passage: '• 계란을 한 바구니에 담지 마라. - 제임스 토빈 -<br>• 모든 이로 하여금 자신의 돈을 세 부분으로 나누게 하여, 3분의 1은 토지에, 3분의 1은 사업에 투자하게 하고, 나머지 3분의 1은 예비로 남겨 두게 하라. - 탈무드 -',
+    choices: ['신용', '분산 투자', '집중 투자', '수익 극대화', '위험 극대화'],
+    correct: 1,
+    explain: '자산을 여러 곳에 나누어 투자해 위험을 줄이는 것은 <b>분산 투자</b>다. 두 명언 모두 분산 투자의 중요성을 강조한다.'
+  },
+  {
+    id: 'pg09', src: 'pyeongga', type: 'mc',
+    q: '자산 관리 방법 (가)~(다)에 대한 설명으로 옳은 것은?',
+    passage: '(가) 소득의 일부를 저축하여 노후에 매달 일정액을 받는 것<br>(나) 주식회사가 자금 마련을 위해 투자자에게 돈을 받고 발행하는 것<br>(다) 정부, 기업 등이 자금을 빌리면서 원금과 이자를 언제까지 갚겠다는 것을 표시하여 발행하는 증서',
+    choices: ['(가)는 아파트나 빌딩 등과 같이 움직여 옮길 수 없는 재산에 해당한다.', '(나)는 예금·적금보다 안전성이 높은 편이다.', '(다)의 종류에는 국민연금, 개인연금, 퇴직 연금 등이 있다.', '(나)는 채권, (다)는 주식에 대한 설명이다.', '(가)~(다)는 모두 금융 자산에 해당한다.'],
+    correct: 4,
+    explain: '(가) 연금, (나) 주식, (다) 채권 — 모두 <b>금융 자산</b>에 해당한다(⑤○). ① 부동산 설명이라 틀림, ② 주식은 예금·적금보다 안전성 낮음, ③ 국민연금·퇴직 연금은 (가) 연금 종류, ④ (나)가 주식·(다)가 채권이라 반대다.'
+  },
+  {
+    id: 'pg10', src: 'pyeongga', type: 'mc',
+    q: '밑줄 친 \'이것\'에 해당하는 용어로 적절한 것은?',
+    passage: '<u>이것</u>은 나중에 대가를 지불할 것을 약속하고 상품을 이용하거나 돈을 빌릴 수 있는 능력을 말한다. <u>이것</u>을 통해 당장 현금이 없어도 물건을 구매하거나 각종 서비스를 제공받을 수 있다.',
+    choices: ['소득', '시장', '신용', '투자', '통장'],
+    correct: 2,
+    explain: '나중에 대가를 지불할 것을 약속하고 현재 상품·서비스를 이용할 수 있는 능력은 <b>신용</b>이다.'
+  },
+  {
+    id: 'pg11', src: 'pyeongga', type: 'mc',
+    q: '신용을 활용한 경제 활동의 사례를 〈보기〉에서 고른 것은?',
+    passage: 'ㄱ. 문제집을 인터넷 서점에서 구입하여 택배로 배달을 받았다.<br>ㄴ. 자동차를 살 돈이 모자라서 은행에서 대출을 받아 구입하였다.<br>ㄷ. 인터넷 서비스를 미리 이용한 후 다음 달에 청구된 요금을 지불하였다.<br>ㄹ. 외국에 있는 친구에게 물건을 보내기 위해 국제 배송 서비스를 활용하였다.',
+    choices: ['ㄱ, ㄴ', 'ㄱ, ㄹ', 'ㄴ, ㄷ', 'ㄴ, ㄹ', 'ㄷ, ㄹ'],
+    correct: 2,
+    explain: '신용은 \'나중에 대가를 지불\'하는 것이다. ㄴ 대출(나중에 갚음), ㄷ 후불 결제가 신용 거래다(○). ㄱ 택배 구매·ㄹ 국제 배송은 신용과 직접 관련 없다.'
+  },
+  {
+    id: 'pg12', src: 'pyeongga', type: 'mc',
+    q: '합리적으로 신용을 관리하는 방법으로 가장 적절한 것은?',
+    choices: ['한 곳이 아니라 여러 은행에서 예금을 하거나 대출을 받는다.', '부족한 신용 카드 결제 대금은 휴대 전화 요금을 연체하여 마련한다.', '종종 나의 신용 정보를 확인하여 높은 신용도를 유지할 수 있도록 한다.', '필요할 때마다 대출을 하면 되므로 소득을 고려하지 않고 충분히 소비한다.', '신용 카드를 많이 만들어서 한 회사의 카드 대금을 다른 회사의 카드를 이용하여 마련한다.'],
+    correct: 2,
+    explain: '신용 정보를 주기적으로 확인하고 관리해 <b>높은 신용도를 유지</b>하는 것이 합리적이다(③○). ② 연체, ④ 무계획 소비, ⑤ 돌려막기는 신용도를 떨어뜨리는 잘못된 행동이고, ① 주거래 은행 한 곳에 거래를 집중하는 게 낫다.'
+  }
+];
+
+// ---- State ----
+let answered = {};   // id -> {value, correct}
+let revealedSet = {}; // id -> true (short/essay reveal)
+let starred = {};
+let currentFilter = 'all';
+
+const TYPE_LABEL = { mc: '객관식', ox: 'O·X', short: '단답형', essay: '서술형' };
+const SRC_LABEL = { jaseupseo: '자습서', pyeongga: '평가문제집' };
+
+const FILTERS = [
+  { key: 'all', label: '전체' },
+  { key: 'jaseupseo', label: '자습서' },
+  { key: 'pyeongga', label: '평가문제집' },
+  { key: 'star', label: '⭐ 중요' },
+  { key: 'wrong', label: '✗ 틀린 문제' }
+];
+
+function buildFilters() {
+  const box = document.getElementById('filters');
+  box.innerHTML = FILTERS.map(f =>
+    `<div class="filter-tab ${f.key === currentFilter ? 'active' : ''}" onclick="setFilter('${f.key}')">${f.label}</div>`
+  ).join('');
+}
+
+function setFilter(key) {
+  currentFilter = key;
+  buildFilters();
+  render();
+}
+
+function getVisible() {
+  return questions.filter(q => {
+    if (currentFilter === 'all') return true;
+    if (currentFilter === 'jaseupseo') return q.src === 'jaseupseo';
+    if (currentFilter === 'pyeongga') return q.src === 'pyeongga';
+    if (currentFilter === 'star') return starred[q.id];
+    if (currentFilter === 'wrong') return answered[q.id] && !answered[q.id].correct;
+    return true;
+  });
+}
+
+const NUM = ['①','②','③','④','⑤','⑥'];
+
+function render() {
+  const list = document.getElementById('quizList');
+  const visible = getVisible();
+  if (visible.length === 0) {
+    list.innerHTML = '<div class="empty">해당하는 문제가 없어요.</div>';
+    updateProgress();
+    return;
+  }
+  list.innerHTML = visible.map((q, idx) => renderCard(q, idx)).join('');
+  updateProgress();
+}
+
+function renderCard(q, idx) {
+  let head = `
+    <div class="q-head">
+      <div class="q-num">${q._srcNum}</div>
+      <span class="src-tag ${q.src}">${SRC_LABEL[q.src]}</span>
+      <span class="type-tag">${q._area}</span>
+      <span class="type-tag">${TYPE_LABEL[q.type]}</span>
+      <button class="star-btn ${starred[q.id] ? 'on' : ''}" onclick="toggleStar('${q.id}')">${starred[q.id] ? '⭐' : '☆'}</button>
+    </div>`;
+
+  let body = `<div class="q-text">${q.q}</div>`;
+  if (q.passage) body += `<div class="q-passage">${q.passage}</div>`;
+  if (q.image) body += `<div class="q-image"><img src="${q.image}" alt="문제 그림"></div>`;
+  if (q.table) {
+    body += `<table class="q-table"><thead><tr>${q.table.head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${q.table.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  }
+
+  if (q.type === 'mc') body += renderMC(q);
+  else if (q.type === 'ox') body += renderOX(q);
+  else body += renderShort(q);
+
+  return `<div class="q-card" id="card-${q.id}">${head}${body}</div>`;
+}
+
+function renderMC(q) {
+  const a = answered[q.id];
+  let html = '<div class="choices">';
+  q.choices.forEach((c, i) => {
+    let cls = '';
+    if (a) {
+      if (i === q.correct) cls = 'correct';
+      else if (i === a.value) cls = 'wrong';
+    }
+    html += `<div class="choice ${cls}" onclick="selectMC('${q.id}', ${i})"><span class="choice-num">${NUM[i]}</span><span>${c}</span></div>`;
+  });
+  html += '</div>';
+  if (a) {
+    html += `<div class="reset-hint">↻ 다시 클릭하면 초기화돼요</div>`;
+    html += answerBox(q);
+  }
+  return html;
+}
+
+function renderOX(q) {
+  const a = answered[q.id];
+  let oCls = '', xCls = '';
+  if (a) {
+    if (q.answer === 'O') oCls = 'correct'; else xCls = 'correct';
+    if (a.value !== q.answer) { if (a.value === 'O') oCls = 'wrong'; else xCls = 'wrong'; }
+  }
+  let html = `<div class="ox-wrap">
+    <button class="ox-btn ${oCls}" onclick="selectOX('${q.id}','O')">O</button>
+    <button class="ox-btn ${xCls}" onclick="selectOX('${q.id}','X')">X</button>
+  </div>`;
+  if (a) {
+    html += `<div class="reset-hint">↻ 다시 클릭하면 초기화돼요</div>`;
+    html += answerBox(q);
+  }
+  return html;
+}
+
+function renderShort(q) {
+  const shown = revealedSet[q.id];
+  const tag = q.type === 'essay' ? 'textarea' : 'input';
+  let html = `<${tag} class="short-input" placeholder="여기에 답을 적어보세요" ${q.type==='essay'?'':'type="text"'}></${tag}>`;
+  html += `<button class="reveal-btn ${shown?'shown':''}" onclick="toggleReveal('${q.id}')">${shown?'↻ 다시 풀기':'정답 확인'}</button>`;
+  if (shown) html += answerBox(q);
+  return html;
+}
+
+function answerBox(q) {
+  let ans = '';
+  if (q.type === 'mc') ans = `${NUM[q.correct]} ${q.choices[q.correct]}`;
+  else if (q.type === 'ox') ans = q.answer;
+  else ans = q.answer;
+  return `<div class="answer-box show">
+    <div class="answer-label">정답</div>
+    <div class="answer-text">${ans}</div>
+    <div class="explain-text">${q.explain || ''}</div>
+  </div>`;
+}
+
+// ---- Interactions ----
+function selectMC(id, i) {
+  const q = questions.find(x => x.id === id);
+  if (answered[id]) { delete answered[id]; render(); return; }
+  answered[id] = { value: i, correct: i === q.correct };
+  render();
+}
+
+function selectOX(id, val) {
+  const q = questions.find(x => x.id === id);
+  if (answered[id]) { delete answered[id]; render(); return; }
+  answered[id] = { value: val, correct: val === q.answer };
+  render();
+}
+
+function toggleReveal(id) {
+  if (revealedSet[id]) delete revealedSet[id];
+  else revealedSet[id] = true;
+  render();
+}
+
+function toggleStar(id) {
+  if (starred[id]) delete starred[id];
+  else starred[id] = true;
+  render();
+}
+
+function revealAll() {
+  questions.forEach(q => {
+    if (q.type === 'mc') answered[q.id] = { value: q.correct, correct: true };
+    else if (q.type === 'ox') answered[q.id] = { value: q.answer, correct: true };
+    else revealedSet[q.id] = true;
+  });
+  render();
+}
+
+function hideAll() {
+  answered = {};
+  revealedSet = {};
+  render();
+}
+
+function resetAll() {
+  answered = {};
+  revealedSet = {};
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  // 진행률: 객관식·OX는 answered, 단답·서술형은 revealed 기준
+  let done = 0, ok = 0, no = 0;
+  questions.forEach(q => {
+    if (q.type === 'mc' || q.type === 'ox') {
+      if (answered[q.id]) { done++; if (answered[q.id].correct) ok++; else no++; }
+    } else {
+      if (revealedSet[q.id]) done++;
+    }
+  });
+  const total = questions.length;
+  const pct = Math.round(done / total * 100);
+  document.getElementById('scoreNum').innerHTML = `${done} <span>/ ${total}</span>`;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('okCount').textContent = `정답 ${ok}`;
+  document.getElementById('noCount').textContent = `오답 ${no}`;
+}
+
+// 출처/영역별 번호 부여 (id 접두사 기준)
+const SUB_LABEL = {
+  js: { src: '자습서', area: '스스로 확인하기' },
+  pt: { src: '자습서', area: '탄탄 실력 다지기' },
+  pd: { src: '자습서', area: '탄탄 실력 다지기' },
+  pg: { src: '평가문제집', area: '내공 다지기' }
+};
+(function assignNums(){
+  const counters = {};
+  questions.forEach(q => {
+    const pre = q.id.replace(/[0-9]+$/, '');
+    counters[pre] = (counters[pre] || 0) + 1;
+    q._srcNum = String(counters[pre]).padStart(2,'0');
+    q._area = (SUB_LABEL[pre] && SUB_LABEL[pre].area) || '';
+  });
+})();
+
+buildFilters();
+render();
+</script>
+</body>
+</html>
